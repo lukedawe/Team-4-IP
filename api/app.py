@@ -46,13 +46,18 @@ def get_pts():
 def create_user():
     if request.is_json:
         user_details = request.get_json()
-        if 'pt_id' in user_details:
-            query = "EXEC addAthlete @name = '"+user_details['name']+"', @pt_id = "+str(user_details['pt_id']) + \
-                ", @email = '"+user_details['email'] + \
-                "', @password = '"+user_details['password']+"';"
-        else:
-            query = "EXEC addAthlete @name = '"+user_details['name']+"', @pt_id = '', @email = '"+user_details['email'] + \
-                "', @password = '"+user_details['password']+"';"
+
+        try:
+            if 'pt_id' in user_details:
+                query = "EXEC addAthlete @name = '"+user_details['name']+"', @pt_id = "+str(user_details['pt_id']) + \
+                    ", @email = '"+user_details['email'] + \
+                    "', @password = '"+user_details['password']+"';"
+            else:
+                query = "EXEC addAthlete @name = '"+user_details['name']+"', @pt_id = '', @email = '"+user_details['email'] + \
+                    "', @password = '"+user_details['password']+"';"
+        except KeyError:
+            return 'Missing key in request'
+            
         cursor.execute(str(query))
         return 'OK'
     else:
@@ -64,9 +69,12 @@ def create_pt():
     if request.is_json:
         user_details = request.get_json()
 
-        query = "EXEC addPt @name = '"+user_details['name']+"', @email = '"+user_details['email'] + \
+        try:
+            query = "EXEC addPt @name = '"+user_details['name']+"', @email = '"+user_details['email'] + \
             "', @password = '"+user_details['password']+"';"
-       
+        except KeyError:
+            return 'Missing key in request'
+            
         cursor.execute(str(query))
         return 'OK'
     else:
