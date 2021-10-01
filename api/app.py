@@ -58,6 +58,21 @@ def create_user():
     else:
         return {"error": "Request must be JSON"}, 415
 
+
+@app.post("/create-user/pt")
+def create_pt():
+    if request.is_json:
+        user_details = request.get_json()
+
+        query = "EXEC addPt @name = '"+user_details['name']+"', @email = '"+user_details['email'] + \
+            "', @password = '"+user_details['password']+"';"
+       
+        cursor.execute(str(query))
+        return 'OK'
+    else:
+        return {"error": "Request must be JSON"}, 415
+
+
 # def run_query(query: str):
 #     cursor.execute(query)
 #     row = cursor.fetchone()
