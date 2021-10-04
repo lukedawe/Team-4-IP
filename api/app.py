@@ -4,7 +4,7 @@ import pyodbc
 import json
 
 # open the files with connection details
-with open("../connection_details.json") as database_details:
+with open("./connection_details.json") as database_details:
     database_details = json.loads(database_details.read())
 
 # get the details from the files
@@ -57,7 +57,7 @@ def create_user():
                     "', @password = '"+user_details['password']+"';"
         except KeyError:
             return 'Missing key in request'
-            
+
         cursor.execute(str(query))
         return 'OK'
     else:
@@ -80,6 +80,19 @@ def create_pt():
     else:
         return {"error": "Request must be JSON"}, 415
 
+
+# TODO make a procedure to add a data point (remember that we need the id of the session)
+@app.post("/add_data")
+def add_data():
+    if request.is_json:
+        exercise_data = request.get_json()
+
+        try:
+            query = "EXEC " # someone needs to make a procedure for adding data
+        except KeyError:
+            print('JSON did not hold reqired data')
+    else:
+        return {"error": "Request must be a JSON"}, 415
 
 # def run_query(query: str):
 #     cursor.execute(query)
