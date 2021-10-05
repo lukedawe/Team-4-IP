@@ -86,7 +86,6 @@ def create_pt():
         except KeyError:
             print('Missing key in request')
             return {"error": "Request must contain required keys"}, 415
-
         # execute and commit the query
         cursor.execute(str(query))
         cnxn.commit()
@@ -110,7 +109,6 @@ def add_data():
                 ", @left_quad = " + str(exercise_data['muscles']['left_quad']) +\
                 ", @right_quad = " + \
                     str(exercise_data['muscles']['right_quad'])+";"
-
             print(query)
             # execute and commit the query
             cursor.execute(str(query))
@@ -137,7 +135,7 @@ def get_data():
             # execute and commit the query
             cursor.execute(str(query))
             cnxn.commit()
-
+            # there should only be one row returned
             row = cursor.fetchone()
             return row
 
@@ -148,6 +146,7 @@ def get_data():
         return {"error": "Request must be a JSON"}, 415
 
 
+# TODO return the session ID, this needs to be implemented at the stored procedure level
 @app.post("/sessions/add_session")
 def add_session():
     if request.is_json:
@@ -160,7 +159,6 @@ def add_session():
                 query += ", @comment = '" + str(session_data['comment'])+"'"
             # end the query
             query += ";"
-
             print(query)
             # execute and commit the query
             cursor.execute(str(query))
