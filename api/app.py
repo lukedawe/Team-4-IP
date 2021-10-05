@@ -135,6 +135,26 @@ def get_data():
     else:
         return {"error": "Request must be a JSON"}, 415
 
+
+@app.post("/sessions/add_session")
+def add_session():
+    if request.is_json:
+        session_data = request.get_json()
+        try:
+            if 'comment' in session_data:
+                query = "EXEC addSession @athlete_id = " + str(session_data['athlete_id']) +\
+                    ", @start_date = '" + str(session_data['start_date']) + \
+                    ", @comment = '" + str(session_data['comment'])+"';"
+            else:
+                query = "EXEC addSession @athlete_id = " + str(session_data['athlete_id']) +\
+                    ", @start_date = '" + str(session_data['start_date']) + "';"
+
+            print(query)
+            cursor.execute(str(query))
+            return 'OK'
+        except KeyError:
+            print('JSON did not hold reqired data')
+            return {"error": "Request must contain required keys"}, 415
     else:
         return {"error": "Request must be a JSON"}, 415
 
