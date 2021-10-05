@@ -110,6 +110,31 @@ def add_data():
             return 'OK'
         except KeyError:
             print('JSON did not hold reqired data')
+            return {"error": "Request must contain required keys"}, 415
+    else:
+        return {"error": "Request must be a JSON"}, 415
+
+
+# for this you'll need the session id that the data belongs to along with it's number within the session
+@app.post("/exercise_data/get_data")
+def get_data():
+    if request.is_json():
+        search_criteria = request.get_json()
+
+        try:
+            query = "EXEC getDataEntry @session_id = " + str(search_criteria['session_id']) + \
+                ", @order_in_session = " + str(search_criteria['order_in_session']) + ";"
+            cursor.execute(str(query))
+
+            row = cursor.fetchone()
+            return row
+
+        except KeyError:
+            print('JSON did not hold reqired data')
+            return {"error": "Request must contain required keys"}, 415
+    else:
+        return {"error": "Request must be a JSON"}, 415
+
     else:
         return {"error": "Request must be a JSON"}, 415
 
