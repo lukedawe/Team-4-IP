@@ -1,6 +1,6 @@
 npm install -g yarn
 start cmd /k npm install -g expo-cli
-expo init theo-health
+npm install
 
 cd theo-health
 yarn web
