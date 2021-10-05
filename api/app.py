@@ -97,7 +97,17 @@ def add_data():
         exercise_data = request.get_json()
 
         try:
-            query = "EXEC " # someone needs to make a procedure for adding data
+            query = "EXEC addDataEntry @session_id = "+str(exercise_data['session_id']) +\
+                ", @order_in_session = " + str(exercise_data['order_in_session']) + \
+                ", @date_time = '" + str(exercise_data['date_time']) + \
+                "', @left_hamstring = " + str(exercise_data['muscles']['left_hamstring']) +\
+                ", @right_hamstring = " + str(exercise_data['muscles']['right_hamstring']) +\
+                ", @left_quad = " + str(exercise_data['muscles']['left_quad']) +\
+                ", @right_quad = " + str(exercise_data['muscles']['right_quad'])+";"
+
+            print(query)
+            cursor.execute(str(query))
+            return 'OK'
         except KeyError:
             print('JSON did not hold reqired data')
     else:
