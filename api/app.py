@@ -52,20 +52,22 @@ def create_user():
     if request.is_json:
         user_details = request.get_json()
 
-        query = "EXEC addAthlete @name = '"+user_details['name']+"', @email = '"+user_details['email'] + \
-                    "', @password = '"+user_details['password']+"'"
-
         try:
+            query = "EXEC addAthlete @name = '"+user_details['name']+"', @email = '"+user_details['email'] + \
+                    "', @password = '"+user_details['password']+"'"
+            # if the query has the pt id present, add that param to the query
             if 'pt_id' in user_details:
                 query += "', @pt_id = "+str(user_details['pt_id'])
-            else:
-                query += ";"
+            # end the query
+            query += ";"
 
         except KeyError:
             print('Missing key in request')
             return {"error": "Request must contain required keys"}, 415
 
+        # execute and commit the query
         cursor.execute(str(query))
+        cnxn.commit()
         return 'OK'
     else:
         return {"error": "Request must be JSON"}, 415
@@ -85,7 +87,9 @@ def create_pt():
             print('Missing key in request')
             return {"error": "Request must contain required keys"}, 415
 
+        # execute and commit the query
         cursor.execute(str(query))
+        cnxn.commit()
         return 'OK'
     else:
         return {"error": "Request must be JSON"}, 415
@@ -108,7 +112,9 @@ def add_data():
                     str(exercise_data['muscles']['right_quad'])+";"
 
             print(query)
+            # execute and commit the query
             cursor.execute(str(query))
+            cnxn.commit()
             return 'OK'
         except KeyError:
             print('JSON did not hold reqired data')
@@ -120,14 +126,17 @@ def add_data():
 # for this you'll need the session id that the data belongs to along with it's number within the session
 @app.post("/exercise_data/get_data")
 def get_data():
-    if request.is_json():
+    if request.is_json:
         search_criteria = request.get_json()
 
         try:
             query = "EXEC getDataEntry @session_id = " + str(search_criteria['session_id']) + \
                 ", @order_in_session = " + \
                     str(search_criteria['order_in_session']) + ";"
+            print(query)
+            # execute and commit the query
             cursor.execute(str(query))
+            cnxn.commit()
 
             row = cursor.fetchone()
             return row
@@ -148,13 +157,14 @@ def add_session():
                     ", @start_date = '" + str(session_data['start_date']) + "'"
             # if the query holds a comment, add the comment to the query
             if 'comment' in session_data:
-                query += ", @comment = '" + str(session_data['comment'])+"';"
-            # otherwise end the query
-            else:
-                query += ";"
+                query += ", @comment = '" + str(session_data['comment'])+"'"
+            # end the query
+            query += ";"
 
             print(query)
+            # execute and commit the query
             cursor.execute(str(query))
+            cnxn.commit()
             return 'OK'
         except KeyError:
             print('JSON did not hold reqired data')
