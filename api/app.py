@@ -61,7 +61,8 @@ def create_user():
                 query = "EXEC addAthlete @name = '"+user_details['name']+"', @pt_id = '', @email = '"+user_details['email'] + \
                     "', @password = '"+user_details['password']+"';"
         except KeyError:
-            return 'Missing key in request'
+            print('Missing key in request')
+            return {"error": "Request must contain required keys"}, 415
 
         cursor.execute(str(query))
         return 'OK'
@@ -79,8 +80,9 @@ def create_pt():
             query = "EXEC addPt @name = '"+user_details['name']+"', @email = '"+user_details['email'] + \
             "', @password = '"+user_details['password']+"';"
         except KeyError:
-            return 'Missing key in request'
-            
+            print('Missing key in request')
+            return {"error": "Request must contain required keys"}, 415
+
         cursor.execute(str(query))
         return 'OK'
     else:
