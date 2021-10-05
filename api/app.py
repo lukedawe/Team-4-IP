@@ -52,14 +52,15 @@ def create_user():
     if request.is_json:
         user_details = request.get_json()
 
+        query = "EXEC addAthlete @name = '"+user_details['name']+"', @email = '"+user_details['email'] + \
+                    "', @password = '"+user_details['password']+"'"
+
         try:
             if 'pt_id' in user_details:
-                query = "EXEC addAthlete @name = '"+user_details['name']+"', @pt_id = "+str(user_details['pt_id']) + \
-                    ", @email = '"+user_details['email'] + \
-                    "', @password = '"+user_details['password']+"';"
+                query += "', @pt_id = "+str(user_details['pt_id'])
             else:
-                query = "EXEC addAthlete @name = '"+user_details['name']+"', @pt_id = '', @email = '"+user_details['email'] + \
-                    "', @password = '"+user_details['password']+"';"
+                query += ";"
+
         except KeyError:
             print('Missing key in request')
             return {"error": "Request must contain required keys"}, 415
@@ -103,7 +104,8 @@ def add_data():
                 "', @left_hamstring = " + str(exercise_data['muscles']['left_hamstring']) +\
                 ", @right_hamstring = " + str(exercise_data['muscles']['right_hamstring']) +\
                 ", @left_quad = " + str(exercise_data['muscles']['left_quad']) +\
-                ", @right_quad = " + str(exercise_data['muscles']['right_quad'])+";"
+                ", @right_quad = " + \
+                    str(exercise_data['muscles']['right_quad'])+";"
 
             print(query)
             cursor.execute(str(query))
@@ -123,7 +125,8 @@ def get_data():
 
         try:
             query = "EXEC getDataEntry @session_id = " + str(search_criteria['session_id']) + \
-                ", @order_in_session = " + str(search_criteria['order_in_session']) + ";"
+                ", @order_in_session = " + \
+                    str(search_criteria['order_in_session']) + ";"
             cursor.execute(str(query))
 
             row = cursor.fetchone()
@@ -141,13 +144,14 @@ def add_session():
     if request.is_json:
         session_data = request.get_json()
         try:
+            query = "EXEC addSession @athlete_id = " + str(session_data['athlete_id']) +\
+                    ", @start_date = '" + str(session_data['start_date']) + "'"
+            # if the query holds a comment, add the comment to the query
             if 'comment' in session_data:
-                query = "EXEC addSession @athlete_id = " + str(session_data['athlete_id']) +\
-                    ", @start_date = '" + str(session_data['start_date']) + \
-                    ", @comment = '" + str(session_data['comment'])+"';"
+                query += ", @comment = '" + str(session_data['comment'])+"';"
+            # otherwise end the query
             else:
-                query = "EXEC addSession @athlete_id = " + str(session_data['athlete_id']) +\
-                    ", @start_date = '" + str(session_data['start_date']) + "';"
+                query += ";"
 
             print(query)
             cursor.execute(str(query))
