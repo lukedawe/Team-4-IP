@@ -69,7 +69,8 @@ def create_user():
         return {"error": "Request must be JSON"}, 415
 
 
-@app.post("/create-user/pt")
+# this is to create a new personal trainer account
+@app.post("/users/add_pt")
 def create_pt():
     if request.is_json:
         user_details = request.get_json()
@@ -86,8 +87,8 @@ def create_pt():
         return {"error": "Request must be JSON"}, 415
 
 
-# TODO make a procedure to add a data point (remember that we need the id of the session)
-@app.post("/add_data")
+# this is to add a data point to an already existing session
+@app.post("/exercise_data/add_data")
 def add_data():
     if request.is_json:
         exercise_data = request.get_json()
