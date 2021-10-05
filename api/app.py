@@ -77,8 +77,9 @@ def create_pt():
         user_details = request.get_json()
 
         try:
-            query = "EXEC addPt @name = '"+user_details['name']+"', @email = '"+user_details['email'] + \
-            "', @password = '"+user_details['password']+"';"
+            query = "EXEC addPt @name = '"+user_details['name'] +\
+                "', @email = '"+user_details['email'] + \
+                "', @password = '"+user_details['password']+"';"
         except KeyError:
             print('Missing key in request')
             return {"error": "Request must contain required keys"}, 415
