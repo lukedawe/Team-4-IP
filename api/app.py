@@ -1,3 +1,5 @@
+# to run this API, use the line "flask run"
+
 from flask import Flask, json, request, jsonify
 from requests.sessions import merge_cookies
 import pyodbc
@@ -22,7 +24,8 @@ cursor = cnxn.cursor()
 app = Flask(__name__)
 
 
-@app.get("/get_all_athletes")
+# gets all the athlete accounts in the database
+@app.get("/users/get_all_athletes")
 def get_athletes():
     cursor.execute("SELECT * FROM Athlete")
     row = cursor.fetchone()
@@ -32,7 +35,8 @@ def get_athletes():
     return 'OK'
 
 
-@app.get("/get_all_pts")
+# gets all the personal trainer accounts in the database
+@app.get("/users/get_all_pts")
 def get_pts():
     cursor.execute("SELECT * FROM Personal_Trainer")
     row = cursor.fetchone()
@@ -42,7 +46,8 @@ def get_pts():
     return 'OK'
 
 
-@app.post("/create-user/athlete")
+# this is to create a new athlete account
+@app.post("/users/add_athlete")
 def create_user():
     if request.is_json:
         user_details = request.get_json()
