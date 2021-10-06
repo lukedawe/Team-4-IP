@@ -146,7 +146,6 @@ def get_data():
         return {"error": "Request must be a JSON"}, 415
 
 
-# TODO return the session ID, this needs to be implemented at the stored procedure level
 @app.post("/sessions/add_session")
 def add_session():
     if request.is_json:
@@ -162,8 +161,9 @@ def add_session():
             print(query)
             # execute and commit the query
             cursor.execute(str(query))
-            cnxn.commit()
-            return 'OK'
+            id = cursor.fetchone()
+            # return the ID of the session that was just created
+            return str(id[0])
         except KeyError:
             print('JSON did not hold reqired data')
             return {"error": "Request must contain required keys"}, 415
