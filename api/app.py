@@ -48,7 +48,7 @@ def get_pts():
 
 # this is to create a new athlete account
 @app.post("/users/add_athlete")
-def create_user():
+def add_athlete():
     if request.is_json:
         user_details = request.get_json()
 
@@ -75,7 +75,7 @@ def create_user():
 
 # this is to create a new personal trainer account
 @app.post("/users/add_pt")
-def create_pt():
+def add_pt():
     if request.is_json:
         user_details = request.get_json()
 
@@ -93,8 +93,36 @@ def create_pt():
     else:
         return {"error": "Request must be JSON"}, 415
 
+# this is to create a new personal trainer account
+@app.post("/users/add_user")
+def add_user():
+    if request.is_json:
+        user_details = request.get_json()
+
+        try:
+            query = "EXEC addUser @user_type = '"+user_details['user_type'] + \
+                "', @name = '"+user_details['name'] +\
+                "', @email = '"+user_details['email'] + \
+                "', @password = '"+user_details['password']+"'"
+
+            # if the query has the pt id present, add that param to the query
+            if 'pt_id' in user_details and user_details['user_type'] == "personal trainer":
+                query += ", @pt_id = "+str(user_details['pt_id'])
+            # end the query
+            query += ";"
+        except KeyError:
+            print('Missing key in request')
+            return {"error": "Request must contain required keys"}, 415
+        # execute and commit the query
+        cursor.execute(str(query))
+        cnxn.commit()
+        return 'OK'
+    else:
+        return {"error": "Request must be JSON"}, 415
 
 # this is to add a data point to an already existing session
+
+
 @app.post("/exercise_data/add_data")
 def add_data():
     if request.is_json:
@@ -243,11 +271,14 @@ def get_user_id():
         user_data = request.get_json()
         try:
             query = "EXEC getUserId @user_type = '" + user_data['user_type'] + \
-                "', @email = '" + user_data['email'] + "', @password = '" + user_data['password'] + "';"
+                "', @email = '" + \
+                    user_data['email'] + "', @password = '" + \
+                user_data['password'] + "';"
             print(query)
             cursor.execute(str(query))
             user = cursor.fetchone()
             print(str(user[0]))
+            # return the ID of the user
             return(str(user[0]))
 
         except KeyError:
