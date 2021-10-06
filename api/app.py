@@ -147,6 +147,8 @@ def get_data():
     else:
         return {"error": "Request must be a JSON"}, 415
 
+# query to add a session to the database
+
 
 @app.post("/sessions/add_session")
 def add_session():
@@ -171,6 +173,36 @@ def add_session():
             return {"error": "Request must contain required keys"}, 415
     else:
         return {"error": "Request must be a JSON"}, 415
+
+# query to get all the clients that one pt manages
+# requires the email of the pt (I thought this was easier than the ID)
+@app.post("/users/pt_get_clients")
+def pt_get_clients():
+    if request.is_json:
+        request_data = request.get_json()
+        try:
+            query = "EXEC getPtClients @pt_email = '" + \
+                str(request_data['pt_email']) + "';"
+            print(query)
+            cursor.execute(str(query))
+            clients = cursor.fetchall()
+        except KeyError:
+            print('JSON did not hold reqired data')
+            return {"error": "Request must contain required keys"}, 415
+    else:
+        return {"error": "Request must be a JSON"}, 415
+    # an array of dictionaries that store the client data
+    client_array = []
+    # go through each client and add their details to the array
+    for client in clients:
+        array_entry = {'id': str(client[0]).rstrip(), 'name': str(client[1]).rstrip(), 'email': str(client[2]).rstrip()}
+        client_array.append(array_entry)
+    # turn the array into a JSON to send
+    return_json = {'clients': client_array}
+    return json.dumps(return_json)
+
+
+# TODO recent sessions
 
 # def run_query(query: str):
 #     cursor.execute(query)
