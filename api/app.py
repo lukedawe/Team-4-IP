@@ -222,8 +222,9 @@ def get_user_sessions():
             return {"error": "Request must contain required keys"}, 415
     else:
         return {"error": "Request must be a JSON"}, 415
+    # an array of dictionaries that store the client data
     session_array = []
-
+    # go through each client and add their details to the array
     for session in sessions:
         array_entry = {'id': str(session[0]).rstrip(),
                        'date': str(session[1].day) + ', ' + str(session[1].month) + ', ' + str(session[1].year),
@@ -232,6 +233,28 @@ def get_user_sessions():
 
     return_json = {'sessions': session_array}
     return json.dumps(return_json)
+
+
+# effectively log the user in
+# requires the user's username and password (works for both athletes and pt's)
+@app.post("/users/get_user_id")
+def get_user_id():
+    if request.is_json:
+        user_data = request.get_json()
+        try:
+            query = "EXEC getUserId @user_type = '" + user_data['user_type'] + \
+                "', @email = '" + user_data['email'] + "', @password = '" + user_data['password'] + "';"
+            print(query)
+            cursor.execute(str(query))
+            user = cursor.fetchone()
+            print(str(user[0]))
+            return(str(user[0]))
+
+        except KeyError:
+            print('JSON did not hold reqired data')
+            return {"error": "Request must contain required keys"}, 415
+    else:
+        return {"error": "Request must be a JSON"}, 415
 
 
 # def run_query(query: str):
