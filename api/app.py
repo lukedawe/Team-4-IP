@@ -134,10 +134,12 @@ def get_data():
             print(query)
             # execute and commit the query
             cursor.execute(str(query))
-            cnxn.commit()
             # there should only be one row returned
             row = cursor.fetchone()
-            return row
+            return_data = {'id': row[0], 'date': str(row[3].day) + ', ' + str(row[3].month) + ', ' + str(row[3].year),
+                           'time': str(row[3].hour) + ':' + str(row[3].minute) + ':' + str(row[3].second) + '.' + str(row[3].microsecond),
+                           'muscles': {'left hamstring': row[4], 'right hamstring': row[5], 'left quad': row[6], 'right quad': row[7]}}
+            return json.dumps(return_data)
 
         except KeyError:
             print('JSON did not hold reqired data')
