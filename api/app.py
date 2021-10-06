@@ -147,7 +147,7 @@ def get_data():
     else:
         return {"error": "Request must be a JSON"}, 415
 
-# query to add a session to the database
+# query to add a session to the database, returns the ID of the session
 
 
 @app.post("/sessions/add_session")
@@ -176,6 +176,8 @@ def add_session():
 
 # query to get all the clients that one pt manages
 # requires the email of the pt (I thought this was easier than the ID)
+
+
 @app.post("/users/pt_get_clients")
 def pt_get_clients():
     if request.is_json:
@@ -194,15 +196,43 @@ def pt_get_clients():
     # an array of dictionaries that store the client data
     client_array = []
     # go through each client and add their details to the array
+    # rstrip() removes spaces at the end of lines https://docs.python.org/3/library/stdtypes.html#str.rstrip
     for client in clients:
-        array_entry = {'id': str(client[0]).rstrip(), 'name': str(client[1]).rstrip(), 'email': str(client[2]).rstrip()}
+        array_entry = {'id': str(client[0]).rstrip(), 'name': str(
+            client[1]).rstrip(), 'email': str(client[2]).rstrip()}
         client_array.append(array_entry)
     # turn the array into a JSON to send
     return_json = {'clients': client_array}
     return json.dumps(return_json)
 
 
-# TODO recent sessions
+# get sessions associated with the user
+@app.post("/users/get_user_sessions")
+def get_user_sessions():
+    if request.is_json:
+        session_data = request.get_json()
+        try:
+            query = "EXEC getUserSessions @athlete_id = " + \
+                str(session_data['athlete_id']) + ";"
+            print(query)
+            cursor.execute(str(query))
+            sessions = cursor.fetchall()
+        except KeyError:
+            print('JSON did not hold reqired data')
+            return {"error": "Request must contain required keys"}, 415
+    else:
+        return {"error": "Request must be a JSON"}, 415
+    session_array = []
+
+    for session in sessions:
+        array_entry = {'id': str(session[0]).rstrip(),
+                       'date': str(session[1].day) + ', ' + str(session[1].month) + ', ' + str(session[1].year),
+                       'comment': str(session[2]).rstrip()}
+        session_array.append(array_entry)
+
+    return_json = {'sessions': session_array}
+    return json.dumps(return_json)
+
 
 # def run_query(query: str):
 #     cursor.execute(query)
