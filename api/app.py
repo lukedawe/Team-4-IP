@@ -235,7 +235,7 @@ def pt_get_clients():
 
 
 # get sessions associated with the user
-@app.post("/users/get_user_sessions")
+@app.post("/sessions/get_user_sessions")
 def get_user_sessions():
     if request.is_json:
         session_data = request.get_json()
