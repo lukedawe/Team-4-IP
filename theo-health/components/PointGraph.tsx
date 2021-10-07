@@ -1,12 +1,30 @@
-import { Dimensions } from 'react-native';
+import { Dimensions, Text, StyleSheet } from 'react-native';
 import { LineChart } from "react-native-chart-kit";
 import * as React from 'react';
 import { View } from '../components/Themed';
 import ChartConfig from '../constants/ChartConfig';
 
-export default function PointGraph() {
+import { Picker } from "@react-native-picker/picker";
+import { setSelectedMuscle } from "../constants/MuscleSelection";
+import { useState } from 'react';
+import { MusclePicker } from './MusclePicker';
+
+// export { setSelectedMuscle } 
+
+
+
+export default function PointGraph({ muscle }: { muscle: string }) {
+    const [selectedMuscle, setSelectedMuscle] = useState();
     return (
         <View>
+
+
+            <Text style={styles.titleText} >
+                {'This year'}
+                {"\n"}
+                {"\n"}
+            </Text>
+
             <LineChart
                 data={{
                     labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
@@ -33,6 +51,19 @@ export default function PointGraph() {
                     borderRadius: 16
                 }}
             />
+            
+            <MusclePicker/>
         </View>
     );
 }
+
+const styles = StyleSheet.create({
+    baseText: {
+        fontFamily: "Cochin"
+    },
+    titleText: {
+        color: "white",
+        fontSize: 20,
+        fontWeight: "bold"
+    }
+});

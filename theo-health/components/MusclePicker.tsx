@@ -1,19 +1,21 @@
 import React, { useState } from "react";
 import { Picker } from "@react-native-picker/picker";
+import { setSelectedMuscle } from "../constants/MuscleSelection";
 
+export function MusclePicker() {
 
+  const [selectedMuscle, setSelectedMuscle] = useState();
 
-export default function MusclePicker() {
-  const [selectedLanguage, setSelectedLanguage] = useState();
-  
   return (
     <Picker
-      selectedValue={selectedLanguage}
-      onValueChange={(itemValue, itemIndex) =>
-        setSelectedLanguage(itemValue)
-      }>
-      <Picker.Item label="Java" value="java" />
-      <Picker.Item label="JavaScript" value="js" />
+      selectedValue={selectedMuscle}
+      onValueChange={ (itemValue, itemIndex) => setSelectedMuscle(itemValue) }>
+      <Picker.Item label="Left hamstring" value="left hamstring" />
+      <Picker.Item label="Right hamstring" value="right hamstring" />
+      <Picker.Item label="Left quad" value="left quad" />
+      <Picker.Item label="Right quad" value="right quad" />
     </Picker>
   );
 }
+
+// export { setSelectedMuscle } 

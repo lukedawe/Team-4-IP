@@ -3,14 +3,14 @@ import { StyleSheet } from 'react-native';
 import { Text, View } from '../components/Themed';
 import { RootTabScreenProps } from '../types';
 import PointGraph from "../components/PointGraph"
-import MusclePicker from '../components/MusclePicker';
+import { MusclePicker } from '../components/MusclePicker';
 
 export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
   return (
     <View style={styles.container}>
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <MusclePicker />
-      <PointGraph />
+      {/* <MusclePicker /> */}
+      <PointGraph muscle="None" />
     </View>
   );
 }
