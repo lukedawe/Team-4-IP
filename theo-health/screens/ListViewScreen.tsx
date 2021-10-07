@@ -6,9 +6,6 @@ import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
 
 export default function ListViewScreen() {
-  const renderItem = ({ item }) => (
-    <Item title={item.title} />
-  )
   return (
     <View style={styles.container}>
       <Text style={styles.title}>welcome back,</Text>
@@ -18,21 +15,21 @@ export default function ListViewScreen() {
       <FlatList
         horizontal={true}
         data={CLIENTDATA}
-        renderItem={renderItem}
+        renderItem={({ item }) => (
+          <Text style={styles.item}>{item.name}</Text>
+        )}
+        keyExtractor={item => item.id}
+      />
+      <FlatList
+        horizontal={true}
+        data={SESSIONDATA}
+        renderItem={({ item }) => (
+          <Text style={styles.item}>{item.datetime}</Text>
+        )}
         keyExtractor={item => item.id}
       />
     </View>
   );
-}
-
-const Item = ({ title }) => (
-  <View style={styles.item}>
-    <Text style={styles.title}>{title}</Text>
-  </View>
-)
-
-const ClientHeader = {
-}
 }
 
 const styles = StyleSheet.create({
