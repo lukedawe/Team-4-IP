@@ -27,7 +27,7 @@ const linking: LinkingOptions<RootStackParamList> = {
           },
           ListViewTab: {
             screens: {
-              ListViewScreen: 'test',
+              ListViewScreen: 'list',
             }
           }
         },
