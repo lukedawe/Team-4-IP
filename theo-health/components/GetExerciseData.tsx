@@ -18,8 +18,8 @@ export default function GetExerciseData(session_id: number, order_in_session: nu
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    session_id: 1,
-                    order_in_session: 6
+                    session_id: 6,
+                    order_in_session: 1
                 })
             }
             )
