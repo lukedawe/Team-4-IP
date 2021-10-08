@@ -1,6 +1,7 @@
 # to run this API, use the line "flask run"
 
 from flask import Flask, json, request, jsonify
+from flask_cors import CORS
 from requests.sessions import merge_cookies
 import pyodbc
 import json
@@ -22,6 +23,7 @@ cnxn.setencoding('latin1')
 
 cursor = cnxn.cursor()
 app = Flask(__name__)
+CORS(app)
 
 
 # gets all the athlete accounts in the database
