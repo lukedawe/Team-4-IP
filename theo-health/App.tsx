@@ -21,9 +21,8 @@ export default function App() {
       
       <SafeAreaProvider>
         
-        {/*<Navigation colorScheme={colorScheme} /> */}
-        <GetAllUserSessions/>
-        
+        <Navigation colorScheme={colorScheme} />
+        {/* <GetAllUserSessions/> */}
         <StatusBar />
       </SafeAreaProvider>
     );

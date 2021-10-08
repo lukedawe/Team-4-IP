@@ -1,9 +1,9 @@
-import { useEffect } from 'react';
-import { ActivityIndicator, FlatList } from 'react-native';
-import { useState } from 'react';
-import { Text, View } from 'react-native';
 import React from 'react';
+import { useEffect, useState } from 'react';
+import { ActivityIndicator, FlatList, Text, View } from 'react-native';
 import { Card, ListItem, Button, Icon } from 'react-native-elements'
+
+
 
 export default function GetAllUserSessions(athlete_id: number) {
     const [isLoading, setLoading] = useState(true);
@@ -62,6 +62,7 @@ export default function GetAllUserSessions(athlete_id: number) {
         </View>
     );
 };
+
 
 
 

@@ -1,19 +1,19 @@
 import * as React from 'react';
 import { StyleSheet } from 'react-native';
-import { Text, View } from '../components/Themed';
-import { RootTabScreenProps } from '../types';
 
 import EditScreenInfo from '../components/EditScreenInfo';
-import SessionCards from '../components/SessionCards';
-import getAllUserSessions from '../components/GetAllUserSessions';
-
+import { Text, View } from '../components/Themed';
+import { RootTabScreenProps } from '../types';
+import GetAllUserSessions from '../components/GetAllUserSessions.tsx';
 
 export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
   return (
     <View style={styles.container}>
-      
-      <SessionCards/>
-      
+      <Text style={styles.title}>List of all sessions for ID:2</Text>
+
+      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
+
+      <GetAllUserSessions />
     </View>
   );
 }
@@ -25,6 +25,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   title: {
+    paddingTop: 30,
     fontSize: 20,
     fontWeight: 'bold',
   },
