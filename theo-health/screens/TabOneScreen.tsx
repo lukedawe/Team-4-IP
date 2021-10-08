@@ -1,17 +1,19 @@
 import * as React from 'react';
 import { StyleSheet } from 'react-native';
+import { Text, View } from '../components/Themed';
+import { RootTabScreenProps } from '../types';
 
 import EditScreenInfo from '../components/EditScreenInfo';
 import SessionCards from '../components/SessionCards';
-import { Text, View } from '../components/Themed';
-import { RootTabScreenProps } from '../types';
+import getAllUserSessions from '../components/GetAllUserSessions';
+
 
 export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
   return (
     <View style={styles.container}>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <SessionCards path="/screens/SessionCards.tsx" />
-
+      
+      <SessionCards/>
+      
     </View>
   );
 }

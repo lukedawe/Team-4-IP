@@ -6,16 +6,23 @@ import useCachedResources from './hooks/useCachedResources';
 import useColorScheme from './hooks/useColorScheme';
 import Navigation from './navigation';
 
+import GetAllUserSessions from './components/GetAllUserSessions';
+
 export default function App() {
   const isLoadingComplete = useCachedResources();
   const colorScheme = useColorScheme();
+
 
   if (!isLoadingComplete) {
     return null;
   } else {
     return (
+      
+      
       <SafeAreaProvider>
+        
         <Navigation colorScheme={colorScheme} />
+        <GetAllUserSessions/>
         <StatusBar />
       </SafeAreaProvider>
     );

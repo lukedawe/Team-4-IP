@@ -8,6 +8,24 @@ import { Card, ListItem, Button, Icon } from 'react-native-elements'
 //Creates local object "data" based on JSON file
 import * as importedData from '../example.json';
 
+const getAllUserSessions = async () => {
+  try {
+    const response = await fetch('http://localhost:5000/sessions/get_user_sessions', {
+        method: 'GET',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          firstParam: '2',
+        })
+      });
+    const json = await response.json();
+    return json.sessions;
+  } catch (error) {
+    console.error(error);
+  }
+};
 
 export default function SessionCards() {
   return (
@@ -40,6 +58,9 @@ export default function SessionCards() {
             );
           })}
     </View>
+
+    
+
   );
 }
 
