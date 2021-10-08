@@ -3,6 +3,7 @@ import { ActivityIndicator, FlatList } from 'react-native';
 import { useState } from 'react';
 import { Text, View } from 'react-native';
 import React from 'react';
+import { Card, ListItem, Button, Icon } from 'react-native-elements'
 
 export default function GetAllUserSessions(athlete_id: number) {
     const [isLoading, setLoading] = useState(true);
@@ -38,19 +39,62 @@ export default function GetAllUserSessions(athlete_id: number) {
     return (
         <View style={{ flex: 1, padding: 24 }}>
             {isLoading ? <ActivityIndicator /> : (
-                <FlatList
-                    data={data}
-                    keyExtractor={({ id }, index) => id}
-                    renderItem={({ item }) => (
-                        <Text>{item.id}, {item.date}</Text>
-                    )}
-                />
+                data.map((data, key) =>{
+                    return(
+                        <Card>
+                        <Card.Title>Session ID: {data.id}</Card.Title>
+                        <Card.Divider/>
+                            <Card.Image source={require('../assets/images/green_background.png')}>
+                                <Text>
+                                    Date: {data.date}
+                                </Text>
+    
+                                <Text>
+                                    Comment: {data.comment}
+                                </Text>
+                            </Card.Image>
+    
+                    </Card>
+                    )
+                })
+                
             )}
         </View>
     );
 };
 
 
-/*
 
+/* --- WORKS FOR SIMPLE LISTING ALL DATA ---
+                <FlatList
+                    data={data}
+
+                    keyExtractor={({ id }, index) => id}
+
+                    renderItem={({ item }) => (
+                        <Text>
+                            Session ID: {item.id}{"\n"}
+                            Session date: {item.date}{"\n"}
+                            Session Comment: {item.comment}{"\n"}{"\n"}
+                        </Text>
+                    )}
+                />
+*/
+
+
+/* --- CARD FORMAT WHICH SHOULD WORK ---
+                <Card>
+                    <Card.Title>Session ID: {data.id}</Card.Title>
+                    <Card.Divider/>
+                        <Card.Image source={require('../assets/images/green_background.png')}>
+                            <Text>
+                                Date: {data.date}
+                            </Text>
+
+                            <Text>
+                                Comment: {data.comment}
+                            </Text>
+                        </Card.Image>
+
+                </Card>
 */
