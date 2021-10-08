@@ -140,6 +140,7 @@ dmypy.json
 # Cython debug symbols
 cython_debug/
 
+# React files
 node_modules/
 .expo/
 npm-debug.*
