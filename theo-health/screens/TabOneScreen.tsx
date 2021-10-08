@@ -14,20 +14,14 @@ import { RootTabScreenProps } from '../types';
 
 export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
   return (
-    // <View style={styles.container}>
-    //   <Text style={styles.title}>Tab One hi</Text>
-    //   <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-    //   <View style={styles.container}>
-        
-    //   <Text>Open up App.js to start working on your app!</Text>
-    // </View>
-    //   {/* <EditScreenInfo path="/screens/TabOneScreen.tsx" /> */}
-    // </View>
-    <View style={styles.container}>
-      <View style={styles.container2}>
-        {/* <Image style={styles.image} source={require("./assets/log2.png")} /> */}
-  
-        <StatusBar style="auto" />
+    <View style={styles.mainContainer}>
+      <View style={styles.logoContainer}>
+      <Image
+        style={styles.logo}
+        source={require('../assets/images/logo.png')}
+      />
+      </View>
+      <View style={styles.subContainer}>
 
         <Text style={styles.heading_text}>
           log in
@@ -74,13 +68,19 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
 }
 
 const styles = StyleSheet.create({
-  container: {
+  mainContainer: {
     flex: 1,
     backgroundColor: '#1D2121',
     alignItems: 'center',
     justifyContent: 'center',
   },
-  container2: {
+  logoContainer: {
+    backgroundColor: '#1D2121',
+    alignItems: 'flex-start',
+    justifyContent: 'center',
+    width: "80%",
+  },
+  subContainer: {
     backgroundColor: '#434747',
     alignItems: 'flex-start',
     justifyContent: 'center',
@@ -88,17 +88,17 @@ const styles = StyleSheet.create({
     paddingBottom: "5%",
     paddingTop: "5%",
     width: "80%",
-    //height: "50%",
     borderRadius: 10,
+  },
+  logo: {
+    maxWidth:"100%",
+    maxHeight:"40%",
+    width: 225,
+    height: 125,
   },
   title: {
     fontSize: 20,
     fontWeight: 'bold',
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%',
   },
   loginBtn: {
     width: "25%",
@@ -114,7 +114,6 @@ const styles = StyleSheet.create({
     height: 30,
     justifyContent: 'flex-start',
     color: "#f36d21",
-    //paddingLeft: 10,
   },
   TextInput: {
     height: 50,
@@ -135,7 +134,6 @@ const styles = StyleSheet.create({
   },
   info_text: {
     color:"#E6C59E",
-    //marginLeft: 10,
   },
   inputView: {
     backgroundColor: "#1D2121",
