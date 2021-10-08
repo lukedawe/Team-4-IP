@@ -12,9 +12,38 @@ import { MusclePicker } from './MusclePicker';
 // export { setSelectedMuscle } 
 
 
+function getExerciseData(session_id: number, order_in_session: number) {
+    const exerciseData = async () => {
+        try {
+            const response = await fetch(
+                'http://localhost:5000/exercise_data/get_data', {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    session_id: session_id,
+                    order_in_session: order_in_session
+                })
+            }
+            );
+            const json = await response.json();
+            return json.movies;
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    return exerciseData;
+}
+
 
 export default function PointGraph({ muscle }: { muscle: string }) {
     const [selectedMuscle, setSelectedMuscle] = useState();
+
+
+
     return (
         <View>
 
@@ -24,6 +53,8 @@ export default function PointGraph({ muscle }: { muscle: string }) {
                 {"\n"}
                 {"\n"}
             </Text>
+
+            <Text style={styles.baseText}>{getExerciseData(6,1)}</Text>
 
             <LineChart
                 data={{
@@ -51,8 +82,8 @@ export default function PointGraph({ muscle }: { muscle: string }) {
                     borderRadius: 16
                 }}
             />
-            
-            <MusclePicker/>
+
+            {/* <MusclePicker/> */}
         </View>
     );
 }
