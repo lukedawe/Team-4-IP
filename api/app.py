@@ -151,35 +151,7 @@ def add_data():
         return {"error": "Request must be a JSON"}, 415
 
 
-# for this you'll need the session id that the data belongs to along with it's number within the session
-@app.post("/exercise_data/get_data")
-def get_data():
-    if request.is_json:
-        search_criteria = request.get_json()
-
-        try:
-            query = "EXEC getDataEntry @session_id = " + str(search_criteria['session_id']) + \
-                ", @order_in_session = " + \
-                    str(search_criteria['order_in_session']) + ";"
-            print(query)
-            # execute and commit the query
-            cursor.execute(str(query))
-            # there should only be one row returned
-            row = cursor.fetchone()
-            return_data = {'id': row[0], 'date': str(row[3].day) + ', ' + str(row[3].month) + ', ' + str(row[3].year),
-                           'time': str(row[3].hour) + ':' + str(row[3].minute) + ':' + str(row[3].second) + '.' + str(row[3].microsecond),
-                           'muscles': {'left hamstring': row[4], 'right hamstring': row[5], 'left quad': row[6], 'right quad': row[7]}}
-            return json.dumps(return_data)
-
-        except KeyError:
-            print('JSON did not hold reqired data')
-            return {"error": "Request must contain required keys"}, 415
-    else:
-        return {"error": "Request must be a JSON"}, 415
-
 # query to add a session to the database, returns the ID of the session
-
-
 @app.post("/sessions/add_session")
 def add_session():
     if request.is_json:
@@ -204,6 +176,38 @@ def add_session():
     else:
         return {"error": "Request must be a JSON"}, 415
 
+
+
+# for this you'll need the session id that the data belongs to along with it's number within the session
+@app.post("/exercise_data/get_data")
+def get_data():
+    if request.is_json:
+        search_criteria = request.get_json()
+
+        try:
+            query = "EXEC getDataEntry @session_id = " + str(search_criteria['session_id']) + \
+                ", @order_in_session = " + \
+                    str(search_criteria['order_in_session']) + ";"
+            print(query)
+            # execute and commit the query
+            cursor.execute(str(query))
+            # there should only be one row returned
+            row = cursor.fetchone()
+            return_data = {'id': row[0], 'date': str(row[3].day) + ', ' + str(row[3].month) + ', ' + str(row[3].year),
+                           'time': str(row[3].hour) + ':' + str(row[3].minute) + ':' + str(row[3].second) + '.' + str(row[3].microsecond),
+                           'muscles': {'left hamstring': row[4], 'right hamstring': row[5], 'left quad': row[6], 'right quad': row[7]}}
+            return json.dumps(return_data)
+
+        except KeyError:
+            print('JSON did not hold reqired data')
+            return {"error": "Request must contain required keys"}, 415
+        except TypeError:
+            print('Query returned no data')
+            return {"error": "Request returned nothing"}, 415
+    else:
+        return {"error": "Request must be a JSON"}, 415
+
+
 # query to get all the clients that one pt manages
 # requires the email of the pt (I thought this was easier than the ID)
 
@@ -221,6 +225,9 @@ def pt_get_clients():
         except KeyError:
             print('JSON did not hold reqired data')
             return {"error": "Request must contain required keys"}, 415
+        except TypeError:
+            print('Query returned no data')
+            return {"error": "Request returned nothing"}, 415
     else:
         return {"error": "Request must be a JSON"}, 415
     # an array of dictionaries that store the client data
@@ -250,6 +257,9 @@ def get_user_sessions():
         except KeyError:
             print('JSON did not hold reqired data')
             return {"error": "Request must contain required keys"}, 415
+        except TypeError:
+            print('Query returned no data')
+            return {"error": "Request returned nothing"}, 415
     else:
         return {"error": "Request must be a JSON"}, 415
     # an array of dictionaries that store the client data
@@ -286,6 +296,9 @@ def get_user_id():
         except KeyError:
             print('JSON did not hold reqired data')
             return {"error": "Request must contain required keys"}, 415
+        except TypeError:
+            print('Query returned no data')
+            return {"error": "Request returned nothing"}, 415
     else:
         return {"error": "Request must be a JSON"}, 415
 
