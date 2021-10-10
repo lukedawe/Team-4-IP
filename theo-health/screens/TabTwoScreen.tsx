@@ -69,9 +69,8 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
           already have an account?
         </Text>
 
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('TabOneScreen')}>
           <Text style={styles.log_in_button}>log in</Text>
-          onPress={() => navigation.navigate('TabOneScreen')}
         </TouchableOpacity>
         
       </View>

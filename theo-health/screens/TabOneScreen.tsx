@@ -13,6 +13,11 @@ import { Text, View } from '../components/Themed';
 import { RootTabScreenProps } from '../types';
 
 export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const submit = () => {
+
+    };
   return (
     <View style={styles.mainContainer}>
       <View style={styles.logoContainer}>
@@ -35,6 +40,8 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
             style={styles.TextInput}
             placeholder="email"
             placeholderTextColor="#434747"
+            onChangeText={(email) => setEmail(email)}
+            value={email}
           />
         </View>
   
@@ -47,10 +54,12 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
             placeholder="password"
             placeholderTextColor="#434747"
             secureTextEntry={true}
+            onChangeText={(password) => setPassword(password)}
+            value={password}
           />
         </View>
 
-        <TouchableOpacity style={styles.loginBtn}>
+        <TouchableOpacity style={styles.loginBtn} onPress={submit}>
           <Text>log in</Text>
         </TouchableOpacity>
 
