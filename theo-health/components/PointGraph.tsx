@@ -21,14 +21,7 @@ export default function PointGraph({ muscle }: { muscle: string }) {
     return (
         <View>
 
-
-            <Text style={styles.titleText} >
-                {'This year'}
-                {"\n"}
-                {"\n"}
-            </Text>
-
-            <Text style={styles.baseText}>{GetExerciseData(6,1)}</Text>
+            <GetExerciseData/>
 
             <LineChart
                 data={{
