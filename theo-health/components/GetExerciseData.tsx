@@ -44,7 +44,11 @@ export default function GetExerciseData() {
                     data={data}
                     keyExtractor={({ id }, index) => id}
                     renderItem={({ item }) => (
-                        <Text>{item.id}, {item.date}</Text>
+                        <Text style={{ color: "white" }}>
+                            Session ID: {item.id}{"\n"}
+                            Session date: {item.date}{"\n"}
+                            Session Comment: {item.comment}{"\n"}{"\n"}
+                        </Text>
                     )}
                 />
             )}
