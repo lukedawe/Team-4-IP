@@ -54,14 +54,3 @@ export default function PointGraph({ muscle }: { muscle: string }) {
         </View>
     );
 }
-
-const styles = StyleSheet.create({
-    baseText: {
-        fontFamily: "Cochin"
-    },
-    titleText: {
-        color: "white",
-        fontSize: 20,
-        fontWeight: "bold"
-    }
-});
