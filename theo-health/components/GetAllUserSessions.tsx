@@ -1,8 +1,8 @@
+import { warmUpAsync } from 'expo-web-browser';
 import React from 'react';
 import { useEffect, useState } from 'react';
-import { ActivityIndicator, FlatList, Text, View } from 'react-native';
+import { ActivityIndicator, FlatList, Text, View, StyleSheet } from 'react-native';
 import { Card, ListItem, Button, Icon } from 'react-native-elements'
-
 
 
 export default function GetAllUserSessions(athlete_id: number) {
@@ -32,29 +32,34 @@ export default function GetAllUserSessions(athlete_id: number) {
         }
     }
 
+
     useEffect(() => {
         sessionData();
     }, []);
 
     return (
-        <View style={{ flex: 1, padding: 24 }}>
+        <View style={styles.session_card_container}>
             {isLoading ? <ActivityIndicator /> : (
                 data.map((data, key) =>{
                     return(
-                        <Card>
-                        <Card.Title>Session ID: {data.id}</Card.Title>
-                        <Card.Divider/>
-                            <Card.Image source={require('../assets/images/green_background.png')}>
-                                <Text>
+                        <Card containerStyle={styles.card}>
+                            <Card.Title style={styles.card_title}>Session ID: {data.id}</Card.Title>
+                                
+                            <Card.Divider/>
+                                <Text style={styles.card_content}>
                                     Date: {data.date}
                                 </Text>
     
-                                <Text>
+                                <Text style={styles.card_content}>
                                     Comment: {data.comment}
                                 </Text>
-                            </Card.Image>
-    
-                    </Card>
+
+                                <Button
+                                    icon={<Icon name='code' color='#ffffff' />}
+                                    buttonStyle={styles.button_style}
+                                    title='VIEW NOW' 
+                                />
+                        </Card>
                     )
                 })
                 
@@ -63,7 +68,43 @@ export default function GetAllUserSessions(athlete_id: number) {
     );
 };
 
+const styles = StyleSheet.create({
+    session_card_container: {
+        flexDirection: 'row',
 
+    },
+    card:{
+        borderColor: '#f36d21',
+        backgroundColor: '#f36d21',
+        borderRadius: 10,
+        width: screen.width * 0.15,
+        
+    },
+    card_title:{
+        color: '#FFFFFF',
+
+    },
+    card_content:{
+        fontSize: 16,
+
+        paddingLeft: 5,
+        paddingRight: 5,
+        
+        color: '#FFFFFF',
+        textAlign: 'left',
+        flexWrap: 'wrap',
+
+    },
+    button_style:{
+        borderRadius: 10,
+        backgroundColor: '#0297a2',
+
+        marginLeft: 0,
+        marginTop: 10,
+        marginRight: 0,
+        marginBottom: 0
+    }
+  });
 
 
 /* --- WORKS FOR SIMPLE LISTING ALL DATA ---

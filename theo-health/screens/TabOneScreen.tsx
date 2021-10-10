@@ -4,14 +4,12 @@ import { StyleSheet } from 'react-native';
 import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
 import { RootTabScreenProps } from '../types';
-import GetAllUserSessions from '../components/GetAllUserSessions.tsx';
+import GetAllUserSessions from '../components/GetAllUserSessions';
 
 export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>List of all sessions for ID:2</Text>
-
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
 
       <GetAllUserSessions />
     </View>
