@@ -12,7 +12,7 @@ import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
 import { RootTabScreenProps } from '../types';
 
-export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
+export default function SignUpScreen({ navigation }: RootTabScreenProps<'SignUpTab'>) {
   return (
     <View style={styles.mainContainer}>
       <View style={styles.logoContainer}>
@@ -69,7 +69,7 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
           already have an account?
         </Text>
 
-        <TouchableOpacity onPress={() => navigation.navigate('TabOneScreen')}>
+        <TouchableOpacity onPress={() => navigation.navigate('LogInScreen')}>
           <Text style={styles.log_in_button}>log in</Text>
         </TouchableOpacity>
         
