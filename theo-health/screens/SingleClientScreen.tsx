@@ -1,7 +1,7 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
 import {
-  FlatList
+  FlatList,
   StyleSheet,
   Image,
   TextInput,
@@ -101,50 +101,7 @@ export default function SingleClientScreen({ navigation }: RootTabScreenProps<'S
           keyExtractor={item => item.id}
         />
       </View>
-      
-
-
-        <Text style={styles.label_text}>
-          email
-        </Text>
-        <View style={styles.inputView}>
-          <TextInput
-            style={styles.TextInput}
-            placeholder="email"
-            placeholderTextColor="#434747"
-            onChangeText={(email) => setEmail(email)}
-            value={email}
-          />
-        </View>
-  
-        <Text style={styles.label_text}>
-          password
-        </Text>
-        <View style={styles.inputView}>
-          <TextInput
-            style={styles.TextInput}
-            placeholder="password"
-            placeholderTextColor="#434747"
-            secureTextEntry={true}
-            onChangeText={(password) => setPassword(password)}
-            value={password}
-          />
-        </View>
-
-        <TouchableOpacity style={styles.loginBtn} onPress={submit}>
-          <Text>log in</Text>
-        </TouchableOpacity>
-
-        <Text style={styles.info_text}>
-          don't have an account?
-        </Text>
-
-        <TouchableOpacity>
-          <Text style={styles.sign_up_button}>sign up</Text>
-        </TouchableOpacity>
-        
       </View>
-    </View>
   );
 }
 
@@ -200,10 +157,6 @@ const styles = StyleSheet.create({
     width: 225,
     height: 125,
   },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
   loginBtn: {
     width: "25%",
     borderRadius: 10,
@@ -253,3 +206,18 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
 });
+
+const SESSIONDATA = [
+  {
+    id: 1,
+    datetime: 'session 1',
+  },
+  {
+    id: 2,
+    datetime: 'session 2',
+  },
+  {
+    id: 3,
+    datetime: 'session 3',
+  },
+]
