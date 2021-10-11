@@ -30,6 +30,11 @@ const linking: LinkingOptions<RootStackParamList> = {
               SingleClientScreen: 'singleclient',
             },
           },
+          ListViewTab: {
+            screens: {
+              ListViewScreen: 'list',
+            }
+          }
         },
       },
       Modal: 'modal',

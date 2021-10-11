@@ -17,6 +17,7 @@ import NotFoundScreen from '../screens/NotFoundScreen';
 import LogInScreen from '../screens/LogInScreen';
 import SignUpScreen from '../screens/SignUpScreen';
 import SingleClientScreen from '../screens/SingleClientScreen';
+import ListViewScreen from '../screens/ListViewScreen';
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
 
@@ -98,6 +99,14 @@ function BottomTabNavigator() {
         component={SingleClientScreen}
         options={{
           title: 'Single Client Tab',
+          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+        }}
+      />
+      <BottomTab.Screen
+        name="ListViewTab"
+        component={ListViewScreen}
+        options={{
+          title: 'List View Tab',
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
         }}
       />
