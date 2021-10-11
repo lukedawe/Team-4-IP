@@ -73,12 +73,14 @@ export default function SingleClientScreen({ navigation }: RootTabScreenProps<'S
             style={styles.muscleimg}
             source={require('../assets/images/icon.png')}
             />
-            <Text style={styles.heading_text}>
-              Hamstrings
-            </Text>
-            <Text style={styles.TextInput}>
-                left - poor  right - good
-            </Text>
+            <View>
+              <Text style={styles.heading_text}>
+                Hamstrings
+              </Text>
+              <Text style={styles.TextInput}>
+                  left - poor  right - good
+              </Text>
+            </View>
           </View>
         </View>
       </View>
