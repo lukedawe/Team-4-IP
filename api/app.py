@@ -59,7 +59,7 @@ def add_athlete():
                     "', @password = '"+user_details['password']+"'"
             # if the query has the pt id present, add that param to the query
             if 'pt_id' in user_details:
-                query += "', @pt_id = "+str(user_details['pt_id'])
+                query += ", @pt_id = "+str(user_details['pt_id'])
             # end the query
             query += ";"
 
@@ -96,6 +96,8 @@ def add_pt():
         return {"error": "Request must be JSON"}, 415
 
 # this is to create a new personal trainer account
+
+
 @app.post("/users/add_user")
 def add_user():
     if request.is_json:
@@ -175,7 +177,6 @@ def add_session():
             return {"error": "Request must contain required keys"}, 415
     else:
         return {"error": "Request must be a JSON"}, 415
-
 
 
 # for this you'll need the session id that the data belongs to along with it's number within the session
