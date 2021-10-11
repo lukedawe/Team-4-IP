@@ -36,14 +36,58 @@ export default function SingleClientScreen({ navigation }: RootTabScreenProps<'S
           source={require('../assets/images/logo.png')}
         />
       </View>
-      <TouchableOpacity style={styles.loginBtn} onPress={back}>
+      <TouchableOpacity style={styles.title} onPress={back}>
           <Text>back</Text>
       </TouchableOpacity>
       <View style={styles.subContainer}>
-
         <Text style={styles.heading_text}>
-          log in
+         #api-client-firstname#
+         #api-client-lastname#
         </Text>
+      </View>
+      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
+      <View style={styles.subContainer}>
+        <Text style={styles.heading_text}>
+          muscle health
+        </Text>
+        <View>
+          <View style={styles.musclegroup}>
+            <Image
+            style={styles.muscleimg}
+            source={require('../assets/images/icon.png')}
+            />
+            <View>
+              <Text style={styles.heading_text}>
+                Quadriceps
+              </Text>
+              <Text style={styles.TextInput}>
+                Left - poor  right - good
+              </Text>
+            </View>
+          </View>
+        </View>
+        <View>
+          <View style={styles.musclegroup}>
+            <Image
+            style={styles.muscleimg}
+            source={require('../assets/images/icon.png')}
+            />
+            <Text style={styles.heading_text}>
+              Hamstrings
+            </Text>
+            <Text style={styles.TextInput}>
+                Left - poor  right - good
+            </Text>
+          </View>
+        </View>
+      </View>
+      <View style={styles.subContainer}>
+        <Text style={styles.heading_text}>
+          recent sessions
+        </Text>
+      </View>
+
+
 
         <Text style={styles.label_text}>
           email
@@ -135,6 +179,12 @@ const styles = StyleSheet.create({
     width: 225,
     height: 125,
   },
+  muscleimg: {
+    maxWidth:"100%",
+    maxHeight:"100%",
+    width: 225,
+    height: 125,
+  },
   title: {
     fontSize: 20,
     fontWeight: 'bold',
@@ -179,5 +229,8 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     width: "90%",
     height: 45,
+  },
+  musclegroup: {
+    flexDirection: "row",
   },
 });
