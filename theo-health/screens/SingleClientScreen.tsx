@@ -62,7 +62,7 @@ export default function SingleClientScreen({ navigation }: RootTabScreenProps<'S
                 Quadriceps
               </Text>
               <Text style={styles.TextInput}>
-                Left - poor  right - good
+                left - poor  right - good
               </Text>
             </View>
           </View>
@@ -77,7 +77,7 @@ export default function SingleClientScreen({ navigation }: RootTabScreenProps<'S
               Hamstrings
             </Text>
             <Text style={styles.TextInput}>
-                Left - poor  right - good
+                left - poor  right - good
             </Text>
           </View>
         </View>
@@ -246,6 +246,10 @@ const styles = StyleSheet.create({
     height: 45,
   },
   musclegroup: {
+    flexDirection: "row",
+  },
+  flatList: {
+    flexGrow: 0,
     flexDirection: "row",
   },
 });
