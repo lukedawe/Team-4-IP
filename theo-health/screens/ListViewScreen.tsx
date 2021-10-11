@@ -6,6 +6,7 @@ import {
   TextInput,
   Button,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 
@@ -35,6 +36,11 @@ export default function ListViewScreen({ navigation }: RootTabScreenProps<'ListV
         style={styles.flatList}
         horizontal={true}
         data={CLIENTDATA}
+        ListHeaderComponent={
+          <Text style={styles.heading_text}>
+            clients
+          </Text>
+        }
         renderItem={({ item }) => (
           <Text style={styles.listItem}>{item.name}</Text>
         )}
@@ -44,10 +50,20 @@ export default function ListViewScreen({ navigation }: RootTabScreenProps<'ListV
         style={styles.flatList}
         horizontal={true}
         data={SESSIONDATA}
+        ListHeaderComponent={
+          <Text style={styles.heading_text}>
+            sessions
+          </Text>
+        }
         renderItem={({ item }) => (
           <Text style={styles.listItem}>{item.datetime}</Text>
         )}
         keyExtractor={item => item.id}
+      />
+      <Button
+        style={styles.listItem}
+        title="new session"
+        onPress={() => Alert.alert('new session button pressed')}
       />
     </View>
   );
@@ -59,16 +75,12 @@ const styles = StyleSheet.create({
     height: 1,
     width: '80%',
   },
-  list: {
-    flex: 3,
-    alignItems: 'flex-end',
-    justifyContent: 'flex-end',
-  },
   listItem: {
-    backgroundColor: '#ff0000',
+    backgroundColor: "#f36d21",
     padding: 15,
     marginVertical: 6,
     marginHorizontal: 10,
+    borderRadius: 5,
   },
   
 
@@ -81,13 +93,13 @@ const styles = StyleSheet.create({
   logoContainer: {
     backgroundColor: '#1D2121',
     alignItems: 'flex-start',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     width: "80%",
   },
   subContainer: {
     backgroundColor: '#434747',
     alignItems: 'flex-start',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     paddingLeft: "7%",
     paddingBottom: "5%",
     paddingTop: "5%",
@@ -103,28 +115,6 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     fontWeight: 'bold',
-  },
-  loginBtn: {
-    width: "25%",
-    borderRadius: 10,
-    height: 30,
-    alignItems: "center",
-    justifyContent: "center",
-    marginTop: 20,
-    marginBottom: 20,
-    backgroundColor: "#f36d21",
-  },
-  sign_up_button: {
-    height: 30,
-    justifyContent: 'flex-start',
-    color: "#f36d21",
-  },
-  TextInput: {
-    height: 50,
-    flex: 1,
-    padding: 10,
-    marginLeft: 10,
-    color: "white"
   },
   heading_text: {
     color:"white",
@@ -147,6 +137,8 @@ const styles = StyleSheet.create({
   },
   flatList: {
     flexGrow: 0,
+    flexDirection: "row",
+    
   },
 });
 
