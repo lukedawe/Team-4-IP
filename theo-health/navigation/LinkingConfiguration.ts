@@ -35,6 +35,11 @@ const linking: LinkingOptions<RootStackParamList> = {
               ListViewScreen: 'list',
             }
           }
+          ProgressTab: {
+            screens: {
+              ProgressScreen: 'progress',
+            },
+          },
         },
       },
       Modal: 'modal',

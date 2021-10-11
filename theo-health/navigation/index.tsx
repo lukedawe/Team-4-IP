@@ -18,6 +18,7 @@ import LogInScreen from '../screens/LogInScreen';
 import SignUpScreen from '../screens/SignUpScreen';
 import SingleClientScreen from '../screens/SingleClientScreen';
 import ListViewScreen from '../screens/ListViewScreen';
+import ProgressScreen from '../screens/ProgressScreen';
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
 
@@ -70,20 +71,6 @@ function BottomTabNavigator() {
         options={({ navigation }: RootTabScreenProps<'LogInTab'>) => ({
           title: 'Log In Tab',
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
-          headerRight: () => (
-            <Pressable
-              onPress={() => navigation.navigate('Modal')}
-              style={({ pressed }) => ({
-                opacity: pressed ? 0.5 : 1,
-              })}>
-              <FontAwesome
-                name="info-circle"
-                size={25}
-                color={Colors[colorScheme].text}
-                style={{ marginRight: 15 }}
-              />
-            </Pressable>
-          ),
         })}
       />
       <BottomTab.Screen
@@ -107,6 +94,14 @@ function BottomTabNavigator() {
         component={ListViewScreen}
         options={{
           title: 'List View Tab',
+          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+        }}
+      />
+      <BottomTab.Screen
+        name="ProgressTab"
+        component={ProgressScreen}
+        options={{
+          title: 'Progress Tab',
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
         }}
       />
