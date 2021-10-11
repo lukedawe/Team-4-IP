@@ -1,6 +1,7 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
 import {
+  FlatList
   StyleSheet,
   Image,
   TextInput,
@@ -85,8 +86,22 @@ export default function SingleClientScreen({ navigation }: RootTabScreenProps<'S
         <Text style={styles.heading_text}>
           recent sessions
         </Text>
+        <FlatList
+          style={styles.flatList}
+          horizontal={true}
+          data={SESSIONDATA}
+          ListHeaderComponent={
+            <Text style={styles.heading_text}>
+              sessions
+            </Text>
+            }
+          renderItem={({ item }) => (
+            <Text style={styles.listItem}>{item.datetime}</Text>
+          )}
+          keyExtractor={item => item.id}
+        />
       </View>
-
+      
 
 
         <Text style={styles.label_text}>
