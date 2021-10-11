@@ -328,10 +328,10 @@ def average_muscle_usage_per_session():
                     row = cursor.fetchone()
                     print(row[4], row[5], row[6])
 
-                    total_muscle_movement["left hamstring"]+=row[4]
-                    total_muscle_movement["right hamstring"]+=row[5]
-                    total_muscle_movement["left quad"]+=row[6]
-                    total_muscle_movement["right quad"]+=row[7]
+                    total_muscle_movement["left hamstring"] += row[4]
+                    total_muscle_movement["right hamstring"] += row[5]
+                    total_muscle_movement["left quad"] += row[6]
+                    total_muscle_movement["right quad"] += row[7]
 
                     order_in_session += 1
                 except TypeError:
