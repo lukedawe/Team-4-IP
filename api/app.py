@@ -22,7 +22,6 @@ cnxn.setdecoding(pyodbc.SQL_CHAR, encoding='latin1')
 cnxn.setencoding('latin1')
 
 cursor = cnxn.cursor()
-
 app = Flask(__name__)
 CORS(app)
 
@@ -302,9 +301,6 @@ def get_user_id():
             return {"error": "Request returned nothing"}, 415
     else:
         return {"error": "Request must be a JSON"}, 415
-
-
-
 
 
 # def run_query(query: str):
