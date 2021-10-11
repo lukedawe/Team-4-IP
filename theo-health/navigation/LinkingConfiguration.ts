@@ -25,6 +25,11 @@ const linking: LinkingOptions<RootStackParamList> = {
               SignUpScreen: 'signup',
             },
           },
+          SingleClientTab: {
+            screens: {
+              SingleClientScreen: 'singleclient',
+            },
+          },
         },
       },
       Modal: 'modal',
