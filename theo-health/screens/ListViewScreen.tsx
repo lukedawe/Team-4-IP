@@ -1,11 +1,19 @@
-import * as React from 'react';
-import { StyleSheet } from 'react-native';
+import { StatusBar } from "expo-status-bar";
+import React, { useState } from "react";
+import { 
+  StyleSheet,
+  Image,
+  TextInput,
+  Button,
+  TouchableOpacity,
+} from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 
 import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
+import { RootTabScreenProps } from '../types';
 
-export default function ListViewScreen() {
+export default function ListViewScreen({ navigation }: RootTabScreenProps<'ListViewTab'>) {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>welcome back,</Text>
@@ -13,6 +21,9 @@ export default function ListViewScreen() {
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
       <EditScreenInfo path="/screens/ListViewScreen.tsx" />
       <FlatList
+        style={{
+          flexGrow: 0,
+        }}
         horizontal={true}
         data={CLIENTDATA}
         renderItem={({ item }) => (
@@ -21,6 +32,9 @@ export default function ListViewScreen() {
         keyExtractor={item => item.id}
       />
       <FlatList
+        style={{
+          flexGrow: 0,
+        }}
         horizontal={true}
         data={SESSIONDATA}
         renderItem={({ item }) => (
