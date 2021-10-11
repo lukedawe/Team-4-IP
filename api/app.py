@@ -101,7 +101,7 @@ def add_pt():
 @app.post("/users/add_user")
 def add_user():
     if request.is_json:
-        user_details = request.get_json()   
+        user_details = request.get_json()
         try:
             query = "EXEC addUser @user_type = '"+user_details['user_type'] + \
                 "', @name = '"+user_details['name'] +\
@@ -303,6 +303,53 @@ def get_user_id():
     else:
         return {"error": "Request must be a JSON"}, 415
 
+
+# TODO finish this method for the graph page
+@app.post("/sessions/average_muscle_usage_per_session")
+def average_muscle_usage_per_session():
+    if request.is_json:
+        session_data = request.get_json()
+        # set the dictionary for the total muscle movement in the session
+        total_muscle_movement = {
+            "right quad": 0, "left quad": 0, "right hamstring": 0, "left hamstring": 0}
+        try:
+            order_in_session = 1
+
+            row = " "
+            while row:
+                query = "EXEC getDataEntry @session_id = " + str(session_data['session_id']) + \
+                    ", @order_in_session = " + \
+                    str(order_in_session) + ";"
+                print(query)
+                try:
+                    # execute and commit the query
+                    cursor.execute(str(query))
+                    # there should only be one row returned
+                    row = cursor.fetchone()
+                    print(row[4], row[5], row[6])
+
+                    total_muscle_movement["left hamstring"]+=row[4]
+                    total_muscle_movement["right hamstring"]+=row[5]
+                    total_muscle_movement["left quad"]+=row[6]
+                    total_muscle_movement["right quad"]+=row[7]
+
+                    order_in_session += 1
+                except TypeError:
+                    print('last data entry reached')
+                    break
+
+            return json.dumps(total_muscle_movement)
+
+            # return_data = {'id': row[0], 'date': str(row[3].day) + ', ' + str(row[3].month) + ', ' + str(row[3].year),
+            #                'time': str(row[3].hour) + ':' + str(row[3].minute) + ':' + str(row[3].second) + '.' + str(row[3].microsecond),
+            #                'muscles': {'left hamstring': row[4], 'right hamstring': row[5], 'left quad': row[6], 'right quad': row[7]}}
+            # return json.dumps(return_data), 200
+
+        except KeyError:
+            print('JSON did not hold reqired data')
+            return {"error": "Request must contain required keys"}, 415
+    else:
+        return {"error": "Request must be a JSON"}, 415
 
 # def run_query(query: str):
 #     cursor.execute(query)
