@@ -33,8 +33,8 @@ const linking: LinkingOptions<RootStackParamList> = {
           ListViewTab: {
             screens: {
               ListViewScreen: 'list',
-            }
-          }
+            },
+          },
           ProgressTab: {
             screens: {
               ProgressScreen: 'progress',
