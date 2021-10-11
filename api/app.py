@@ -170,6 +170,7 @@ def add_session():
             # execute and commit the query
             cursor.execute(str(query))
             id = cursor.fetchone()
+            cnxn.commit()
             # return the ID of the session that was just created
             return str(id[0])
         except KeyError:
