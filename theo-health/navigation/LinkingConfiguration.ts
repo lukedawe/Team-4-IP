@@ -25,6 +25,11 @@ const linking: LinkingOptions<RootStackParamList> = {
               TabTwoScreen: 'two',
             },
           },
+          ProgressTab: {
+            screens: {
+              ProgressScreen: 'progress',
+            },
+          },
         },
       },
       Modal: 'modal',
