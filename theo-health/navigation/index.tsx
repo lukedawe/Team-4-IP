@@ -14,8 +14,10 @@ import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
 import ModalScreen from '../screens/ModalScreen';
 import NotFoundScreen from '../screens/NotFoundScreen';
-import TabOneScreen from '../screens/TabOneScreen';
-import TabTwoScreen from '../screens/TabTwoScreen';
+import LogInScreen from '../screens/LogInScreen';
+import SignUpScreen from '../screens/SignUpScreen';
+import SingleClientScreen from '../screens/SingleClientScreen';
+import ListViewScreen from '../screens/ListViewScreen';
 import ProgressScreen from '../screens/ProgressScreen';
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
@@ -59,23 +61,39 @@ function BottomTabNavigator() {
 
   return (
     <BottomTab.Navigator
-      initialRouteName="TabOne"
+      initialRouteName="LogInTab"
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme].tint,
       }}>
       <BottomTab.Screen
-        name="TabOne"
-        component={TabOneScreen}
-        options={({ navigation }: RootTabScreenProps<'TabOne'>) => ({
-          title: 'Your progress',
+        name="LogInTab"
+        component={LogInScreen}
+        options={({ navigation }: RootTabScreenProps<'LogInTab'>) => ({
+          title: 'Log In Tab',
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
         })}
       />
       <BottomTab.Screen
-        name="TabTwo"
-        component={TabTwoScreen}
+        name="SignUpTab"
+        component={SignUpScreen}
         options={{
-          title: 'Tab Two',
+          title: 'Sign Up Tab',
+          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+        }}
+      />
+      <BottomTab.Screen
+        name="SingleClientTab"
+        component={SingleClientScreen}
+        options={{
+          title: 'Single Client Tab',
+          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+        }}
+      />
+      <BottomTab.Screen
+        name="ListViewTab"
+        component={ListViewScreen}
+        options={{
+          title: 'List View Tab',
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
         }}
       />
