@@ -101,14 +101,12 @@ def add_pt():
 @app.post("/users/add_user")
 def add_user():
     if request.is_json:
-        user_details = request.get_json()
-
+        user_details = request.get_json()   
         try:
             query = "EXEC addUser @user_type = '"+user_details['user_type'] + \
                 "', @name = '"+user_details['name'] +\
                 "', @email = '"+user_details['email'] + \
                 "', @password = '"+user_details['password']+"'"
-
             # if the query has the pt id present, add that param to the query
             if 'pt_id' in user_details and user_details['user_type'] == "personal trainer":
                 query += ", @pt_id = "+str(user_details['pt_id'])
@@ -170,9 +168,10 @@ def add_session():
             # execute and commit the query
             cursor.execute(str(query))
             id = cursor.fetchone()
+            new_id = str(id[0])
             cnxn.commit()
             # return the ID of the session that was just created
-            return str(id[0])
+            return new_id
         except KeyError:
             print('JSON did not hold reqired data')
             return {"error": "Request must contain required keys"}, 415
