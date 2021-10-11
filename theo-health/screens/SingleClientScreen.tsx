@@ -82,6 +82,7 @@ export default function SingleClientScreen({ navigation }: RootTabScreenProps<'S
           </View>
         </View>
       </View>
+      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
       <View style={styles.subContainer}>
         <Text style={styles.heading_text}>
           recent sessions
@@ -101,7 +102,7 @@ export default function SingleClientScreen({ navigation }: RootTabScreenProps<'S
           keyExtractor={item => item.id}
         />
       </View>
-      </View>
+    </View>
   );
 }
 
@@ -204,6 +205,13 @@ const styles = StyleSheet.create({
   flatList: {
     flexGrow: 0,
     flexDirection: "row",
+  },
+  listItem: {
+    backgroundColor: "#f36d21",
+    padding: 15,
+    marginVertical: 6,
+    marginHorizontal: 10,
+    borderRadius: 5,
   },
 });
 
