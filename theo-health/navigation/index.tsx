@@ -19,7 +19,6 @@ import SignUpScreen from '../screens/SignUpScreen';
 import SingleClientScreen from '../screens/SingleClientScreen';
 import ListViewScreen from '../screens/ListViewScreen';
 import ProgressScreen from '../screens/ProgressScreen';
-import AllSessionsScreen from '../screens/AllSessionsScreen';
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
 
@@ -103,14 +102,6 @@ function BottomTabNavigator() {
         component={ProgressScreen}
         options={{
           title: 'Progress Tab',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
-        }}
-      />
-      <BottomTab.Screen
-        name="AllSessionsTab"
-        component={AllSessionsScreen}
-        options={{
-          title: 'All Sessions Tab',
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
         }}
       />
