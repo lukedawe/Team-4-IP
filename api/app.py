@@ -309,7 +309,7 @@ def get_user_id():
         return {"error": "Request must be a JSON"}, 415
 
 
-# TODO finish this method for the graph page
+# calculates the percentage of a session that a muscle is activated for
 @app.post("/sessions/percentage_muscle_activation")
 def percentage_muscle_activation():
     if request.is_json:
@@ -319,7 +319,6 @@ def percentage_muscle_activation():
             "right quad": 0, "left quad": 0, "right hamstring": 0, "left hamstring": 0}
         try:
             order_in_session = 1
-
             row = " "
             while row:
                 query = "EXEC getDataEntry @session_id = " + str(session_data['session_id']) + \
@@ -365,6 +364,52 @@ def percentage_muscle_activation():
             return {"error": "Request must contain required keys"}, 415
     else:
         return {"error": "Request must be a JSON"}, 415
+
+
+# calculates the total activation (sum of all values) within a session for each muscle
+@app.post("/sessions/total_muscle_activation")
+def total_muscle_activation():
+    if request.is_json:
+        session_data = request.get_json()
+        # set the dictionary for the total muscle movement in the session
+        total_muscle_movement = {
+            "right quad": 0, "left quad": 0, "right hamstring": 0, "left hamstring": 0}
+        try:
+            order_in_session = 1
+            row = " "
+            while row:
+                query = "EXEC getDataEntry @session_id = " + str(session_data['session_id']) + \
+                    ", @order_in_session = " + \
+                    str(order_in_session) + ";"
+                print(query)
+                try:
+                    # execute and commit the query
+                    cursor.execute(str(query))
+                    # there should only be one row returned
+                    row = cursor.fetchone()
+                    # if the muscles are activated, add the value to the dictionary
+                    total_muscle_movement["left hamstring"] += row[4]
+                    total_muscle_movement["right hamstring"] += row[5]
+                    total_muscle_movement["left quad"] += row[6]
+                    total_muscle_movement["right quad"] += row[7]
+                    order_in_session += 1
+                except TypeError:
+                    print('last data entry reached')
+                    # if there are no entries in the database found for the id, return an error
+                    if(order_in_session == 1):
+                        return {"error": "no data for that session found"}
+                    break
+            for key in total_muscle_movement:
+                total_muscle_movement[key] = round(total_muscle_movement[key], 2)
+            return json.dumps(total_muscle_movement), 200
+
+        except KeyError:
+            print('JSON did not hold reqired data')
+            return {"error": "Request must contain required keys"}, 415
+    else:
+        return {"error": "Request must be a JSON"}, 415
+
+
 
 # def run_query(query: str):
 #     cursor.execute(query)
