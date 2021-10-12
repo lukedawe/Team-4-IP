@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { Text, View } from 'react-native';
 import React from 'react';
 
-export default function GetExerciseData(session_id: number, order_in_session: number) {
+export default function GetExerciseData() {
     const [isLoading, setLoading] = useState(true);
     const [data, setData] = useState([]);
 
@@ -24,7 +24,8 @@ export default function GetExerciseData(session_id: number, order_in_session: nu
             }
             )
             const json = await response.json();
-            setData(json.movies);
+            console.log(json);
+            setData(json);
         } catch (error) {
             console.error(error);
         } finally {
@@ -43,7 +44,11 @@ export default function GetExerciseData(session_id: number, order_in_session: nu
                     data={data}
                     keyExtractor={({ id }, index) => id}
                     renderItem={({ item }) => (
-                        <Text>{item.id}, {item.date}</Text>
+                        <Text style={{ color: "white" }}>
+                            Session ID: {item.id}{"\n"}
+                            Session date: {item.date}{"\n"}
+                            Session Comment: {item.comment}{"\n"}{"\n"}
+                        </Text>
                     )}
                 />
             )}
