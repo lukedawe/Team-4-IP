@@ -16,12 +16,17 @@ database = database_details['database name']
 username = database_details['admin username']
 password = database_details['admin password']
 
-cnxn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER=' +
-                      server+';PORT=1433;DATABASE='+database+';UID='+username+';PWD={' + password + '}')
-cnxn.setdecoding(pyodbc.SQL_CHAR, encoding='latin1')
-cnxn.setencoding('latin1')
+try:
+    cnxn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER=' +
+                          server+';PORT=1433;DATABASE='+database+';UID='+username+';PWD={' + password + '}')
+    cnxn.setdecoding(pyodbc.SQL_CHAR, encoding='latin1')
+    cnxn.setencoding('latin1')
 
-cursor = cnxn.cursor()
+    cursor = cnxn.cursor()
+
+except pyodbc.ProgrammingError as pe:
+    print("Cannot connect to the database, the IP needs to be added to the Azure Management Portal error: \n\n", pe)
+
 app = Flask(__name__)
 CORS(app)
 
@@ -305,8 +310,8 @@ def get_user_id():
 
 
 # TODO finish this method for the graph page
-@app.post("/sessions/average_muscle_usage_per_session")
-def average_muscle_usage_per_session():
+@app.post("/sessions/percentage_muscle_activation")
+def percentage_muscle_activation():
     if request.is_json:
         session_data = request.get_json()
         # set the dictionary for the total muscle movement in the session
@@ -326,24 +331,34 @@ def average_muscle_usage_per_session():
                     cursor.execute(str(query))
                     # there should only be one row returned
                     row = cursor.fetchone()
-                    print(row[4], row[5], row[6])
-
-                    total_muscle_movement["left hamstring"] += row[4]
-                    total_muscle_movement["right hamstring"] += row[5]
-                    total_muscle_movement["left quad"] += row[6]
-                    total_muscle_movement["right quad"] += row[7]
-
+                    # if the muscles are activated, add it to the dictionary
+                    if(row[4] > 300):
+                        total_muscle_movement["left hamstring"] += 1
+                    if(row[5] > 300):
+                        total_muscle_movement["right hamstring"] += 1
+                    if(row[6] > 300):
+                        total_muscle_movement["left quad"] += 1
+                    if(row[7] > 300):
+                        total_muscle_movement["right quad"] += 1
                     order_in_session += 1
                 except TypeError:
                     print('last data entry reached')
+                    # if there are no entries in the database found for the id, return an error
+                    if(order_in_session == 1):
+                        return {"error": "no data for that session found"}
                     break
-
-            return json.dumps(total_muscle_movement)
-
-            # return_data = {'id': row[0], 'date': str(row[3].day) + ', ' + str(row[3].month) + ', ' + str(row[3].year),
-            #                'time': str(row[3].hour) + ':' + str(row[3].minute) + ':' + str(row[3].second) + '.' + str(row[3].microsecond),
-            #                'muscles': {'left hamstring': row[4], 'right hamstring': row[5], 'left quad': row[6], 'right quad': row[7]}}
-            # return json.dumps(return_data), 200
+            percentage_muscle_movement = {
+                "right quad": 0, "left quad": 0, "right hamstring": 0, "left hamstring": 0}
+            # divide everything by the total number of entries (and multiply by 100) to get the percentage
+            percentage_muscle_movement["left hamstring"] = round(total_muscle_movement["left hamstring"] /
+                                                                 (order_in_session-1) * 100, 2)
+            percentage_muscle_movement["right hamstring"] = round(total_muscle_movement["right hamstring"] /
+                                                                  (order_in_session-1) * 100, 2)
+            percentage_muscle_movement["left quad"] = round(total_muscle_movement["left quad"] /
+                                                            (order_in_session-1) * 100, 2)
+            percentage_muscle_movement["right quad"] = round(total_muscle_movement["right quad"] /
+                                                             (order_in_session-1) * 100, 2)
+            return json.dumps(percentage_muscle_movement), 200
 
         except KeyError:
             print('JSON did not hold reqired data')
