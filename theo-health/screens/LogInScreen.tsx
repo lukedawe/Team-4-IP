@@ -7,17 +7,41 @@ import {
   Button,
   TouchableOpacity,
 } from "react-native";
-
 import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
 import { RootTabScreenProps } from '../types';
 
-export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
+export default function TabOneScreen({ navigation }: RootTabScreenProps<'LogInTab'>) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const submit = () => {
-
-    };
+    const [userID, setuserID] = useState("");
+    
+    const submit = async () => {
+      try {
+          const response = await fetch(
+              'http://localhost:5000/users/get_user_id ', {
+              method: 'POST',
+              headers: {
+                  Accept: 'application/json',
+                  'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                  user_type: "athlete",
+                  email: email,
+                  password: password
+              })
+          }
+          )
+          const json = await response.json();
+          console.log(json);
+          setuserID(json);
+          console.log(userID);
+          
+      } catch (error) {
+          console.error(error);
+      }
+  }
+  
   return (
     <View style={styles.mainContainer}>
       <View style={styles.logoContainer}>
