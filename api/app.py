@@ -31,6 +31,10 @@ except pyodbc.ProgrammingError as pe:
 app = Flask(__name__)
 CORS(app)
 
+# all the different user types that are in the database,
+# add to this list if the types of user expand
+user_types = ['athlete', 'personal trainer']
+
 
 # gets all the athlete accounts in the database
 @app.get("/users/get_all_athletes")
@@ -210,7 +214,7 @@ def get_data():
             return {"error": "Request must contain required keys"}, 415
         except TypeError:
             print('Query returned no data')
-            return {"error": "Request returned nothing"}, 415
+            return {"message": "Request returned nothing"}, 200
     else:
         return {"error": "Request must be a JSON"}, 415
 
@@ -234,7 +238,7 @@ def pt_get_clients():
             return {"error": "Request must contain required keys"}, 415
         except TypeError:
             print('Query returned no data')
-            return {"error": "Request returned nothing"}, 415
+            return {"message": "Request returned nothing"}, 200
     else:
         return {"error": "Request must be a JSON"}, 415
     # an array of dictionaries that store the client data
@@ -278,7 +282,7 @@ def get_user_sessions():
             return {"error": "Request must contain required keys"}, 415
         except TypeError:
             print('Query returned no data')
-            return {"error": "Request returned nothing"}, 415
+            return {"message": "Request returned nothing"}, 200
     else:
         return {"error": "Request must be a JSON"}, 415
     # an array of dictionaries that store the client data
@@ -300,24 +304,28 @@ def get_user_sessions():
 def get_user_id():
     if request.is_json:
         user_data = request.get_json()
-        try:
-            query = "EXEC getUserId @user_type = '" + user_data['user_type'] + \
-                "', @email = '" + \
-                    user_data['email'] + "', @password = '" + \
-                user_data['password'] + "';"
-            print(query)
-            cursor.execute(str(query))
-            user = cursor.fetchone()
-            print(str(user[0]))
-            # return the ID of the user
-            return(str(user[0]))
 
-        except KeyError:
-            print('JSON did not hold reqired data')
-            return {"error": "Request must contain required keys"}, 415
-        except TypeError:
-            print('Query returned no data')
-            return {"error": "Request returned nothing"}, 415
+        for user_type in user_types:
+            try:
+                query = "EXEC getUserId @user_type = '" + user_type \
+                    + "', @email = '" + \
+                        user_data['email'] + "', @password = '" + \
+                    user_data['password'] + "';"
+                print(query)
+                cursor.execute(str(query))
+                user = cursor.fetchone()
+                if user[0]:
+                    print(str(user[0]))
+                    # return the ID of the user
+                    return({'user_type': user_type, 'id': str(user[0])})
+
+            except KeyError:
+                print('JSON did not hold reqired data')
+                return {"error": "Request must contain required keys"}, 415
+            except TypeError:
+                print('Query returned no data')
+                if user_type == user_types[len(user_types)-1]:
+                    return {"message": "Request returned nothing"}, 200
     else:
         return {"error": "Request must be a JSON"}, 415
 
