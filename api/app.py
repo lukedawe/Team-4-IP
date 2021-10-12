@@ -1,5 +1,6 @@
 # to run this API, use the line "flask run"
 
+from itertools import count
 from flask import Flask, json, request, jsonify
 from flask_cors import CORS
 from requests.sessions import merge_cookies
@@ -250,6 +251,7 @@ def pt_get_clients():
 
 
 # get sessions associated with the user
+# TODO add optional perameter for the number of sessions that you want to be returned
 @app.post("/sessions/get_user_sessions")
 def get_user_sessions():
     if request.is_json:
@@ -259,7 +261,18 @@ def get_user_sessions():
                 str(session_data['athlete_id']) + ";"
             print(query)
             cursor.execute(str(query))
-            sessions = cursor.fetchall()
+            # the no_of_sessions param allows you to specify the number
+            # of sessions that you want to return, if not included, it will return all sessions
+            if "no_of_sessions" not in session_data:
+                sessions = cursor.fetchall()
+            else:
+                sessions = []
+                row = cursor.fetchone()
+                count = 0
+                while row and count < session_data["no_of_sessions"]:
+                    sessions.append(row)
+                    row = cursor.fetchone()
+                    count += 1
         except KeyError:
             print('JSON did not hold reqired data')
             return {"error": "Request must contain required keys"}, 415
@@ -278,7 +291,7 @@ def get_user_sessions():
         session_array.append(array_entry)
 
     return_json = {'sessions': session_array}
-    return json.dumps(return_json)
+    return json.dumps(return_json), 200
 
 
 # effectively log the user in
@@ -400,7 +413,8 @@ def total_muscle_activation():
                         return {"error": "no data for that session found"}
                     break
             for key in total_muscle_movement:
-                total_muscle_movement[key] = round(total_muscle_movement[key], 2)
+                total_muscle_movement[key] = round(
+                    total_muscle_movement[key], 2)
             return json.dumps(total_muscle_movement), 200
 
         except KeyError:
@@ -408,7 +422,6 @@ def total_muscle_activation():
             return {"error": "Request must contain required keys"}, 415
     else:
         return {"error": "Request must be a JSON"}, 415
-
 
 
 # def run_query(query: str):
