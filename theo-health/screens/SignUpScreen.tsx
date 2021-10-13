@@ -11,8 +11,42 @@ import { useNavigation } from '@react-navigation/native';
 import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
 import { RootTabScreenProps } from '../types';
+import LogInScreen from '../screens/LogInScreen';
 
 export default function SignUpScreen({ navigation }: RootTabScreenProps<'SignUpTab'>) {
+    const [name, setname] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [errorMessage, seterrorMessage] = useState("");
+
+    const submit = async () => {
+      try {
+        if (email=="" || password=="" || name==""){
+          throw Error;
+        }
+          const response = await fetch(
+              'http://localhost:5000/users/add_user ', {
+              method: 'POST',
+              headers: {
+                  Accept: 'application/json',
+                  'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                  user_type: "athlete", 
+                  name: name, 
+                  email: email, 
+                  password: password 
+              })
+          }
+          )
+          const json = await response.json();
+          //redirect to login page
+      } catch (error) {
+          console.error(error);
+          seterrorMessage("An error occured while signing up");
+      }
+  }
+
   return (
     <View style={styles.mainContainer}>
       <View style={styles.logoContainer}>
@@ -35,6 +69,8 @@ export default function SignUpScreen({ navigation }: RootTabScreenProps<'SignUpT
             style={styles.TextInput}
             placeholder="name"
             placeholderTextColor="#434747"
+            onChangeText={(name) => setname(name)}
+            value={name}
           />
         </View>
 
@@ -46,6 +82,8 @@ export default function SignUpScreen({ navigation }: RootTabScreenProps<'SignUpT
             style={styles.TextInput}
             placeholder="email"
             placeholderTextColor="#434747"
+            onChangeText={(email) => setEmail(email)}
+            value={email}
           />
         </View>
   
@@ -58,10 +96,16 @@ export default function SignUpScreen({ navigation }: RootTabScreenProps<'SignUpT
             placeholder="password"
             placeholderTextColor="#434747"
             secureTextEntry={true}
+            onChangeText={(password) => setPassword(password)}
+            value={password}
           />
         </View>
 
-        <TouchableOpacity style={styles.signUpBtn}>
+        <Text style={styles.error_text}>
+          {errorMessage}
+        </Text>
+
+        <TouchableOpacity style={styles.signUpBtn} onPress={submit}>
           <Text>sign up</Text>
         </TouchableOpacity>
 
@@ -69,7 +113,7 @@ export default function SignUpScreen({ navigation }: RootTabScreenProps<'SignUpT
           already have an account?
         </Text>
 
-        <TouchableOpacity onPress={() => navigation.navigate('LogInScreen')}>
+        <TouchableOpacity>
           <Text style={styles.log_in_button}>log in</Text>
         </TouchableOpacity>
         
@@ -142,6 +186,10 @@ const styles = StyleSheet.create({
   label_text: {
     color:"#E6C59E",
     padding: 10
+  },
+  error_text: {
+    color:"red",
+    paddingTop: 10
   },
   info_text: {
     color:"#E6C59E",

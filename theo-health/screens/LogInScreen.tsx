@@ -6,18 +6,23 @@ import {
   TextInput,
   Button,
   TouchableOpacity,
+  Alert,
 } from "react-native";
 import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
 import { RootTabScreenProps } from '../types';
 
-export default function TabOneScreen({ navigation }: RootTabScreenProps<'LogInTab'>) {
+export default function LogInScreen({ navigation }: RootTabScreenProps<'LogInTab'>) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [userID, setuserID] = useState("");
+    const [data, setData] = useState("");
+    const [errorMessage, seterrorMessage] = useState("");
     
     const submit = async () => {
       try {
+        if (email=="" || password==""){
+            throw Error;
+        }
           const response = await fetch(
               'http://localhost:5000/users/get_user_id ', {
               method: 'POST',
@@ -26,7 +31,6 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'LogInTa
                   'Content-Type': 'application/json'
               },
               body: JSON.stringify({
-                  user_type: "athlete",
                   email: email,
                   password: password
               })
@@ -34,11 +38,18 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'LogInTa
           )
           const json = await response.json();
           console.log(json);
-          setuserID(json);
-          console.log(userID);
-          
+          setData(json);
+          console.log(data);
+          //if (the request returns nothing) {
+          //  throw Error;
+          // }
+          // else{
+          //   //navigate to user screen 
+          // }
+            
       } catch (error) {
           console.error(error);
+          seterrorMessage("Incorrect email or password");
       }
   }
   
@@ -82,6 +93,10 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'LogInTa
             value={password}
           />
         </View>
+
+        <Text style={styles.error_text}>
+          {errorMessage}
+        </Text>
 
         <TouchableOpacity style={styles.loginBtn} onPress={submit}>
           <Text>log in</Text>
@@ -164,6 +179,10 @@ const styles = StyleSheet.create({
   label_text: {
     color:"#E6C59E",
     padding: 10
+  },
+  error_text: {
+    color:"red",
+    paddingTop: 10
   },
   info_text: {
     color:"#E6C59E",
