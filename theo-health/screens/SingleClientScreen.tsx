@@ -1,10 +1,7 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useState, useEffect } from "react";
 import {
-  FlatList,
   StyleSheet,
-  Image,
-  TextInput,
   TouchableOpacity,
   ActivityIndicator,
 } from "react-native";
@@ -19,33 +16,17 @@ import { ScrollView } from "react-native-gesture-handler";
 import { Card, ListItem, Icon, Button } from 'react-native-elements'
 
 export default function SingleClientScreen({ route, navigation }: RootTabScreenProps<'SingleClientTab'>) {
-  const { id, type } = route.params;
-  const name = useState("");
-  // const leftquad = useState("");
-  // const rightquad = useState("");
-  // const leftham = useState("");
-  // const rightham = useState("");
-  // const emailpref = useState("");
-  // const phonepref = useState("");
-  // const smspref = useState("");
-  // const email = useState("");
-  // const phoneno = useState("");
+  const { userid, id, type } = route.params;
   const colorScheme = useColorScheme();
   const [userName, setuserName] = useState("");
   const [success, setsuccess] = useState(Boolean);
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
-  const back = () => {
-
-  };
   useEffect(() => {
-    
+
     if (!success) {
       sessionData();
       getuserName();
-    }
-    else {
-
     }
   });
 
@@ -88,7 +69,7 @@ export default function SingleClientScreen({ route, navigation }: RootTabScreenP
         body: JSON.stringify({
           athlete_id: id
         })
-        
+
       }
       )
       const json = await response.json();
@@ -106,8 +87,11 @@ export default function SingleClientScreen({ route, navigation }: RootTabScreenP
     <SafeAreaProvider>
       <View style={styles.mainContainer}>
         <View style={styles.headingContainer}>
+          <TouchableOpacity onPress={() => navigation.navigate('ListViewTab', { id: userid, type: "personal trainer" })}>
+            <Text style={styles.back_button}>back</Text>
+          </TouchableOpacity>
           <Text style={styles.heading_text}>
-            welcome back {userName}
+            {userName}
           </Text>
         </View>
         <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
@@ -133,11 +117,11 @@ export default function SingleClientScreen({ route, navigation }: RootTabScreenP
                       Comment: {data.comment}
                     </Text>
 
-                    <Button onPress={() => navigation.navigate('HeatmapTab', {data.id})}
+                    {/* <Button onPress={() => navigation.navigate('HeatmapTab', {data.id})}
                       icon={<Icon name='code' color='#ffffff' />}
                       buttonStyle={styles.button_style }
                       title='VIEW NOW'
-                    />
+                    /> */}
                   </Card>
                 )
               })
@@ -205,7 +189,6 @@ const styles = StyleSheet.create({
     marginBottom: 0
   },
   mainContainer: {
-    //flex: 1,
     backgroundColor: '#1D2121',
     alignItems: 'center',
     justifyContent: 'center',
@@ -249,7 +232,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     backgroundColor: "#f36d21",
   },
-  sign_up_button: {
+  back_button: {
     height: 30,
     justifyContent: 'flex-start',
     color: "#f36d21",
@@ -295,18 +278,3 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
 });
-
-const SESSIONDATA = [
-  {
-    id: 1,
-    datetime: 'session 1',
-  },
-  {
-    id: 2,
-    datetime: 'session 2',
-  },
-  {
-    id: 3,
-    datetime: 'session 3',
-  },
-]

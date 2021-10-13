@@ -22,6 +22,7 @@ import ProgressScreen from '../screens/ProgressScreen';
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
 import heatmapScreen from '../screens/heatmapScreen';
+import AthleteScreen from '../screens/AthleteScreen'
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
   return (
@@ -119,6 +120,14 @@ function BottomTabNavigator() {
         component={heatmapScreen}
         options={{
           title: 'Heatmap Tab',
+          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+        }}
+        />
+        <BottomTab.Screen
+        name="AthleteTab"
+        component={AthleteScreen}
+        options={{
+          title: 'Athlete Tab',
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
         }}
         />

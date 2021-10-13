@@ -44,7 +44,12 @@ const linking: LinkingOptions<RootStackParamList> = {
           },
           HeatmapTab: {
             screens: {
-              heatmapScreen: 'progress',
+              heatmapScreen: 'heatmap',
+            },
+          },
+          AthleteTab: {
+            screens: {
+              AthleteScreen: 'athlete',
             },
           },
         },

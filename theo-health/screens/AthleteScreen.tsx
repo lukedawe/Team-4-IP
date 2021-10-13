@@ -1,28 +1,37 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useState, useEffect } from "react";
 import {
+  FlatList,
   StyleSheet,
-  ActivityIndicator,
+  Image,
+  TextInput,
   TouchableOpacity,
-} from 'react-native';
-import { Card, ListItem, Icon, Button } from 'react-native-elements'
-import { FlatList } from 'react-native-gesture-handler';
-
+  ActivityIndicator,
+} from "react-native";
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
 import { RootTabScreenProps } from '../types';
+import Navigation from '../navigation';
+import useColorScheme from '../hooks/useColorScheme';
+import GetAllUserSessions from "../components/GetAllUserSessions";
+import { ScrollView } from "react-native-gesture-handler";
+import { Card, ListItem, Icon, Button } from 'react-native-elements'
 
-export default function ListViewScreen({ route, navigation }: RootTabScreenProps<'ListViewTab'>) {
+export default function SingleClientScreen({ route, navigation }: RootTabScreenProps<'AthleteTab'>) {
   const { id, type } = route.params;
+  const colorScheme = useColorScheme();
   const [userName, setuserName] = useState("");
   const [success, setsuccess] = useState(Boolean);
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
+  const back = () => {
 
+  };
   useEffect(() => {
-
+    
     if (!success) {
-      clientData();
+      sessionData();
       getuserName();
     }
   });
@@ -38,7 +47,7 @@ export default function ListViewScreen({ route, navigation }: RootTabScreenProps
         },
         body: JSON.stringify({
           id: id,
-          user_type: "personal trainer"
+          user_type: "athlete"
         })
       }
       )
@@ -54,25 +63,23 @@ export default function ListViewScreen({ route, navigation }: RootTabScreenProps
     }
   }
 
-  const clientData = async () => {
+  const sessionData = async () => {
     try {
       const response = await fetch(
-        'http://localhost:5000/users/pt_get_clients', {
+        'http://localhost:5000/sessions/get_user_sessions', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          pt_id: id
+          athlete_id: id
         })
-
+        
       }
       )
       const json = await response.json();
-      console.log(json);
-      console.log(json.clients);
-      setData(json.clients);
+      setData(json.sessions);
       setsuccess(true);
     } catch (error) {
       console.error(error);
@@ -82,58 +89,63 @@ export default function ListViewScreen({ route, navigation }: RootTabScreenProps
     }
   }
 
-
   return (
-    <View style={styles.mainContainer}>
-      <View style={styles.headingContainer}>
+    <SafeAreaProvider>
+      <View style={styles.mainContainer}>
+        <View style={styles.headingContainer}>
         <TouchableOpacity onPress={() => navigation.navigate('LogInTab')}>
           <Text style={styles.back_button}>sign out</Text>
         </TouchableOpacity>
-        <Text style={styles.heading_text}>
-          welcome back {userName}
-        </Text>
-      </View>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <View style={styles.headingContainer}>
-        <Text style={styles.heading_text}>
-          your clients
-        </Text>
-      </View>
-      <View style={styles.subContainer}>
-        <View style={styles.session_card_container}>
-          {isLoading ? <ActivityIndicator /> : (
-            data.map((data, key) => {
-              return (
-                <Card containerStyle={styles.card}>
-                  <Card.Title style={styles.card_title}>Client Name: {data.name}</Card.Title>
-
-                  <Card.Divider />
-                  <Text style={styles.card_content}>
-                    ID: {data.id}
-                  </Text>
-
-                  <Text style={styles.card_content}>
-                    email: {data.email}
-                  </Text>
-
-                  <Button onPress={() => navigation.navigate('SingleClientTab', { userid: id, id: data.id, type: "personal trainer" })}
-                    icon={<Icon name='code' color='#ffffff' />}
-                    buttonStyle={styles.button_style}
-                    title='select client'
-                  />
-                </Card>
-              )
-            })
-          )}
+          <Text style={styles.heading_text}>
+            welcome back {userName}
+          </Text>
         </View>
+        <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
+
+        <View style={styles.subContainer}>
+
+          <Text style={styles.heading_text}>
+            recent sessions
+          </Text>
+          <View style={styles.session_card_container}>
+            {isLoading ? <ActivityIndicator /> : (
+              data.map((data, key) => {
+                return (
+                  <Card containerStyle={styles.card}>
+                    <Card.Title style={styles.card_title}>Session ID: {data.id}</Card.Title>
+
+                    <Card.Divider />
+                    <Text style={styles.card_content}>
+                      Date: {data.date}
+                    </Text>
+
+                    <Text style={styles.card_content}>
+                      Comment: {data.comment}
+                    </Text>
+
+                    {/* <Button onPress={() => navigation.navigate('HeatmapTab', {data.id})}
+                      icon={<Icon name='code' color='#ffffff' />}
+                      buttonStyle={styles.button_style }
+                      title='VIEW NOW'
+                    /> */}
+                  </Card>
+                )
+              })
+            )}
+          </View>
+
+        </View>
+
       </View>
-    </View>
+      {/* <Navigation colorScheme={colorScheme}/> */}
+    </SafeAreaProvider>
+
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    //flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -183,7 +195,6 @@ const styles = StyleSheet.create({
     marginBottom: 0
   },
   mainContainer: {
-    flex: 1,
     backgroundColor: '#1D2121',
     alignItems: 'center',
     justifyContent: 'center',
@@ -205,6 +216,11 @@ const styles = StyleSheet.create({
     width: "80%",
     borderRadius: 10,
   },
+  back_button: {
+    height: 30,
+    justifyContent: 'flex-start',
+    color: "#f36d21",
+  },
   heading_text: {
     color: "white",
     fontSize: 35,
@@ -215,11 +231,6 @@ const styles = StyleSheet.create({
     color: "#E6C59E",
     padding: 10
   },
-  back_button: {
-    height: 30,
-    justifyContent: 'flex-start',
-    color: "#f36d21",
-  },
   info_text: {
     color: "#E6C59E",
   },
@@ -228,6 +239,9 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     width: "90%",
     height: 45,
+  },
+  musclegroup: {
+    flexDirection: "row",
   },
   flatList: {
     flexGrow: 0,

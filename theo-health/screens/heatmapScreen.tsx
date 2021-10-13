@@ -42,7 +42,7 @@ export default function HeatmapThing() {
     var counter = 0;
     var angle = 0;
 
-    const humanObj = require("../assets/models/human.obj")
+    //const humanObj = require("../assets/models/human.obj")
 
     const canvas = document.querySelector('canvas.webgl')
 

@@ -248,7 +248,7 @@ def get_data():
 
 
 # query to get all the clients that one pt manages
-# requires the email of the pt (I thought this was easier than the ID)
+# requires the id of the pt
 
 
 @app.post("/users/pt_get_clients")
@@ -256,8 +256,8 @@ def pt_get_clients():
     if request.is_json:
         request_data = request.get_json()
         try:
-            query = "EXEC getPtClients @pt_email = '" + \
-                str(request_data['pt_email']) + "';"
+            query = "EXEC getPtClients @pt_id = " + \
+                str(request_data['pt_id']) + ";"
             print(query)
             cursor.execute(str(query))
             clients = cursor.fetchall()
@@ -352,7 +352,6 @@ def get_user_id():
                 return {"error": "Request must contain required keys"}, 415
             except TypeError:
                 print('Query returned no data')
-                return {"message": "Request returned nothing"}, 200
                 if user_type == user_types[len(user_types)-1]:
                     return {"message": "Request returned nothing"}, 200
     else:
