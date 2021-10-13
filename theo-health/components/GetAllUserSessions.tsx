@@ -3,9 +3,11 @@ import React from 'react';
 import { useEffect, useState } from 'react';
 import { ActivityIndicator, FlatList, Text, View, StyleSheet } from 'react-native';
 import { Card, ListItem, Button, Icon } from 'react-native-elements'
+import { ScrollView } from "react-native-gesture-handler";
 
+let athlete_id = 6;
 
-export default function GetAllUserSessions(athlete_id: number) {
+export default function GetAllUserSessions() {
     const [isLoading, setLoading] = useState(true);
     const [data, setData] = useState([]);
 
@@ -19,7 +21,7 @@ export default function GetAllUserSessions(athlete_id: number) {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    athlete_id: 2
+                    athlete_id: athlete_id
                 })
             }
             )
@@ -38,18 +40,21 @@ export default function GetAllUserSessions(athlete_id: number) {
     }, []);
 
     return (
+
         <View style={styles.session_card_container}>
-            {isLoading ? <ActivityIndicator /> : (
-                data.map((data, key) =>{
-                    return(
-                        <Card containerStyle={styles.card}>
-                            <Card.Title style={styles.card_title}>Session ID: {data.id}</Card.Title>
-                                
-                            <Card.Divider/>
+            
+                {isLoading ? <ActivityIndicator /> : (
+                    data.map((data, key) => {
+                        return (
+
+                            <Card containerStyle={styles.card}>
+                                <Card.Title style={styles.card_title}>Session ID: {data.id}</Card.Title>
+
+                                <Card.Divider />
                                 <Text style={styles.card_content}>
                                     Date: {data.date}
                                 </Text>
-    
+
                                 <Text style={styles.card_content}>
                                     Comment: {data.comment}
                                 </Text>
@@ -57,45 +62,54 @@ export default function GetAllUserSessions(athlete_id: number) {
                                 <Button
                                     icon={<Icon name='code' color='#ffffff' />}
                                     buttonStyle={styles.button_style}
-                                    title='VIEW NOW' 
+                                    title='VIEW NOW'
                                 />
-                        </Card>
-                    )
-                })
-                
-            )}
+                            </Card>
+
+                        )
+                    })
+
+                )}
+
+            
         </View>
+
     );
 };
 
+const setAthleteID = (id: any) => {
+    athlete_id = id;
+    console.log(athlete_id);
+}
+
 const styles = StyleSheet.create({
     session_card_container: {
-        flexDirection: 'row',
-
+        //flexDirection: 'column',
+        alignContent: "center",
     },
-    card:{
+    card: {
         borderColor: '#f36d21',
         backgroundColor: '#f36d21',
         borderRadius: 10,
-        width: screen.width * 0.15,
-        
+        //width: screen.width * 0.15,
+
     },
-    card_title:{
+    card_title: {
         color: '#FFFFFF',
 
     },
-    card_content:{
+    card_content: {
         fontSize: 16,
 
-        paddingLeft: 5,
+        //paddingLeft: 5,
         paddingRight: 5,
-        
+
         color: '#FFFFFF',
         textAlign: 'left',
-        flexWrap: 'wrap',
+        //flexWrap: 'wrap',
 
     },
-    button_style:{
+    button_style: {
         borderRadius: 10,
         backgroundColor: '#0297a2',
 
@@ -104,7 +118,7 @@ const styles = StyleSheet.create({
         marginRight: 0,
         marginBottom: 0
     }
-  });
+});
 
 
 /* --- WORKS FOR SIMPLE LISTING ALL DATA ---

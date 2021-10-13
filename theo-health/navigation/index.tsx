@@ -21,6 +21,7 @@ import ListViewScreen from '../screens/ListViewScreen';
 import ProgressScreen from '../screens/ProgressScreen';
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
+import heatmapScreen from '../screens/heatmapScreen';
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
   return (
@@ -43,9 +44,11 @@ function RootNavigator() {
     <Stack.Navigator>
       <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
+      
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
         <Stack.Screen name="Modal" component={ModalScreen} />
       </Stack.Group>
+
     </Stack.Navigator>
   );
 }
@@ -56,6 +59,7 @@ function RootNavigator() {
  */
 const BottomTab = createBottomTabNavigator<RootTabParamList>();
 
+
 function BottomTabNavigator() {
   const colorScheme = useColorScheme();
 
@@ -64,15 +68,19 @@ function BottomTabNavigator() {
       initialRouteName="LogInTab"
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme].tint,
-      }}>
+        headerShown: false,
+      }
+
+      }>
       <BottomTab.Screen
         name="LogInTab"
         component={LogInScreen}
         options={({ navigation }: RootTabScreenProps<'LogInTab'>) => ({
           title: 'Log In Tab',
+
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
         })}
-      />
+      /> 
       <BottomTab.Screen
         name="SignUpTab"
         component={SignUpScreen}
@@ -104,7 +112,16 @@ function BottomTabNavigator() {
           title: 'Progress Tab',
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
         }}
+        
       />
+      <BottomTab.Screen
+        name="HeatmapTab"
+        component={heatmapScreen}
+        options={{
+          title: 'Heatmap Tab',
+          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+        }}
+        />
     </BottomTab.Navigator>
   );
 }

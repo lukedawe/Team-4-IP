@@ -1,23 +1,89 @@
 import { StatusBar } from "expo-status-bar";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   Image,
   TextInput,
   Button,
   TouchableOpacity,
+  Alert,
+  FlatList,
+  ActivityIndicator,
 } from "react-native";
-
 import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
 import { RootTabScreenProps } from '../types';
+import SingleClientScreen from "../screens/SingleClientScreen";
+import SignUpScreen from "../screens/SignUpScreen"
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
+let userData = undefined
+
+export default function LogInScreen({ navigation }: RootTabScreenProps<'LogInTab'>) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const submit = () => {
+    const [data, setData] = useState([]);
+    const [errorMessage, seterrorMessage] = useState("");
+    const [success, setsuccess] = useState(Boolean);
+    const [dataArray, setdataArray] = useState([]);
 
-    };
+    useEffect(() => {
+      if (success){
+        console.log(data)
+        //split the data up
+        if (data.message=='Request returned nothing') {
+          seterrorMessage("Incorrect email or password");
+          setsuccess(false)
+        }
+        else {
+          dataArray.push(data.id)
+          dataArray.push(data.user_type)
+          userData = data
+          console.log(dataArray[0])
+          console.log(dataArray[1])
+          if (dataArray[1]=="athlete"){
+            navigation.navigate('SingleClientTab', {id:dataArray[0], type:dataArray[1]});
+          }
+          }
+          //navigate to user screen
+        }
+        
+      }
+    );
+
+    const submit = async () => {
+      try {
+        if (email=="" || password==""){
+            throw Error;
+        }
+          const response = await fetch(
+              'http://localhost:5000/users/get_user_id ', {
+              method: 'POST',
+              headers: {
+                  Accept: 'application/json',
+                  'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                  email: email,
+                  password: password
+              })
+          }
+          )
+          const json = await response.json();
+          console.log(json);
+          setData(json);
+          setsuccess(true);
+            
+      } catch (error) {
+          console.error(error);
+          seterrorMessage("Incorrect email or password");
+          setsuccess(false)
+      }
+      
+  }
+  
+  
   return (
     <View style={styles.mainContainer}>
       <View style={styles.logoContainer}>
@@ -59,6 +125,10 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
           />
         </View>
 
+        <Text style={styles.error_text}>
+          {errorMessage}
+        </Text>
+
         <TouchableOpacity style={styles.loginBtn} onPress={submit}>
           <Text>log in</Text>
         </TouchableOpacity>
@@ -67,7 +137,7 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
           don't have an account?
         </Text>
 
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('SignUpTab')}>
           <Text style={styles.sign_up_button}>sign up</Text>
         </TouchableOpacity>
         
@@ -141,6 +211,10 @@ const styles = StyleSheet.create({
     color:"#E6C59E",
     padding: 10
   },
+  error_text: {
+    color:"red",
+    paddingTop: 10
+  },
   info_text: {
     color:"#E6C59E",
   },
@@ -151,3 +225,5 @@ const styles = StyleSheet.create({
     height: 45,
   },
 });
+
+export{userData}
