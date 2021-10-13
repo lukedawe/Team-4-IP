@@ -44,7 +44,7 @@ def get_user_name():
         user_data = request.get_json()
 
         try:
-            query = "EXEC getUserName @id=" + user_data['id'] + ", @user_type='"+user_data['user_type']+"';"
+            query = "EXEC getUserName @id=" + str(user_data['id']) + ", @user_type='"+user_data['user_type']+"';"
             print(query)
             cursor.execute(str(query))
             user = cursor.fetchone()
