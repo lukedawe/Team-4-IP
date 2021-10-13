@@ -35,6 +35,35 @@ CORS(app)
 # add to this list if the types of user expand
 user_types = ['athlete', 'personal trainer']
 
+# takes the id and gives the name and the user type
+
+
+@app.post("/users/get_user_name")
+def get_user_name():
+    if request.is_json:
+        user_data = request.get_json()
+
+        try:
+            query = "EXEC getUserName @id=" + user_data['id'] + ", @user_type='"+user_data['user_type']+"';"
+            print(query)
+            cursor.execute(str(query))
+            user = cursor.fetchone()
+            if user[0]:
+                print(str(user[0]))
+                # return the ID of the user
+                return {"user_name": str(user[0]).rstrip()}, 200
+            else:
+                return {"message": "Request returned nothing"}, 200
+
+        except KeyError:
+            print('JSON did not hold reqired data')
+            return {"error": "Request must contain required keys"}, 415
+        except TypeError:
+            print('Query returned no data')
+            return {"message": "Request returned nothing"}, 200
+    else:
+        return {"error": "Request must be a JSON"}, 415
+
 
 # gets all the athlete accounts in the database
 @app.get("/users/get_all_athletes")
@@ -324,6 +353,7 @@ def get_user_id():
                 return {"error": "Request must contain required keys"}, 415
             except TypeError:
                 print('Query returned no data')
+                return {"message": "Request returned nothing"}, 200
                 if user_type == user_types[len(user_types)-1]:
                     return {"message": "Request returned nothing"}, 200
     else:
