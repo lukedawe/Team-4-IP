@@ -1,9 +1,6 @@
 # to run this API, use the line "flask run"
-
-from itertools import count
-from flask import Flask, json, request, jsonify
+from flask import Flask, json, request
 from flask_cors import CORS
-from requests.sessions import merge_cookies
 import pyodbc
 import json
 
