@@ -44,7 +44,9 @@ def get_user_name():
         user_data = request.get_json()
 
         try:
-            query = "EXEC getUserName @id=" + str(user_data['id']) + ", @user_type='"+user_data['user_type']+"';"
+            query = "EXEC getUserName @id=" + \
+                str(user_data['id']) + ", @user_type='" + \
+                user_data['user_type']+"';"
             print(query)
             cursor.execute(str(query))
             user = cursor.fetchone()
@@ -452,7 +454,7 @@ def total_muscle_activation():
                     break
             for key in total_muscle_movement:
                 total_muscle_movement[key] = round(
-                    total_muscle_movement[key], 2)
+                    total_muscle_movement[key] / order_in_session, 2)
             return json.dumps(total_muscle_movement), 200
 
         except KeyError:
