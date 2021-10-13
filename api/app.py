@@ -72,7 +72,7 @@ def get_athletes():
     while row:
         print(str(row[0]) + " " + str(row[1]))
         row = cursor.fetchone()
-    return {'message': 'OK'}
+    return {"message": "OK"}
 
 
 # gets all the personal trainer accounts in the database
@@ -83,7 +83,7 @@ def get_pts():
     while row:
         print(str(row[0]) + " " + str(row[1]))
         row = cursor.fetchone()
-    return {'message': 'OK'}
+    return {"message": "OK"}
 
 
 # this is to create a new athlete account
@@ -108,7 +108,7 @@ def add_athlete():
         # execute and commit the query
         cursor.execute(str(query))
         cnxn.commit()
-        return {'message': 'OK'}
+        return {"message": "OK"}
     else:
         return {"error": "Request must be JSON"}, 415
 
@@ -129,7 +129,7 @@ def add_pt():
         # execute and commit the query
         cursor.execute(str(query))
         cnxn.commit()
-        return {'message': 'OK'}
+        return {"message": "OK"}
     else:
         return {"error": "Request must be JSON"}, 415
 
@@ -156,7 +156,7 @@ def add_user():
         # execute and commit the query
         cursor.execute(str(query))
         cnxn.commit()
-        return {'message': 'OK'}
+        return {"message": "OK"}
     else:
         return {"error": "Request must be JSON"}, 415
 
@@ -181,7 +181,7 @@ def add_data():
             # execute and commit the query
             cursor.execute(str(query))
             cnxn.commit()
-            return {'message': 'OK'}
+            return {"message": "OK"}
         except KeyError:
             print('JSON did not hold reqired data')
             return {"error": "Request must contain required keys"}, 415
@@ -248,7 +248,7 @@ def get_data():
 
 
 # query to get all the clients that one pt manages
-# requires the email of the pt (I thought this was easier than the ID)
+# requires the id of the pt
 
 
 @app.post("/users/pt_get_clients")
@@ -256,8 +256,8 @@ def pt_get_clients():
     if request.is_json:
         request_data = request.get_json()
         try:
-            query = "EXEC getPtClients @pt_email = '" + \
-                str(request_data['pt_email']) + "';"
+            query = "EXEC getPtClients @pt_id = " + \
+                str(request_data['pt_id']) + ";"
             print(query)
             cursor.execute(str(query))
             clients = cursor.fetchall()
@@ -318,7 +318,7 @@ def get_user_sessions():
     # go through each client and add their details to the array
     for session in sessions:
         array_entry = {'id': str(session[0]).rstrip(),
-                       'date': str(session[1].day) + ', ' + str(session[1].month) + ', ' + str(session[1].year),
+                       'date': str(session[1].day) + '/' + str(session[1].month) + '/' + str(session[1].year),
                        'comment': str(session[2]).rstrip()}
         session_array.append(array_entry)
 
@@ -352,7 +352,6 @@ def get_user_id():
                 return {"error": "Request must contain required keys"}, 415
             except TypeError:
                 print('Query returned no data')
-                return {"message": "Request returned nothing"}, 200
                 if user_type == user_types[len(user_types)-1]:
                     return {"message": "Request returned nothing"}, 200
     else:
@@ -459,6 +458,90 @@ def total_muscle_activation():
             return {"error": "Request must contain required keys"}, 415
     else:
         return {"error": "Request must be a JSON"}, 415
+
+
+# calculates the average muscle usage per session for a number of sessions
+@app.post("/sessions/average_muscle_usage_progress")
+def average_muscle_usage_progress():
+    if request.is_json:
+        user_details = request.get_json()
+
+        # get the users last <number of sessions> sessions
+        try:
+            query = "EXEC getUserSessions @athlete_id = " + \
+                str(user_details['athlete_id']) + ";"
+            print(query)
+            cursor.execute(str(query))
+            # the no_of_sessions param allows you to specify the number
+            # of sessions that you want to return, if not included, it will return all sessions
+            if "no_of_sessions" not in user_details:
+                sessions = cursor.fetchall()
+            else:
+                sessions = []
+                row = cursor.fetchone()
+                count = 0
+                while row and count < user_details["no_of_sessions"]:
+                    sessions.append(row)
+                    row = cursor.fetchone()
+                    count += 1
+        except KeyError:
+            print('JSON did not hold reqired data')
+            return {"error": "Request must contain required keys"}, 415
+        except TypeError:
+            print('Query returned no data')
+            return {"message": "Request returned nothing"}, 200
+        # an array of dictionaries that store the client data
+        session_array = []
+        # go through each client and add their details to the array
+        for session in sessions:
+            array_entry = {'id': str(session[0]).rstrip(),
+                           'date': str(session[1].day) + '/' + str(session[1].month) + '/' + str(session[1].year),
+                           'comment': str(session[2]).rstrip()}
+            session_array.append(array_entry)
+        # now we have an array of all sessions that the user has done
+        # we want the average muscle movement per session in the array
+        for session in session_array:
+            total_muscle_movement = {
+                "right quad": 0, "left quad": 0, "right hamstring": 0, "left hamstring": 0}
+            order_in_session = 1
+            try:
+                row = " "
+                while row:
+                    query = "EXEC getDataEntry @session_id = " + str(session['id']) + \
+                        ", @order_in_session = " + \
+                        str(order_in_session) + ";"
+                    print(query)
+                    try:
+                        # execute and commit the query
+                        cursor.execute(str(query))
+                        # there should only be one row returned
+                        row = cursor.fetchone()
+                        # if the muscles are activated, add the value to the dictionary
+                        total_muscle_movement["left hamstring"] += row[4]
+                        total_muscle_movement["right hamstring"] += row[5]
+                        total_muscle_movement["left quad"] += row[6]
+                        total_muscle_movement["right quad"] += row[7]
+                        order_in_session += 1
+                    except TypeError:
+                        print('last data entry reached')
+                        # if there are no entries in the database found for the id, return an error
+                        if(order_in_session == 1):
+                            continue
+                        break
+                for key in total_muscle_movement:
+                    total_muscle_movement[key] = round(
+                        total_muscle_movement[key] / order_in_session, 2)
+                # now we store the averages per session
+                session["left hamstring"] = total_muscle_movement["left hamstring"]
+                session["right hamstring"] = total_muscle_movement["right hamstring"]
+                session["left quad"] = total_muscle_movement["left quad"]
+                session["right quad"] = total_muscle_movement["right quad"]
+
+            except KeyError:
+                print('JSON did not hold reqired data')
+                return {"error": "Request must contain required keys"}, 415
+        # now return all the data for each session including the average muscle usage statistics per session
+        return json.dumps({"sessions": session_array}), 200
 
 
 # def run_query(query: str):

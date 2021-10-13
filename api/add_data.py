@@ -1,6 +1,7 @@
 import requests
 import csv
 import json
+import random
 
 filenames = ["SensorTest-sensor1.csv", "SensorTest-sensor2.csv",
              "SensorTest-sensor3.csv", "SensorTest-sensor4.csv"]
@@ -46,14 +47,14 @@ reader4 = list(csv.reader(file4, delimiter=' ', quotechar='|'))
 # now we send the data to the api
 counter = 1
 
-while counter < len(reader1):
+while counter < random.randint(2, 30):
     try:
         entries1 = str(reader1[counter][0]).split('T')
         entries2 = str(reader2[counter][0]).split('T')
         entries3 = str(reader3[counter][0]).split('T')
         entries4 = str(reader4[counter][0]).split('T')
 
-        date = entries1[0]
+        date = "2021-10-13"
         time = entries1[1].split('Z')[0]
         # get the data from the entries
         data1 = str(entries1[1]).split(',')[1]

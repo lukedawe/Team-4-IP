@@ -11,18 +11,40 @@ import { RootStackParamList } from '../types';
 
 const linking: LinkingOptions<RootStackParamList> = {
   prefixes: [Linking.makeUrl('/')],
+
   config: {
     screens: {
       Root: {
         screens: {
-          TabOne: {
+          LogInTab: {
             screens: {
-              TabOneScreen: 'one',
+              LogInScreen: 'login',
             },
           },
-          TabTwo: {
+          SignUpTab: {
             screens: {
-              TabTwoScreen: 'two',
+              SignUpScreen: 'signup',
+
+            },
+          },
+          SingleClientTab: {
+            screens: {
+              SingleClientScreen: 'singleclient',
+            },
+          },
+          ListViewTab: {
+            screens: {
+              ListViewScreen: 'list',
+            },
+          },
+          ProgressTab: {
+            screens: {
+              ProgressScreen: 'progress',
+            },
+          },
+          HeatmapTab: {
+            screens: {
+              heatmapScreen: 'progress',
             },
           },
         },

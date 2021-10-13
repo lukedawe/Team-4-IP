@@ -14,10 +14,14 @@ import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
 import ModalScreen from '../screens/ModalScreen';
 import NotFoundScreen from '../screens/NotFoundScreen';
-import TabOneScreen from '../screens/TabOneScreen';
-import TabTwoScreen from '../screens/TabTwoScreen';
+import LogInScreen from '../screens/LogInScreen';
+import SignUpScreen from '../screens/SignUpScreen';
+import SingleClientScreen from '../screens/SingleClientScreen';
+import ListViewScreen from '../screens/ListViewScreen';
+import ProgressScreen from '../screens/ProgressScreen';
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
+import heatmapScreen from '../screens/heatmapScreen';
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
   return (
@@ -40,9 +44,11 @@ function RootNavigator() {
     <Stack.Navigator>
       <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
+      
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
         <Stack.Screen name="Modal" component={ModalScreen} />
       </Stack.Group>
+
     </Stack.Navigator>
   );
 }
@@ -53,31 +59,69 @@ function RootNavigator() {
  */
 const BottomTab = createBottomTabNavigator<RootTabParamList>();
 
+
 function BottomTabNavigator() {
   const colorScheme = useColorScheme();
 
   return (
     <BottomTab.Navigator
-      initialRouteName="TabOne"
+      initialRouteName="LogInTab"
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme].tint,
-      }}>
+        headerShown: false,
+      }
+
+      }>
       <BottomTab.Screen
-        name="TabOne"
-        component={TabOneScreen}
-        options={({ navigation }: RootTabScreenProps<'TabOne'>) => ({
-          title: 'Your progress',
+        name="LogInTab"
+        component={LogInScreen}
+        options={({ navigation }: RootTabScreenProps<'LogInTab'>) => ({
+          title: 'Log In Tab',
+
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
         })}
-      />
+      /> 
       <BottomTab.Screen
-        name="TabTwo"
-        component={TabTwoScreen}
+        name="SignUpTab"
+        component={SignUpScreen}
         options={{
-          title: 'Tab Two',
+          title: 'Sign Up Tab',
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
         }}
       />
+      <BottomTab.Screen
+        name="SingleClientTab"
+        component={SingleClientScreen}
+        options={{
+          title: 'Single Client Tab',
+          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+        }}
+      />
+      <BottomTab.Screen
+        name="ListViewTab"
+        component={ListViewScreen}
+        options={{
+          title: 'List View Tab',
+          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+        }}
+      />
+      <BottomTab.Screen
+        name="ProgressTab"
+        component={ProgressScreen}
+        options={{
+          title: 'Progress Tab',
+          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+        }}
+        
+      />
+      <BottomTab.Screen
+        name="HeatmapTab"
+        component={heatmapScreen}
+        options={{
+          title: 'Heatmap Tab',
+          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+        }}
+        />
     </BottomTab.Navigator>
   );
 }

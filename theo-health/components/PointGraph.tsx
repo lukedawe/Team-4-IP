@@ -9,27 +9,16 @@ import { setSelectedMuscle } from "../constants/MuscleSelection";
 import { useState } from 'react';
 import { MusclePicker } from './MusclePicker';
 import GetExerciseData from './GetExerciseData';
+import { json } from 'stream/consumers';
 
 // export { setSelectedMuscle } 
 
 
-export default function PointGraph({ muscle }: { muscle: string }) {
+export default function PointGraph({ muscle }: { muscle: string }, id: number) {
     const [selectedMuscle, setSelectedMuscle] = useState();
-
-
 
     return (
         <View>
-
-
-            <Text style={styles.titleText} >
-                {'This year'}
-                {"\n"}
-                {"\n"}
-            </Text>
-
-            <Text style={styles.baseText}>{GetExerciseData(6,1)}</Text>
-
             <LineChart
                 data={{
                     labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
@@ -61,14 +50,3 @@ export default function PointGraph({ muscle }: { muscle: string }) {
         </View>
     );
 }
-
-const styles = StyleSheet.create({
-    baseText: {
-        fontFamily: "Cochin"
-    },
-    titleText: {
-        color: "white",
-        fontSize: 20,
-        fontWeight: "bold"
-    }
-});
