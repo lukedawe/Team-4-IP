@@ -1,9 +1,6 @@
 # to run this API, use the line "flask run"
-
-from itertools import count
-from flask import Flask, json, request, jsonify
+from flask import Flask, json, request
 from flask_cors import CORS
-from requests.sessions import merge_cookies
 import pyodbc
 import json
 
@@ -34,6 +31,37 @@ CORS(app)
 # all the different user types that are in the database,
 # add to this list if the types of user expand
 user_types = ['athlete', 'personal trainer']
+
+# takes the id and gives the name and the user type
+
+
+@app.post("/users/get_user_name")
+def get_user_name():
+    if request.is_json:
+        user_data = request.get_json()
+
+        try:
+            query = "EXEC getUserName @id=" + \
+                str(user_data['id']) + ", @user_type='" + \
+                user_data['user_type']+"';"
+            print(query)
+            cursor.execute(str(query))
+            user = cursor.fetchone()
+            if user[0]:
+                print(str(user[0]))
+                # return the ID of the user
+                return {"user_name": str(user[0]).rstrip()}, 200
+            else:
+                return {"message": "Request returned nothing"}, 200
+
+        except KeyError:
+            print('JSON did not hold reqired data')
+            return {"error": "Request must contain required keys"}, 415
+        except TypeError:
+            print('Query returned no data')
+            return {"message": "Request returned nothing"}, 200
+    else:
+        return {"error": "Request must be a JSON"}, 415
 
 
 # gets all the athlete accounts in the database
@@ -324,6 +352,7 @@ def get_user_id():
                 return {"error": "Request must contain required keys"}, 415
             except TypeError:
                 print('Query returned no data')
+                return {"message": "Request returned nothing"}, 200
                 if user_type == user_types[len(user_types)-1]:
                     return {"message": "Request returned nothing"}, 200
     else:
@@ -422,7 +451,7 @@ def total_muscle_activation():
                     break
             for key in total_muscle_movement:
                 total_muscle_movement[key] = round(
-                    total_muscle_movement[key], 2)
+                    total_muscle_movement[key] / order_in_session, 2)
             return json.dumps(total_muscle_movement), 200
 
         except KeyError:
