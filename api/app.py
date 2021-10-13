@@ -44,7 +44,7 @@ def get_athletes():
     while row:
         print(str(row[0]) + " " + str(row[1]))
         row = cursor.fetchone()
-    return 'OK'
+    return {'message': 'OK'}
 
 
 # gets all the personal trainer accounts in the database
@@ -55,7 +55,7 @@ def get_pts():
     while row:
         print(str(row[0]) + " " + str(row[1]))
         row = cursor.fetchone()
-    return 'OK'
+    return {'message': 'OK'}
 
 
 # this is to create a new athlete account
@@ -80,7 +80,7 @@ def add_athlete():
         # execute and commit the query
         cursor.execute(str(query))
         cnxn.commit()
-        return 'OK'
+        return {'message': 'OK'}
     else:
         return {"error": "Request must be JSON"}, 415
 
@@ -101,7 +101,7 @@ def add_pt():
         # execute and commit the query
         cursor.execute(str(query))
         cnxn.commit()
-        return 'OK'
+        return {'message': 'OK'}
     else:
         return {"error": "Request must be JSON"}, 415
 
@@ -128,7 +128,7 @@ def add_user():
         # execute and commit the query
         cursor.execute(str(query))
         cnxn.commit()
-        return 'OK'
+        return {'message': 'OK'}
     else:
         return {"error": "Request must be JSON"}, 415
 
@@ -139,7 +139,7 @@ def add_user():
 def add_data():
     if request.is_json:
         exercise_data = request.get_json()
-
+        print(exercise_data)
         try:
             query = "EXEC addDataEntry @session_id = "+str(exercise_data['session_id']) +\
                 ", @order_in_session = " + str(exercise_data['order_in_session']) + \
@@ -153,7 +153,7 @@ def add_data():
             # execute and commit the query
             cursor.execute(str(query))
             cnxn.commit()
-            return 'OK'
+            return {'message': 'OK'}
         except KeyError:
             print('JSON did not hold reqired data')
             return {"error": "Request must contain required keys"}, 415
@@ -167,7 +167,7 @@ def add_session():
     if request.is_json:
         session_data = request.get_json()
         try:
-            query = "EXEC addSession @athlete_id = " + str(session_data['athlete_id']) +\
+            query = "EXEC addSession @athlete_id = " + str(int(session_data['athlete_id'])) +\
                     ", @start_date = '" + str(session_data['start_date']) + "'"
             # if the query holds a comment, add the comment to the query
             if 'comment' in session_data:
@@ -181,7 +181,7 @@ def add_session():
             new_id = str(id[0])
             cnxn.commit()
             # return the ID of the session that was just created
-            return new_id
+            return {"session_id": new_id}
         except KeyError:
             print('JSON did not hold reqired data')
             return {"error": "Request must contain required keys"}, 415
