@@ -11,7 +11,7 @@ import { RootStackParamList } from '../types';
 
 const linking: LinkingOptions<RootStackParamList> = {
   prefixes: [Linking.makeUrl('/')],
-  
+
   config: {
     screens: {
       Root: {
@@ -40,6 +40,11 @@ const linking: LinkingOptions<RootStackParamList> = {
           ProgressTab: {
             screens: {
               ProgressScreen: 'progress',
+            },
+          },
+          HeatmapTab: {
+            screens: {
+              heatmapScreen: 'progress',
             },
           },
         },

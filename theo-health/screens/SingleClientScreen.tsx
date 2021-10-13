@@ -133,9 +133,9 @@ export default function SingleClientScreen({ route, navigation }: RootTabScreenP
                       Comment: {data.comment}
                     </Text>
 
-                    <Button
+                    <Button onPress={() => navigation.navigate('HeatmapTab', {data.id})}
                       icon={<Icon name='code' color='#ffffff' />}
-                      buttonStyle={styles.button_style}
+                      buttonStyle={styles.button_style }
                       title='VIEW NOW'
                     />
                   </Card>

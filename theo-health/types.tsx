@@ -30,6 +30,7 @@ export type RootTabParamList = {
   SingleClientTab: undefined;
   ListViewTab: undefined;
   ProgressTab: undefined;
+  HeatmapTab: undefined;
 };
 
 export type RootTabScreenProps<Screen extends keyof RootTabParamList> = CompositeScreenProps<
