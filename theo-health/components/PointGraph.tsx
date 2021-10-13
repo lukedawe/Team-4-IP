@@ -9,20 +9,16 @@ import { setSelectedMuscle } from "../constants/MuscleSelection";
 import { useState } from 'react';
 import { MusclePicker } from './MusclePicker';
 import GetExerciseData from './GetExerciseData';
+import { json } from 'stream/consumers';
 
 // export { setSelectedMuscle } 
 
 
-export default function PointGraph({ muscle }: { muscle: string }) {
+export default function PointGraph({ muscle }: { muscle: string }, id: number) {
     const [selectedMuscle, setSelectedMuscle] = useState();
-
-
 
     return (
         <View>
-
-            <GetExerciseData/>
-
             <LineChart
                 data={{
                     labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
