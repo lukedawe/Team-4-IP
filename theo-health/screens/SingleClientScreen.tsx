@@ -6,12 +6,9 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
 import { RootTabScreenProps } from '../types';
-import Navigation from '../navigation';
 import useColorScheme from '../hooks/useColorScheme';
-import GetAllUserSessions from "../components/GetAllUserSessions";
 import { ScrollView } from "react-native-gesture-handler";
 import { Card, ListItem, Icon, Button } from 'react-native-elements'
 
@@ -95,10 +92,13 @@ export default function SingleClientScreen({ route, navigation }: RootTabScreenP
           </Text>
         </View>
         <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-
+        <Button
+          onPress={() => navigation.navigate('ProgressTab', { userid: userid, id: id, type: type })}
+          buttonStyle={styles.progress_button}
+          title='check progress'
+        />
         <View style={styles.subContainer}>
-
-          <Text style={styles.heading_text}>
+          <Text style={styles.sub_text}>
             recent sessions
           </Text>
           <View style={styles.session_card_container}>
@@ -188,6 +188,16 @@ const styles = StyleSheet.create({
     marginRight: 0,
     marginBottom: 0
   },
+  progress_button: {
+    borderRadius: 10,
+    backgroundColor: '#f36d21',
+    marginLeft: 0,
+    marginTop: 0,
+    marginRight: 0,
+    marginBottom: 30,
+    width: "100%",
+    fontSize: 30,
+  },
   mainContainer: {
     backgroundColor: '#1D2121',
     alignItems: 'center',
@@ -204,45 +214,15 @@ const styles = StyleSheet.create({
     backgroundColor: '#434747',
     alignItems: 'center',
     justifyContent: 'center',
-    //paddingLeft: "7%",
     paddingBottom: "5%",
     paddingTop: "5%",
     width: "80%",
     borderRadius: 10,
   },
-  logo: {
-    maxWidth: "100%",
-    maxHeight: "40%",
-    width: 225,
-    height: 125,
-  },
-  muscleimg: {
-    maxWidth: "100%",
-    maxHeight: "100%",
-    width: 225,
-    height: 125,
-  },
-  loginBtn: {
-    width: "25%",
-    borderRadius: 10,
-    height: 30,
-    alignItems: "center",
-    justifyContent: "center",
-    marginTop: 20,
-    marginBottom: 20,
-    backgroundColor: "#f36d21",
-  },
   back_button: {
     height: 30,
     justifyContent: 'flex-start',
     color: "#f36d21",
-  },
-  TextInput: {
-    height: 50,
-    flex: 1,
-    padding: 10,
-    marginLeft: 10,
-    color: "white"
   },
   heading_text: {
     color: "white",
@@ -250,9 +230,12 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     paddingBottom: 10,
   },
-  label_text: {
-    color: "#E6C59E",
-    padding: 10
+  sub_text: {
+    color: "white",
+    fontSize: 30,
+    paddingBottom: 10,
+    alignSelf: "flex-start",
+    paddingLeft: "7%"
   },
   info_text: {
     color: "#E6C59E",
@@ -262,19 +245,5 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     width: "90%",
     height: 45,
-  },
-  musclegroup: {
-    flexDirection: "row",
-  },
-  flatList: {
-    flexGrow: 0,
-    flexDirection: "row",
-  },
-  listItem: {
-    backgroundColor: "#f36d21",
-    padding: 15,
-    marginVertical: 6,
-    marginHorizontal: 10,
-    borderRadius: 5,
   },
 });

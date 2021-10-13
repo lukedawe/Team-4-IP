@@ -94,12 +94,10 @@ export default function ListViewScreen({ route, navigation }: RootTabScreenProps
         </Text>
       </View>
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <View style={styles.headingContainer}>
-        <Text style={styles.heading_text}>
+      <View style={styles.subContainer}>
+        <Text style={styles.sub_text}>
           your clients
         </Text>
-      </View>
-      <View style={styles.subContainer}>
         <View style={styles.session_card_container}>
           {isLoading ? <ActivityIndicator /> : (
             data.map((data, key) => {
@@ -117,7 +115,6 @@ export default function ListViewScreen({ route, navigation }: RootTabScreenProps
                   </Text>
 
                   <Button onPress={() => navigation.navigate('SingleClientTab', { userid: id, id: data.id, type: "personal trainer" })}
-                    icon={<Icon name='code' color='#ffffff' />}
                     buttonStyle={styles.button_style}
                     title='select client'
                   />
@@ -211,9 +208,12 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     paddingBottom: 10,
   },
-  label_text: {
-    color: "#E6C59E",
-    padding: 10
+  sub_text: {
+    color: "white",
+    fontSize: 30,
+    paddingBottom: 10,
+    alignSelf: "flex-start",
+    paddingLeft: "7%"
   },
   back_button: {
     height: 30,
@@ -222,22 +222,5 @@ const styles = StyleSheet.create({
   },
   info_text: {
     color: "#E6C59E",
-  },
-  inputView: {
-    backgroundColor: "#1D2121",
-    borderRadius: 10,
-    width: "90%",
-    height: 45,
-  },
-  flatList: {
-    flexGrow: 0,
-    flexDirection: "row",
-  },
-  listItem: {
-    backgroundColor: "#f36d21",
-    padding: 15,
-    marginVertical: 6,
-    marginHorizontal: 10,
-    borderRadius: 5,
   },
 });

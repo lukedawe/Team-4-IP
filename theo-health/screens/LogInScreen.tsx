@@ -37,6 +37,8 @@ export default function LogInScreen({ navigation }: RootTabScreenProps<'LogInTab
         setsuccess(false)
       }
       else {
+        console.log(dataArray[0])
+        console.log(dataArray[1])
         dataArray.push(data.id)
         dataArray.push(data.user_type)
         userData = data
@@ -46,14 +48,14 @@ export default function LogInScreen({ navigation }: RootTabScreenProps<'LogInTab
           navigation.navigate('AthleteTab', { id: dataArray[0], type: dataArray[1] });
         }
         else {
-          navigation.navigate('ListViewTab', { id: dataArray[0], type: dataArray[1] });
+          navigation.navigate('ListViewTab', { userid:dataArray[0], id: dataArray[0], type: dataArray[1] });
         }
         setsuccess(false)
         seterrorMessage("");
+        dataArray.splice(0, dataArray.length);
       }
       //navigate to user screen
     }
-
   }
   );
 

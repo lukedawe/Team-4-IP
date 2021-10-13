@@ -1,5 +1,5 @@
-import * as React from 'react';
-import { StyleSheet } from 'react-native';
+import React, { useState, useEffect } from "react";
+import { StyleSheet, TouchableOpacity } from 'react-native';
 import { Text, View } from '../components/Themed';
 import { RootTabScreenProps } from '../types';
 import PointGraph from "../components/PointGraph"
@@ -9,9 +9,28 @@ import { TextStyles } from '../constants/FontStyle';
 import { ScrollView } from 'react-native-gesture-handler';
 import ExcerciseStackedBarChart from '../components/StackedBarChart';
 
-export default function ProgressScreen({ navigation }: RootTabScreenProps<'ProgressTab'>) {
+export default function ProgressScreen({ route, navigation }: RootTabScreenProps<'ProgressTab'>) {
+  console.log("hello?")
+  const { userid, id, type } = route.params;
+  const back = async () => {
+    if (userid == id) {
+      navigation.navigate('AthleteTab', { userid: userid, id: id, type: type })
+    }
+    else {
+      navigation.navigate('SingleClientTab', { userid: userid, id: id, type: type })
+    }
+    
+  }
+  useEffect(() => {
+  });
+
+  console.log("hi")
   return (
     <View style={styles.container}>
+      <TouchableOpacity
+        onPress={back}>
+        <Text style={styles.back_button}>back</Text>
+      </TouchableOpacity>
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
       {/* <MusclePicker /> */}
       <Text style={TextStyles.titleText} >
@@ -42,6 +61,11 @@ const styles = StyleSheet.create({
     marginVertical: 30,
     height: 1,
     width: '80%',
+  },
+  back_button: {
+    height: 30,
+    justifyContent: 'flex-start',
+    color: "#f36d21",
   },
 });
 

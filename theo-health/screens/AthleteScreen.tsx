@@ -29,7 +29,7 @@ export default function SingleClientScreen({ route, navigation }: RootTabScreenP
 
   };
   useEffect(() => {
-    
+
     if (!success) {
       sessionData();
       getuserName();
@@ -75,7 +75,7 @@ export default function SingleClientScreen({ route, navigation }: RootTabScreenP
         body: JSON.stringify({
           athlete_id: id
         })
-        
+
       }
       )
       const json = await response.json();
@@ -93,18 +93,21 @@ export default function SingleClientScreen({ route, navigation }: RootTabScreenP
     <SafeAreaProvider>
       <View style={styles.mainContainer}>
         <View style={styles.headingContainer}>
-        <TouchableOpacity onPress={() => navigation.navigate('LogInTab')}>
-          <Text style={styles.back_button}>sign out</Text>
-        </TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate('LogInTab')}>
+            <Text style={styles.back_button}>sign out</Text>
+          </TouchableOpacity>
           <Text style={styles.heading_text}>
             welcome back {userName}
           </Text>
         </View>
         <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-
+        <Button
+          onPress={() => navigation.navigate('ProgressTab', {userid: id, id: id, type: type})}
+          buttonStyle={styles.progress_button}
+          title='check progress'
+        />
         <View style={styles.subContainer}>
-
-          <Text style={styles.heading_text}>
+          <Text style={styles.sub_text}>
             recent sessions
           </Text>
           <View style={styles.session_card_container}>
@@ -159,7 +162,6 @@ const styles = StyleSheet.create({
     width: '80%',
   },
   session_card_container: {
-    //flexDirection: 'column',
     alignContent: "center",
     backgroundColor: "#434747"
   },
@@ -167,37 +169,39 @@ const styles = StyleSheet.create({
     borderColor: '#f36d21',
     backgroundColor: '#f36d21',
     borderRadius: 10,
-    //width: screen.width * 0.15,
-
   },
   card_title: {
     color: '#FFFFFF',
-
   },
   card_content: {
     fontSize: 16,
-
-    //paddingLeft: 5,
     paddingRight: 5,
-
     color: '#FFFFFF',
     textAlign: 'left',
-    //flexWrap: 'wrap',
-
   },
   button_style: {
     borderRadius: 10,
     backgroundColor: '#0297a2',
-
     marginLeft: 0,
     marginTop: 10,
     marginRight: 0,
     marginBottom: 0
   },
+  progress_button: {
+    borderRadius: 10,
+    backgroundColor: '#f36d21',
+    marginLeft: 0,
+    marginTop: 0,
+    marginRight: 0,
+    marginBottom: 30,
+    width: "100%",
+    fontSize: 30,
+  },
   mainContainer: {
     backgroundColor: '#1D2121',
     alignItems: 'center',
     justifyContent: 'center',
+    alignSelf: 'flex-start',
   },
   headingContainer: {
     backgroundColor: '#1D2121',
@@ -225,7 +229,14 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 35,
     fontWeight: "bold",
+  },
+  sub_text: {
+    color: "white",
+    fontSize: 30,
+    //fontWeight: "bold",
     paddingBottom: 10,
+    alignSelf: "flex-start",
+    paddingLeft: "7%"
   },
   label_text: {
     color: "#E6C59E",
