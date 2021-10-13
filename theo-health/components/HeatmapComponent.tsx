@@ -203,7 +203,7 @@ export default function HeatmapThing() {
                         colourChange();
                         render();
                     }
-
+                    //loop
                     GameLoop();
                 }}
             >
