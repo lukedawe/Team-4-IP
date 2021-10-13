@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   FlatList,
   StyleSheet,
@@ -13,7 +13,8 @@ import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
 import { RootTabScreenProps } from '../types';
 
-export default function SingleClientScreen({ navigation }: RootTabScreenProps<'SingleClientTab'>) {
+export default function SingleClientScreen({ route, navigation }: RootTabScreenProps<'SingleClientTab'>) {
+  const {id, type} = route.params;
   const firstname = useState("");
   const lastname = useState("");
   const leftquad = useState("");
@@ -26,9 +27,13 @@ export default function SingleClientScreen({ navigation }: RootTabScreenProps<'S
   const email = useState("");
   const phoneno = useState("");
   const back = () => {
-
+  
   };
-
+  useEffect(() => {
+    console.log(id)
+    console.log(type)
+  });
+  
   return (
     <View style={styles.mainContainer}>
       <View style={styles.logoContainer}>

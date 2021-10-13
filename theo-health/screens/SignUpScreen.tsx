@@ -113,7 +113,7 @@ export default function SignUpScreen({ navigation }: RootTabScreenProps<'SignUpT
           already have an account?
         </Text>
 
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('LogInScreen')}>
           <Text style={styles.log_in_button}>log in</Text>
         </TouchableOpacity>
         

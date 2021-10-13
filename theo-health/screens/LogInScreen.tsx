@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   Image,
@@ -7,17 +7,51 @@ import {
   Button,
   TouchableOpacity,
   Alert,
+  FlatList,
+  ActivityIndicator,
 } from "react-native";
 import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
 import { RootTabScreenProps } from '../types';
+import SingleClientScreen from "../screens/SingleClientScreen";
+import SignUpScreen from "../screens/SignUpScreen"
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
+let userData = undefined
 
 export default function LogInScreen({ navigation }: RootTabScreenProps<'LogInTab'>) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [data, setData] = useState("");
+    const [data, setData] = useState([]);
     const [errorMessage, seterrorMessage] = useState("");
-    
+    const [success, setsuccess] = useState(Boolean);
+    const [dataArray, setdataArray] = useState([]);
+
+    useEffect(() => {
+      if (success){
+        console.log(data)
+        //split the data up
+        if (data.message=='Request returned nothing') {
+          seterrorMessage("Incorrect email or password");
+          setsuccess(false)
+        }
+        else {
+          dataArray.push(data.id)
+          dataArray.push(data.user_type)
+          userData = data
+          console.log(dataArray[0])
+          console.log(dataArray[1])
+          if (dataArray[1]=="athlete"){
+            navigation.navigate('SingleClientScreen', {id:dataArray[0], type:dataArray[1]});
+          }
+          }
+          //navigate to user screen
+        }
+        
+      }
+    );
+
     const submit = async () => {
       try {
         if (email=="" || password==""){
@@ -39,19 +73,16 @@ export default function LogInScreen({ navigation }: RootTabScreenProps<'LogInTab
           const json = await response.json();
           console.log(json);
           setData(json);
-          console.log(data);
-          //if (the request returns nothing) {
-          //  throw Error;
-          // }
-          // else{
-          //   //navigate to user screen 
-          // }
+          setsuccess(true);
             
       } catch (error) {
           console.error(error);
           seterrorMessage("Incorrect email or password");
+          setsuccess(false)
       }
+      
   }
+  
   
   return (
     <View style={styles.mainContainer}>
@@ -63,6 +94,7 @@ export default function LogInScreen({ navigation }: RootTabScreenProps<'LogInTab
       </View>
       <View style={styles.subContainer}>
 
+      
         <Text style={styles.heading_text}>
           log in
         </Text>
@@ -106,7 +138,7 @@ export default function LogInScreen({ navigation }: RootTabScreenProps<'LogInTab
           don't have an account?
         </Text>
 
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('SignUpScreen')}>
           <Text style={styles.sign_up_button}>sign up</Text>
         </TouchableOpacity>
         
@@ -194,3 +226,5 @@ const styles = StyleSheet.create({
     height: 45,
   },
 });
+
+export{userData}
