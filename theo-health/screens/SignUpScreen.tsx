@@ -11,7 +11,6 @@ import { useNavigation } from '@react-navigation/native';
 import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
 import { RootTabScreenProps } from '../types';
-import LogInScreen from '../screens/LogInScreen';
 
 export default function SignUpScreen({ navigation }: RootTabScreenProps<'SignUpTab'>) {
     const [name, setname] = useState("");
@@ -40,7 +39,7 @@ export default function SignUpScreen({ navigation }: RootTabScreenProps<'SignUpT
           }
           )
           const json = await response.json();
-          //redirect to login page
+          navigation.navigate('LogInTab');
       } catch (error) {
           console.error(error);
           seterrorMessage("An error occured while signing up");
@@ -113,7 +112,7 @@ export default function SignUpScreen({ navigation }: RootTabScreenProps<'SignUpT
           already have an account?
         </Text>
 
-        <TouchableOpacity onPress={() => navigation.navigate('LogInScreen')}>
+        <TouchableOpacity onPress={() => navigation.navigate('LogInTab')}>
           <Text style={styles.log_in_button}>log in</Text>
         </TouchableOpacity>
         

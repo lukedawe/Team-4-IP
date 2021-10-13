@@ -43,7 +43,7 @@ export default function LogInScreen({ navigation }: RootTabScreenProps<'LogInTab
           console.log(dataArray[0])
           console.log(dataArray[1])
           if (dataArray[1]=="athlete"){
-            navigation.navigate('SingleClientScreen', {id:dataArray[0], type:dataArray[1]});
+            navigation.navigate('SingleClientTab', {id:dataArray[0], type:dataArray[1]});
           }
           }
           //navigate to user screen
@@ -94,7 +94,6 @@ export default function LogInScreen({ navigation }: RootTabScreenProps<'LogInTab
       </View>
       <View style={styles.subContainer}>
 
-      
         <Text style={styles.heading_text}>
           log in
         </Text>
@@ -138,7 +137,7 @@ export default function LogInScreen({ navigation }: RootTabScreenProps<'LogInTab
           don't have an account?
         </Text>
 
-        <TouchableOpacity onPress={() => navigation.navigate('SignUpScreen')}>
+        <TouchableOpacity onPress={() => navigation.navigate('SignUpTab')}>
           <Text style={styles.sign_up_button}>sign up</Text>
         </TouchableOpacity>
         

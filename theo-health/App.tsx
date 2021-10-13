@@ -21,14 +21,16 @@ export default function App() {
   } else {
     return (
       <SafeAreaProvider>
-        <NavigationContainer >
+
+        {/* <NavigationContainer >
           <Stack.Navigator screenOptions={{headerShown: false}}>
             <Stack.Screen name="LogInScreen" component={LogInScreen} />
             <Stack.Screen name="SignUpScreen" component={SignUpScreen} />
             <Stack.Screen name="SingleClientScreen" component={SingleClientScreen} />
           </Stack.Navigator>
-        </NavigationContainer>
-        {/* <Navigation colorScheme={colorScheme} /> */}
+        </NavigationContainer> */}
+
+        <Navigation colorScheme={colorScheme} />
         <StatusBar />
       </SafeAreaProvider>
     );
