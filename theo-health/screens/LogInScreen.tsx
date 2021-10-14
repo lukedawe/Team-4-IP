@@ -232,5 +232,3 @@ const styles = StyleSheet.create({
     height: 45,
   },
 });
-
-export { userData }
