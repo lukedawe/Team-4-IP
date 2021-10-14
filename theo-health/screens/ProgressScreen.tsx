@@ -86,12 +86,12 @@ export default function ProgressScreen({ route, navigation }: RootTabScreenProps
     }
   }
 
-  const muscle_activation = () => {
-    data.map((data2, key) => {
-      exerciseData(data2.id);
-    }
+  // const muscle_activation = () => {
+  //   data.map((data2, key) => {
+  //     exerciseData(data2.id);
+  //   }
 
-  }
+  // }
 
 
   return (
