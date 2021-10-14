@@ -8,26 +8,33 @@ import ExerciseProgressChart from '../components/ExercisePieChart';
 import { TextStyles } from '../constants/FontStyle';
 import { ScrollView } from 'react-native-gesture-handler';
 import ExcerciseStackedBarChart from '../components/StackedBarChart';
-import { useEffect, useState } from 'react';
 import { LineChart } from 'react-native-chart-kit';
-import { Dimensions } from 'react-native';
+import { Dimensions, ActivityIndicator, } from 'react-native';
 import ChartConfig from '../constants/ChartConfig';
+import { Picker } from "@react-native-picker/picker";
 
 export default function ProgressScreen({ route, navigation }: RootTabScreenProps<'ProgressTab'>) {
-  const id = 23;
-  const [selectedMuscle, setSelectedMuscle] = useState();
-
+  const { userid, id, type } = route.params;
+  const back = async () => {
+    if (userid == id) {
+      navigation.navigate('AthleteTab', { userid: userid, id: id, type: type })
+    }
+    else {
+      navigation.navigate('SingleClientTab', { userid: userid, id: id, type: type })
+    }
+  }
+  //const id = 23;
+  const [selectedMuscle, setSelectedMuscle] = useState("");
   // variables for the user sessions
-  const [_isLoading, _setLoading] = useState(true);
+  const [isLoading, setLoading] = useState(true);
   const [sessions, setSessions] = useState([]);
   const [success, setsuccess] = useState(Boolean);
   // variables for the user's session data
-  const [isLoading, setLoading] = useState(true);
-  const [data, setData] = useState([]);
+  const [avgMuscleData, setavgMuscleData] = useState([]);
 
 
   // get the recent user sessions
-  const SessionData = async () => {
+  const getAvgMuscleData = async () => {
     try {
       const response = await fetch(
         'http://localhost:5000/sessions/average_muscle_usage_progress', {
@@ -37,27 +44,27 @@ export default function ProgressScreen({ route, navigation }: RootTabScreenProps
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          "athlete_id": id,
-          "no_of_sessions": 5
+          athlete_id: 2,
+          no_of_sessions: 5
         })
       }
       )
       const json = await response.json();
-      setSessions(json)
+      setavgMuscleData(json.sessions)
       console.log(json);
       setsuccess(true);
     } catch (error) {
       console.error(error);
     } finally {
-      _setLoading(false);
+      setLoading(false);
     }
   }
 
   useEffect(() => {
     if (!success) {
-      SessionData();
-      //   getuserName();
-      console.log(data.sessions)
+      getAvgMuscleData();
+      //getuserName();
+      console.log(avgMuscleData)
     }
   });
 
@@ -69,75 +76,73 @@ export default function ProgressScreen({ route, navigation }: RootTabScreenProps
 
   // }
 
-
-export default function ProgressScreen({ route, navigation }: RootTabScreenProps<'ProgressTab'>) {
-  console.log("hello?")
-  const { userid, id, type } = route.params;
-  const back = async () => {
-    if (userid == id) {
-      navigation.navigate('AthleteTab', { userid: userid, id: id, type: type })
-    }
-    else {
-      navigation.navigate('SingleClientTab', { userid: userid, id: id, type: type })
-    }
-    
-  }
-  useEffect(() => {
-  });
-
-  console.log("hi")
   return (
 
     <View style={styles.container}>
-      <TouchableOpacity
-        onPress={back}>
-        <Text style={styles.back_button}>back</Text>
-      </TouchableOpacity>
+      <View style={styles.headingContainer}>
+        <TouchableOpacity
+          onPress={back}>
+          <Text style={styles.back_button}>back</Text>
+        </TouchableOpacity>
+        <Text style={TextStyles.titleText} >
+          progress
+        </Text>
+      </View>
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
       {/* <MusclePicker /> */}
-      <Text style={TextStyles.titleText} >
-        {'This year'}
-        {"\n"}
-        {"\n"}
-      </Text>
+
       <ScrollView>
+        <Picker
+          selectedValue={selectedMuscle}
+          onValueChange={(itemValue, itemIndex) => setSelectedMuscle(itemValue)}>
+          <Picker.Item label="Left hamstring" value="left hamstring" />
+          <Picker.Item label="Right hamstring" value="right hamstring" />
+          <Picker.Item label="Left quad" value="left quad" />
+          <Picker.Item label="Right quad" value="right quad" />
+        </Picker>
         <View>
           <Text>
-            This is the data {data}
+            {/* This is the data {avgMuscleData} */}
           </Text>
-          <LineChart
-            data={{
-              labels: [" ", " ", " ", " ", " "],
-              datasets: [
-                {
-                  data: [
-                    Math.random() * 100,
-                    Math.random() * 100,
-                    Math.random() * 100,
-                    Math.random() * 100,
-                    Math.random() * 100,
-                    Math.random() * 100
-                  ]
-                }
-              ]
-            }}
-            width={Dimensions.get("window").width - (Dimensions.get("window").width / 10)} // from react-native
-            height={220}
-            yAxisInterval={1} // optional, defaults to 1
-            chartConfig={ChartConfig}
-            bezier
-            style={{
-              marginVertical: 8,
-              borderRadius: 16
-            }}
-          />
+          {isLoading ? <ActivityIndicator /> : (
+            <LineChart
 
+              data={{
+                labels: [" ", " ", " ", " ", " "],
+                datasets: [
+                  {
+                    data: [
+                      Math.random() * 100,
+                                Math.random() * 100,
+                                Math.random() * 100,
+                                Math.random() * 100,
+                                Math.random() * 100
+                      // avgMuscleData[0].selectedMuscle,
+                      // avgMuscleData[1].selectedMuscle,
+                      // avgMuscleData[2].selectedMuscle,
+                      // avgMuscleData[3].selectedMuscle,
+                      // avgMuscleData[4].selectedMuscle,
+                    ]
+                  }
+                ]
+              }}
+              width={Dimensions.get("window").width - (Dimensions.get("window").width / 10)} // from react-native
+              height={220}
+              yAxisInterval={1} // optional, defaults to 1
+              chartConfig={ChartConfig}
+              bezier
+              style={{
+                marginVertical: 8,
+                borderRadius: 16
+              }}
+            />
+          )}
           {/* <MusclePicker/> */}
         </View>
         <ExerciseProgressChart />
         <ExcerciseStackedBarChart />
       </ScrollView>
-    </View>
+    </View >
   );
 }
 
@@ -146,6 +151,12 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  headingContainer: {
+    alignItems: 'flex-start',
+    justifyContent: 'center',
+    paddingTop: "5%",
+    width: "80%",
   },
   title: {
     fontSize: 20,

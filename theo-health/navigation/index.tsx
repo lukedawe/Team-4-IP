@@ -67,8 +67,9 @@ function BottomTabNavigator() {
   return (
     <BottomTab.Navigator
       initialRouteName="LogInTab"
+
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme].tint,
+        tabBarActiveTintColor: '#1D2121',
         headerShown: false,
       }
 
@@ -108,7 +109,7 @@ function BottomTabNavigator() {
       />
       <BottomTab.Screen
         name="ProgressTab"
-        component={ProgressScreen}
+        component= {ProgressScreen}
         options={{
           title: 'Progress Tab',
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,

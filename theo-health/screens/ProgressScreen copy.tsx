@@ -13,7 +13,7 @@ import ChartConfig from '../constants/ChartConfig';
 import { LineChart } from "react-native-chart-kit";
 
 export default function ProgressScreen({ route, navigation }: RootTabScreenProps<'ProgressTab'>) {
-  //const { userid, id, type } = route.params;
+  const { userid, id, type } = route.params;
   const [selectedMuscle, setSelectedMuscle] = useState();
   const [avgMuscleData, setavgMuscleData] = useState([]);
   const [success, setsuccess] = useState(Boolean);
