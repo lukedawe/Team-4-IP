@@ -10,12 +10,88 @@ import { useState } from 'react';
 import { MusclePicker } from './MusclePicker';
 import GetExerciseData from './GetExerciseData';
 import { json } from 'stream/consumers';
+import { useEffect } from 'react';
+import { RootTabScreenProps } from '../types';
 
 // export { setSelectedMuscle } 
 
 
-export default function PointGraph({ muscle }: { muscle: string }, id: number) {
+export default function PointGraph(id: number) {
     const [selectedMuscle, setSelectedMuscle] = useState();
+
+    // variables for the user sessions
+    const [_isLoading, _setLoading] = useState(true);
+    const [sessions, setSessions] = useState([]);
+    const [success, setsuccess] = useState(Boolean);
+    // variables for the user's session data
+    const [isLoading, setLoading] = useState(true);
+    const [data, setData] = useState([]);
+
+
+    // get the recent user sessions
+    const SessionData = async () => {
+        try {
+            const response = await fetch(
+                'http://localhost:5000/sessions/total_muscle_activation', {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    "athlete_id": id,
+                    "no_of_sessions": 5
+                })
+            }
+            )
+            const json = await response.json();
+            setSessions(json)
+            console.log(json);
+            setsuccess(true);
+        } catch (error) {
+            console.error(error);
+        } finally {
+            _setLoading(false);
+        }
+    }
+
+    useEffect(() => {
+
+        if (!success) {
+            SessionData();
+            //   getuserName();
+        }
+    });
+
+
+    // const exerciseData = async () => {
+    //     try {
+    //         const response = await fetch(
+    //             'http://localhost:5000/sessions/total_muscle_activation', {
+    //             method: 'POST',
+    //             headers: {
+    //                 Accept: 'application/json',
+    //                 'Content-Type': 'application/json'
+    //             },
+    //             body: JSON.stringify({
+    //                 "session_id": id
+    //             })
+    //         }
+    //         )
+    //         const json = await response.json();
+    //         console.log(json);
+    //         setData(json);
+    //     } catch (error) {
+    //         console.error(error);
+    //     } finally {
+    //         setLoading(false);
+    //     }
+    // }
+
+    // useEffect(() => {
+    //     exerciseData();
+    // }, []);
+
 
     return (
         <View>
