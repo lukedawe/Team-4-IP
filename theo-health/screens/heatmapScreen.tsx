@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { DatePickerIOSComponent, View, StyleSheet } from "react-native";
+import { DatePickerIOSComponent, View, StyleSheet, TouchableOpacity } from "react-native";
 import { GLView } from "expo-gl";
 
 import {
@@ -18,12 +18,12 @@ import {
     MeshBasicMaterial, Vector2, Vector3, Object3D, CylinderGeometry,
 } from "three";
 import { Renderer } from "expo-three";
-
+import { RootTabScreenProps } from '../types';
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader";
 
-export default function HeatmapThing() {
-
+export default function HeatmapThing({ route, navigation }: RootTabScreenProps<'HeatmapTab'>) {
+    const { userid, id, type, sessionid } = route.params;
     const col1 = 0x0C5793
     const col2 = 0x5F92BD
     const col3 = 0x94B6D6
@@ -42,69 +42,127 @@ export default function HeatmapThing() {
     var counter = 0;
     var angle = 0;
 
+
     const humanObj = require("../assets/models/human.obj")
 
     const canvas = document.querySelector('canvas.webgl')
 
     var index = 1;
+
+    const back = async () => {
+        if (userid == id) {
+          navigation.navigate('AthleteTab', { userid: userid, id: id, type: type })
+        }
+        else {
+          navigation.navigate('SingleClientTab', { userid: userid, id: id, type: type })
+        }
+      }
+
     const [data, setData] = useState([]);
     const [success, setsuccess] = useState(Boolean);
     const [isLoading, setLoading] = useState(true);
-    const [left_hamstring, setLeft_hamstring] = useState();
-    const [right_hamstring, setRight_hamstring] = useState();
-    const [left_quad, setLeft_quad] = useState();
-    const [right_quad, setRight_quad] = useState();
+    // const [left_hamstring, setLeft_hamstring] = useState("");
+    // const [right_hamstring, setRight_hamstring] = useState("");
+    // const [left_quad, setLeft_quad] = useState("");
+    // const [right_quad, setRight_quad] = useState("");
+    const [left_hamstring_color, setLeft_hamstring_color] = useState(String);
+    const [right_hamstring_color, setRight_hamstring_color] = useState(String);
+    const [left_quad_color, setLeft_quad_color] = useState(String);
+    const [right_quad_color, setRight_quad_color] = useState(String);
+    // if (localStorage.getItem('left_hamstring')!=null) {
+    //     setLeft_hamstring_color(localStorage.getItem('left_hamstring'))
+    // }
+    // useEffect(() => {
+    //     if (isLoading) {
+    //         getData();
+    //     }
+    //     else {
+    //         splitMuscles();
+    //     }
+    // });
 
-    useEffect(() => {
-        if (!success) {
-            getData();
-        }
-        else{
-            splitMuscles();
-        }
-    });
+    // const splitMuscles = async () => {
+    //     setLeft_hamstring_color(getColor(data.left_hamstring));
+    //     setRight_hamstring_color(getColor(data.right_hamstring));
+    //     setLeft_quad_color(getColor(data.left_quad));
+    //     setRight_quad_color(getColor(data.right_quad));
+    //     localStorage.setItem('left_hamstring', left_hamstring_color)
+    //     console.log(left_hamstring_color)
+    //     console.log(right_hamstring_color)
+    //     console.log(left_quad_color)
+    //     console.log(right_quad_color)
+    // }
 
-    const splitMuscles = async () => {
-        setLeft_hamstring(data.left_hamstring);
-        setRight_hamstring(data.right_hamstring);
-        setLeft_quad(data.left_quad);
-        setRight_quad(data.right_quad);
-        console.log(data.left_hamstring)
-        console.log(data.right_hamstring)
-        console.log(data.left_quad)
-        console.log(data.right_quad)
-    }
+    // function getColor(muscleValue: number) {
+    //     if (muscleValue >= 0 && muscleValue < 101) {
+    //         return '0x0C5793'
+    //     }
+    //     else if (muscleValue >= 101 && muscleValue < 201) {
+    //         return '0x5F92BD'
+    //     }
+    //     if (muscleValue >= 201 && muscleValue < 301) {
+    //         return '0x94B6D6'
+    //     }
+    //     if (muscleValue >= 301 && muscleValue < 401) {
+    //         return '0xB7CEE4'
+    //     }
+    //     if (muscleValue >= 401 && muscleValue < 501) {
+    //         return '0xD1D9E0'
+    //     }
+    //     if (muscleValue >= 501 && muscleValue < 601) {
+    //         return '0xECC78F'
+    //     }
+    //     if (muscleValue >= 601 && muscleValue < 701) {
+    //         return '0xEAAD65'
+    //     }
+    //     if (muscleValue >= 701 && muscleValue < 801) {
+    //         return '0xE09147'
+    //     }
+    //     if (muscleValue >= 801 && muscleValue < 901) {
+    //         return '0xD2712B'
+    //     }
+    //     if (muscleValue >= 901 && muscleValue < 1023) {
+    //         return '0xBA3E06'
+    //     }
+    // }
 
-    const getData = async () => {
-        try {
-            const response = await fetch(
-                'http://localhost:5000/exercise_data/get_data', {
-                method: 'POST',
-                headers: {
-                    Accept: 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    session_id: 99,
-                    order_in_session: 1
-                })
-            }
-            )
-            const json = await response.json();
-            console.log(json)
-            setData(json.muscles);
-            setsuccess(true);
-        } catch (error) {
-            console.error(error);
-            setsuccess(false);
-        } finally {
-            setLoading(false);
-        }
-    }
+    // const getData = async () => {
+    //     try {
+    //         console.log('hello?')
+    //         const response = await fetch(
+    //             'http://localhost:5000/exercise_data/get_data', {
+    //             method: 'POST',
+    //             headers: {
+    //                 Accept: 'application/json',
+    //                 'Content-Type': 'application/json'
+    //             },
+    //             body: JSON.stringify({
+    //                 session_id: 99,
+    //                 order_in_session: 1
+    //             })
+    //         }
+    //         )
+    //         const json = await response.json();
+    //         console.log(json)
+    //         setData(json.muscles);
+    //         setsuccess(true);
+    //     } catch (error) {
+    //         console.error(error);
+    //         setsuccess(false);
+    //     } finally {
+    //         console.log("DONE WITH THE API")
+    //         setLoading(false);
+    //     }
+    // }
 
     return (
         // <View>
+        
         <GLView
+            {...<TouchableOpacity
+                onPress={back}>
+                <Text style={styles.back_button}>back</Text>
+              </TouchableOpacity>}
             style={{ flex: 1, width: '80%', alignSelf: 'center' }}
             onContextCreate={async (gl) => {
                 // GL Parameter disruption
@@ -251,14 +309,19 @@ export default function HeatmapThing() {
                 controls.target.set(0, 0, 0);
 
                 function changeColor() {
+                    // quadMesh.material.color.set(left_quad_color)
+                    // quadMesh2.material.color.set(right_quad_color)
+                    // hamstringMesh.material.color.set(left_hamstring_color)
+                    // hamstringMesh2.material.color.set(right_hamstring_color)
                     quadMesh.material.color.set(quad1[counter])
-                    quadMesh2.material.color.set(quad2[counter])
-                    hamstringMesh.material.color.set(hamstring1[counter])
-                    hamstringMesh2.material.color.set(hamstring2[counter])
-                    counter++
-                    if (counter > 17) {
-                        counter = 0;
-                    }
+                        quadMesh2.material.color.set(quad2[counter])
+                        hamstringMesh.material.color.set(hamstring1[counter])
+                        hamstringMesh2.material.color.set(hamstring2[counter])
+                        counter++
+                        if (counter > 17)
+                        {
+                            counter = 0;
+                        }
                 }
 
                 function animate() {
@@ -303,4 +366,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
+    back_button: {
+    height: 30,
+    justifyContent: 'flex-start',
+    color: "#f36d21",
+  },
 })

@@ -20,6 +20,7 @@ import { Card, ListItem, Icon, Button } from 'react-native-elements'
 
 export default function SingleClientScreen({ route, navigation }: RootTabScreenProps<'AthleteTab'>) {
   const { id, type } = route.params;
+  const userid = id;
   const colorScheme = useColorScheme();
   const [userName, setuserName] = useState("");
   const [success, setsuccess] = useState(Boolean);
@@ -126,11 +127,10 @@ export default function SingleClientScreen({ route, navigation }: RootTabScreenP
                       Comment: {data.comment}
                     </Text>
 
-                    {/* <Button onPress={() => navigation.navigate('HeatmapTab', {data.id})}
-                      icon={<Icon name='code' color='#ffffff' />}
+                    <Button onPress={() => navigation.navigate('HeatmapTab', {userid: userid, id: id, type:type, sessionid: data.id})}
                       buttonStyle={styles.button_style }
-                      title='VIEW NOW'
-                    /> */}
+                      title='view session heatmap'
+                    />
                   </Card>
                 )
               })
