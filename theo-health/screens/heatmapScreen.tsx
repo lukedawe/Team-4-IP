@@ -156,14 +156,8 @@ export default function HeatmapThing({ route, navigation }: RootTabScreenProps<'
     // }
 
     return (
-        // <View>
-        
         <GLView
-            {...<TouchableOpacity
-                onPress={back}>
-                <Text style={styles.back_button}>back</Text>
-              </TouchableOpacity>}
-            style={{ flex: 1, width: '80%', alignSelf: 'center' }}
+            style={{flex:1, height: 500}}
             onContextCreate={async (gl) => {
                 // GL Parameter disruption
                 const scene = new Scene()
@@ -262,8 +256,8 @@ export default function HeatmapThing({ route, navigation }: RootTabScreenProps<'
                  * Sizes
                  */
                 const sizes = {
-                    width: 900,
-                    height: 2000
+                    width: 1200,
+                    height: 2100
                 }
 
                 window.addEventListener('resize', () => {
@@ -356,7 +350,6 @@ export default function HeatmapThing({ route, navigation }: RootTabScreenProps<'
             }}
         >
         </GLView>
-
     );
 }
 const styles = StyleSheet.create({
