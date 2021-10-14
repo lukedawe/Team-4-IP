@@ -234,7 +234,7 @@ def get_data():
             row = cursor.fetchone()
             return_data = {'id': row[0], 'date': str(row[3].day) + ', ' + str(row[3].month) + ', ' + str(row[3].year),
                            'time': str(row[3].hour) + ':' + str(row[3].minute) + ':' + str(row[3].second) + '.' + str(row[3].microsecond),
-                           'muscles': {'left hamstring': row[4], 'right hamstring': row[5], 'left quad': row[6], 'right quad': row[7]}}
+                           'muscles': {'left_hamstring': row[4], 'right_hamstring': row[5], 'left_quad': row[6], 'right_quad': row[7]}}
             return json.dumps(return_data)
 
         except KeyError:
@@ -365,7 +365,7 @@ def percentage_muscle_activation():
         session_data = request.get_json()
         # set the dictionary for the total muscle movement in the session
         total_muscle_movement = {
-            "right quad": 0, "left quad": 0, "right hamstring": 0, "left hamstring": 0}
+            "right_quad": 0, "left_quad": 0, "right_hamstring": 0, "left_hamstring": 0}
         try:
             order_in_session = 1
             row = " "
@@ -381,13 +381,13 @@ def percentage_muscle_activation():
                     row = cursor.fetchone()
                     # if the muscles are activated, add it to the dictionary
                     if(row[4] > 300):
-                        total_muscle_movement["left hamstring"] += 1
+                        total_muscle_movement["left_hamstring"] += 1
                     if(row[5] > 300):
-                        total_muscle_movement["right hamstring"] += 1
+                        total_muscle_movement["right_hamstring"] += 1
                     if(row[6] > 300):
-                        total_muscle_movement["left quad"] += 1
+                        total_muscle_movement["left_quad"] += 1
                     if(row[7] > 300):
-                        total_muscle_movement["right quad"] += 1
+                        total_muscle_movement["right_quad"] += 1
                     order_in_session += 1
                 except TypeError:
                     print('last data entry reached')
@@ -396,15 +396,15 @@ def percentage_muscle_activation():
                         return {"error": "no data for that session found"}
                     break
             percentage_muscle_movement = {
-                "right quad": 0, "left quad": 0, "right hamstring": 0, "left hamstring": 0}
+                "right_quad": 0, "left_quad": 0, "right_hamstring": 0, "left_hamstring": 0}
             # divide everything by the total number of entries (and multiply by 100) to get the percentage
-            percentage_muscle_movement["left hamstring"] = round(total_muscle_movement["left hamstring"] /
+            percentage_muscle_movement["left_hamstring"] = round(total_muscle_movement["left_hamstring"] /
                                                                  (order_in_session-1) * 100, 2)
-            percentage_muscle_movement["right hamstring"] = round(total_muscle_movement["right hamstring"] /
+            percentage_muscle_movement["right_hamstring"] = round(total_muscle_movement["right_hamstring"] /
                                                                   (order_in_session-1) * 100, 2)
-            percentage_muscle_movement["left quad"] = round(total_muscle_movement["left quad"] /
+            percentage_muscle_movement["left_quad"] = round(total_muscle_movement["left_quad"] /
                                                             (order_in_session-1) * 100, 2)
-            percentage_muscle_movement["right quad"] = round(total_muscle_movement["right quad"] /
+            percentage_muscle_movement["right_quad"] = round(total_muscle_movement["right_quad"] /
                                                              (order_in_session-1) * 100, 2)
             return json.dumps(percentage_muscle_movement), 200
 
@@ -422,7 +422,7 @@ def total_muscle_activation():
         session_data = request.get_json()
         # set the dictionary for the total muscle movement in the session
         total_muscle_movement = {
-            "right quad": 0, "left quad": 0, "right hamstring": 0, "left hamstring": 0}
+            "right_quad": 0, "left_quad": 0, "right_hamstring": 0, "left_hamstring": 0}
         try:
             order_in_session = 1
             row = " "
@@ -437,10 +437,10 @@ def total_muscle_activation():
                     # there should only be one row returned
                     row = cursor.fetchone()
                     # if the muscles are activated, add the value to the dictionary
-                    total_muscle_movement["left hamstring"] += row[4]
-                    total_muscle_movement["right hamstring"] += row[5]
-                    total_muscle_movement["left quad"] += row[6]
-                    total_muscle_movement["right quad"] += row[7]
+                    total_muscle_movement["left_hamstring"] += row[4]
+                    total_muscle_movement["right_hamstring"] += row[5]
+                    total_muscle_movement["left_quad"] += row[6]
+                    total_muscle_movement["right_quad"] += row[7]
                     order_in_session += 1
                 except TypeError:
                     print('last data entry reached')
@@ -502,7 +502,7 @@ def average_muscle_usage_progress():
         # we want the average muscle movement per session in the array
         for session in session_array:
             total_muscle_movement = {
-                "right quad": 0, "left quad": 0, "right hamstring": 0, "left hamstring": 0}
+                "right_quad": 0, "left_quad": 0, "right_hamstring": 0, "left_hamstring": 0}
             order_in_session = 1
             try:
                 row = " "
@@ -517,10 +517,10 @@ def average_muscle_usage_progress():
                         # there should only be one row returned
                         row = cursor.fetchone()
                         # if the muscles are activated, add the value to the dictionary
-                        total_muscle_movement["left hamstring"] += row[4]
-                        total_muscle_movement["right hamstring"] += row[5]
-                        total_muscle_movement["left quad"] += row[6]
-                        total_muscle_movement["right quad"] += row[7]
+                        total_muscle_movement["left_hamstring"] += row[4]
+                        total_muscle_movement["right_hamstring"] += row[5]
+                        total_muscle_movement["left_quad"] += row[6]
+                        total_muscle_movement["right_quad"] += row[7]
                         order_in_session += 1
                     except TypeError:
                         print('last data entry reached')
@@ -532,10 +532,10 @@ def average_muscle_usage_progress():
                     total_muscle_movement[key] = round(
                         total_muscle_movement[key] / order_in_session, 2)
                 # now we store the averages per session
-                session["left hamstring"] = total_muscle_movement["left hamstring"]
-                session["right hamstring"] = total_muscle_movement["right hamstring"]
-                session["left quad"] = total_muscle_movement["left quad"]
-                session["right quad"] = total_muscle_movement["right quad"]
+                session["left_hamstring"] = total_muscle_movement["left_hamstring"]
+                session["right_hamstring"] = total_muscle_movement["right_hamstring"]
+                session["left_quad"] = total_muscle_movement["left_quad"]
+                session["right_quad"] = total_muscle_movement["right_quad"]
 
             except KeyError:
                 print('JSON did not hold reqired data')
