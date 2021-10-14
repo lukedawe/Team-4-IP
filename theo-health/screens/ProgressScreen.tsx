@@ -30,7 +30,7 @@ export default function ProgressScreen({ route, navigation }: RootTabScreenProps
   const SessionData = async () => {
     try {
       const response = await fetch(
-        'http://localhost:5000/sessions/get_user_sessions', {
+        'http://localhost:5000/sessions/average_muscle_usage_progress', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -54,37 +54,13 @@ export default function ProgressScreen({ route, navigation }: RootTabScreenProps
   }
 
   useEffect(() => {
-
     if (!success) {
       SessionData();
       //   getuserName();
+      console.log(data.sessions)
     }
   });
 
-
-  const exerciseData = async (session_id: number) => {
-    try {
-      const response = await fetch(
-        'http://localhost:5000/sessions/total_muscle_activation', {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          "session_id": session_id
-        })
-      }
-      )
-      const json = await response.json();
-      console.log(json);
-      setData(json);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setLoading(false);
-    }
-  }
 
   // const muscle_activation = () => {
   //   data.map((data2, key) => {
@@ -106,6 +82,9 @@ export default function ProgressScreen({ route, navigation }: RootTabScreenProps
       </Text>
       <ScrollView>
         <View>
+          <Text>
+            This is the data {data}
+          </Text>
           <LineChart
             data={{
               labels: [" ", " ", " ", " ", " "],
