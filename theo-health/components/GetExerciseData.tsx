@@ -8,7 +8,7 @@ export default function GetExerciseData(id: number) {
     const exerciseData = async () => {
         try {
             const response = await fetch(
-                'http://localhost:5000/sessions/total_muscle_activation', {
+                'http://localhost:5000/sessions/get_user_sessions', {
                 method: 'POST',
                 headers: {
                     Accept: 'application/json',
@@ -33,4 +33,7 @@ export default function GetExerciseData(id: number) {
         exerciseData();
     }, []);
 
+    return (
+        data.
+    );
 };
