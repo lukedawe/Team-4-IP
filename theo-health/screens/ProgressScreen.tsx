@@ -113,10 +113,10 @@ export default function ProgressScreen({ route, navigation }: RootTabScreenProps
                   {
                     data: [
                       Math.random() * 100,
-                                Math.random() * 100,
-                                Math.random() * 100,
-                                Math.random() * 100,
-                                Math.random() * 100
+                      Math.random() * 100,
+                      Math.random() * 100,
+                      Math.random() * 100,
+                      Math.random() * 100
                       // avgMuscleData[0].selectedMuscle,
                       // avgMuscleData[1].selectedMuscle,
                       // avgMuscleData[2].selectedMuscle,
@@ -141,6 +141,14 @@ export default function ProgressScreen({ route, navigation }: RootTabScreenProps
         </View>
         <ExerciseProgressChart />
         <ExcerciseStackedBarChart />
+
+        <Text>
+        {"\n"}
+              Graph 1 : The line graph shows the average usage of muscles for the last 5 sessions {"\n"} {"\n"}
+              Graph 2 : The doughnut chart shows the increase in usage for each muscle over your last 5 sessions {"\n"} {"\n"}
+              Graph 3 : The bar chart shows the share of work that each muscle has done for each of your last two sessions
+
+        </Text>
       </ScrollView>
     </View >
   );
