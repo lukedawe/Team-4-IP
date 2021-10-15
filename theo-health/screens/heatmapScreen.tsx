@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { DatePickerIOSComponent, View, StyleSheet, TouchableOpacity } from "react-native";
+import { DatePickerIOSComponent, View, StyleSheet, Dimensions, TouchableOpacity, Image } from "react-native";
 import { GLView } from "expo-gl";
 import { Text } from '../components/Themed';
 import {
@@ -23,7 +23,7 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader";
 
 export default function HeatmapThing({ route, navigation }: RootTabScreenProps<'HeatmapTab'>) {
-    //const { userid, id, type, sessionid } = route.params;
+    const { userid, id, type, sessionid } = route.params;
     const col1 = 0x0C5793
     const col2 = 0x5F92BD
     const col3 = 0x94B6D6
@@ -50,12 +50,12 @@ export default function HeatmapThing({ route, navigation }: RootTabScreenProps<'
     var index = 1;
 
     const back = async () => {
-        // if (userid == id) {
-        //     navigation.navigate('AthleteTab', { userid: userid, id: id, type: type })
-        // }
-        // else {
-        //     navigation.navigate('SingleClientTab', { userid: userid, id: id, type: type })
-        // }
+        if (userid == id) {
+            navigation.navigate('AthleteTab', { userid: userid, id: id, type: type })
+        }
+        else {
+            navigation.navigate('SingleClientTab', { userid: userid, id: id, type: type })
+        }
     }
 
     const [data, setData] = useState([]);
@@ -174,7 +174,7 @@ export default function HeatmapThing({ route, navigation }: RootTabScreenProps<'
             </View>
 
             <GLView
-                style={{height: 450 }}
+                style={{ height: 420, backgroundColor: '#1D2121' }}
                 onContextCreate={async (gl) => {
                     // GL Parameter disruption
                     const scene = new Scene()
@@ -273,8 +273,8 @@ export default function HeatmapThing({ route, navigation }: RootTabScreenProps<'
                      * Sizes
                      */
                     const sizes = {
-                        width: 1200,
-                        height: 1500
+                        width: 1150,
+                        height: 1300
                     }
 
                     window.addEventListener('resize', () => {
@@ -367,13 +367,20 @@ export default function HeatmapThing({ route, navigation }: RootTabScreenProps<'
             >
             </GLView>
             <div>
-            <View style={styles.mainContainer}>
-                <View style={styles.headingContainer}>
-                    <Text style={styles.sub_text}>
-                        colour scale:
-                    </Text>
+                <View style={styles.mainContainer}>
+                    <View style={styles.headingContainer}>
+                        <Text style={styles.sub_text}>
+                            colour scale:
+                        </Text>
+                        
+                    </View>
+                    <View style={styles.logoContainer}>
+                            <Image
+                                style={styles.logo}
+                                source={require('../assets/images/colorScale.png')}
+                            />
+                        </View>
                 </View>
-            </View>
             </div>
         </div>
     );
@@ -403,9 +410,20 @@ const styles = StyleSheet.create({
     },
     sub_text: {
         color: "white",
-        fontSize: 30,
+        fontSize: 20,
         //fontWeight: "bold",
         paddingBottom: 10,
         alignSelf: "flex-start",
+    },
+    logoContainer: {
+        backgroundColor: '#1D2121',
+        alignItems: 'flex-start',
+        justifyContent: 'center',
+      },
+    logo: {
+        maxWidth: "100%",
+        maxHeight: "40%",
+        width: 320,
+        height: 135,
       },
 })

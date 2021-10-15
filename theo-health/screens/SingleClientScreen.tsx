@@ -93,6 +93,11 @@ export default function SingleClientScreen({ route, navigation }: RootTabScreenP
         </View>
         <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
         <Button
+          onPress={() => navigation.navigate('HeatmapTab', {userid: userid, id: id, type:type, sessionid: 1})}
+          buttonStyle={styles.progress_button}
+          title='record live session'
+        />
+        <Button
           onPress={() => navigation.navigate('ProgressTab', { userid: userid, id: id, type: type })}
           buttonStyle={styles.progress_button}
           title='check progress'
