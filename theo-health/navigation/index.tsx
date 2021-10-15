@@ -22,7 +22,8 @@ import ProgressScreen from '../screens/ProgressScreen';
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
 import heatmapScreen from '../screens/heatmapScreen';
-import AthleteScreen from '../screens/AthleteScreen'
+import AthleteScreen from '../screens/AthleteScreen';
+import heatmapRecordScreen from '../screens/heatmapRecordScreen';
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
   return (
@@ -69,7 +70,7 @@ function BottomTabNavigator() {
       initialRouteName="LogInTab"
       screenOptions={{
         tabBarActiveBackgroundColor: '#1D2121',
-        //tabBarInactiveBackgroundColor: '#1D2121',
+        tabBarInactiveBackgroundColor: '#1D2121',
         tabBarActiveTintColor: '#1D2121',
         tabBarInactiveTintColor: '#1D2121',
         headerShown: false,
@@ -131,6 +132,14 @@ function BottomTabNavigator() {
         component={AthleteScreen}
         options={{
           title: 'Athlete Tab',
+          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+        }}
+        />
+        <BottomTab.Screen
+        name="HeatmapRecordTab"
+        component={heatmapRecordScreen}
+        options={{
+          title: 'Record Live Session Tab',
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
         }}
         />

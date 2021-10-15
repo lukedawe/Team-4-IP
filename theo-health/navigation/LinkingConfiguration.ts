@@ -52,6 +52,11 @@ const linking: LinkingOptions<RootStackParamList> = {
               AthleteScreen: 'athlete',
             },
           },
+          HeatmapRecordTab: {
+            screens: {
+              heatmapScreen: 'heatmapRecord',
+            },
+          },
         },
       },
       Modal: 'modal',
