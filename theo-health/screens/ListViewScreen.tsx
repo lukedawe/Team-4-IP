@@ -180,7 +180,7 @@ const styles = StyleSheet.create({
     marginBottom: 0
   },
   mainContainer: {
-    flex: 1,
+    //flex: 1,
     backgroundColor: '#1D2121',
     alignItems: 'center',
     justifyContent: 'center',

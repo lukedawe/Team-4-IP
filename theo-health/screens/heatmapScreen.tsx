@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { DatePickerIOSComponent, View, StyleSheet, TouchableOpacity } from "react-native";
 import { GLView } from "expo-gl";
-
+import { Text } from '../components/Themed';
 import {
     SphereGeometry,
     Mesh,
@@ -23,7 +23,7 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader";
 
 export default function HeatmapThing({ route, navigation }: RootTabScreenProps<'HeatmapTab'>) {
-    const { userid, id, type, sessionid } = route.params;
+    //const { userid, id, type, sessionid } = route.params;
     const col1 = 0x0C5793
     const col2 = 0x5F92BD
     const col3 = 0x94B6D6
@@ -50,13 +50,13 @@ export default function HeatmapThing({ route, navigation }: RootTabScreenProps<'
     var index = 1;
 
     const back = async () => {
-        if (userid == id) {
-          navigation.navigate('AthleteTab', { userid: userid, id: id, type: type })
-        }
-        else {
-          navigation.navigate('SingleClientTab', { userid: userid, id: id, type: type })
-        }
-      }
+        // if (userid == id) {
+        //     navigation.navigate('AthleteTab', { userid: userid, id: id, type: type })
+        // }
+        // else {
+        //     navigation.navigate('SingleClientTab', { userid: userid, id: id, type: type })
+        // }
+    }
 
     const [data, setData] = useState([]);
     const [success, setsuccess] = useState(Boolean);
@@ -155,213 +155,257 @@ export default function HeatmapThing({ route, navigation }: RootTabScreenProps<'
     //     }
     // }
 
+
+
     return (
-        <GLView
-            style={{flex:1, height: 500}}
-            onContextCreate={async (gl) => {
-                // GL Parameter disruption
-                const scene = new Scene()
+        <div style={{ flex: 1, backgroundColor: '#1D2121' }}>
+            <View style={styles.mainContainer}>
+                <View style={styles.headingContainer}>
+                    <TouchableOpacity
+                        onPress={back}>
+                        <Text style={styles.back_button}>back</Text>
+                    </TouchableOpacity>
+                    <Text style={styles.heading_text}>
+                        heatmap
+                        {"\n"}
+                        {"\n"}
+                    </Text>
+                </View>
+            </View>
 
-                // Objects
-                const quad = new CylinderGeometry(0.15, 0.15, 0.6, 30);
-                const hamstring = new CylinderGeometry(0.075, 0.075, 0.8, 30);
+            <GLView
+                style={{height: 450 }}
+                onContextCreate={async (gl) => {
+                    // GL Parameter disruption
+                    const scene = new Scene()
 
-
-                const clock = new Clock()
-                // Materials
-
-                const quadMaterial = new MeshBasicMaterial()
-                const quadMaterial2 = new MeshBasicMaterial()
-                const hamMaterial = new MeshBasicMaterial()
-                const hamMaterial2 = new MeshBasicMaterial()
-
-
-                // Mesh
-                const quadMesh = new Mesh(quad, quadMaterial)
-                quadMesh.position.set(-0.25, 2, 0.12)
-                quadMesh.rotation.set(0, 0, -0.1)
-
-                const quadMesh2 = new Mesh(quad, quadMaterial2)
-                quadMesh2.position.set(0.25, 2, 0.12)
-                quadMesh2.rotation.set(0, 0, 0.1)
-
-                const hamstringMesh = new Mesh(hamstring, hamMaterial)
-                hamstringMesh.position.set(-.27, 1.9, -.18)
-                hamstringMesh.rotation.set(-.05, 0, 0)
-
-                const hamstringMesh2 = new Mesh(hamstring, hamMaterial2)
-                hamstringMesh2.position.set(.27, 1.9, -.18)
-                hamstringMesh2.rotation.set(-.05, 0, 0)
-
-                const objLoader = new OBJLoader();
-                // objLoader.setPath('../models/');
-                objLoader.load(humanObj, function (object) {
-                    object.position.set(0, 0, 0);
-                    object.scale.set(1, 1, 1)
-                    scene.add(object);
-                })
-
-                //edges
-                const edges = new EdgesGeometry(quad);
-                const edgesMaterial = new LineBasicMaterial({ color: 0x000000 });
-
-                const edgesMesh = new LineSegments(edges, edgesMaterial);
-                edgesMesh.position.set(-0.25, 2, 0.12)
-                edgesMesh.rotation.set(0, 0, -0.1)
-
-                const edgesMesh2 = new LineSegments(edges, edgesMaterial);
-                edgesMesh2.position.set(0.25, 2, 0.12)
-                edgesMesh2.rotation.set(0, 0, 0.1)
-
-                const edges2 = new EdgesGeometry(hamstring);
-
-                const edgesMesh3 = new LineSegments(edges2, edgesMaterial);
-                edgesMesh3.position.set(.27, 1.9, -.18)
-                edgesMesh3.rotation.set(-.05, 0, 0)
-
-                const edgesMesh4 = new LineSegments(edges2, edgesMaterial);
-                edgesMesh4.position.set(-.27, 1.9, -.18)
-                edgesMesh4.rotation.set(-.05, 0, 0)
+                    // Objects
+                    const quad = new CylinderGeometry(0.15, 0.15, 0.6, 30);
+                    const hamstring = new CylinderGeometry(0.075, 0.075, 0.8, 30);
 
 
-                //Add to scene
+                    const clock = new Clock()
+                    // Materials
 
-                scene.add(hamstringMesh)
-
-                scene.add(quadMesh)
-                scene.add(hamstringMesh2)
-                scene.add(quadMesh2)
-
-                scene.add(edgesMesh)
-                scene.add(edgesMesh2)
-                scene.add(edgesMesh3)
-                scene.add(edgesMesh4)
+                    const quadMaterial = new MeshBasicMaterial()
+                    const quadMaterial2 = new MeshBasicMaterial()
+                    const hamMaterial = new MeshBasicMaterial()
+                    const hamMaterial2 = new MeshBasicMaterial()
 
 
-                // Lights
+                    // Mesh
+                    const quadMesh = new Mesh(quad, quadMaterial)
+                    quadMesh.position.set(-0.25, 2, 0.12)
+                    quadMesh.rotation.set(0, 0, -0.1)
 
-                const pointLight = new PointLight(0xffffff, 0.5)
-                pointLight.position.x = 2
-                pointLight.position.y = 3
-                pointLight.position.z = 4
-                scene.add(pointLight)
+                    const quadMesh2 = new Mesh(quad, quadMaterial2)
+                    quadMesh2.position.set(0.25, 2, 0.12)
+                    quadMesh2.rotation.set(0, 0, 0.1)
 
-                const pointLight2 = new PointLight(0xffffff, 0.5)
-                pointLight2.position.x = -2
-                pointLight2.position.y = 3
-                pointLight2.position.z = -4
-                scene.add(pointLight2)
+                    const hamstringMesh = new Mesh(hamstring, hamMaterial)
+                    hamstringMesh.position.set(-.27, 1.9, -.18)
+                    hamstringMesh.rotation.set(-.05, 0, 0)
 
-                /**
-                 * Sizes
-                 */
-                const sizes = {
-                    width: 1200,
-                    height: 2100
-                }
+                    const hamstringMesh2 = new Mesh(hamstring, hamMaterial2)
+                    hamstringMesh2.position.set(.27, 1.9, -.18)
+                    hamstringMesh2.rotation.set(-.05, 0, 0)
 
-                window.addEventListener('resize', () => {
-                    // Update sizes
-                    sizes.width = window.innerWidth
-                    sizes.height = window.innerHeight
+                    const objLoader = new OBJLoader();
+                    // objLoader.setPath('../models/');
+                    objLoader.load(humanObj, function (object) {
+                        object.position.set(0, 0, 0);
+                        object.scale.set(1, 1, 1)
+                        scene.add(object);
+                    })
 
-                    // Update camera
-                    camera.aspect = sizes.width / sizes.height
-                    camera.updateProjectionMatrix()
+                    //edges
+                    const edges = new EdgesGeometry(quad);
+                    const edgesMaterial = new LineBasicMaterial({ color: 0x000000 });
 
-                    // Update renderer
-                    renderer.setSize(sizes.width, sizes.height)
-                    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
-                })
+                    const edgesMesh = new LineSegments(edges, edgesMaterial);
+                    edgesMesh.position.set(-0.25, 2, 0.12)
+                    edgesMesh.rotation.set(0, 0, -0.1)
 
-                /**
-                 * Camera
-                 */
-                // Base camera
-                const camera = new PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100)
-                camera.lookAt(0, 0, 0)
-                scene.add(camera)
+                    const edgesMesh2 = new LineSegments(edges, edgesMaterial);
+                    edgesMesh2.position.set(0.25, 2, 0.12)
+                    edgesMesh2.rotation.set(0, 0, 0.1)
 
-                var camera_pivot = new Object3D()
-                camera_pivot.position.set(0, 1, 0)
-                camera_pivot.rotation.set(0, 1.5, 0)
-                var Y_AXIS = new Vector3(0, 1, 0);
+                    const edges2 = new EdgesGeometry(hamstring);
 
-                scene.add(camera_pivot);
-                camera_pivot.add(camera);
-                camera.position.set(3, 3, 0);
-                // camera.lookAt( camera_pivot.position );
+                    const edgesMesh3 = new LineSegments(edges2, edgesMaterial);
+                    edgesMesh3.position.set(.27, 1.9, -.18)
+                    edgesMesh3.rotation.set(-.05, 0, 0)
 
-                /**
-                 * Renderer
-                 */
-                const renderer = new Renderer({ gl });
-                renderer.setSize(sizes.width, sizes.height);
-                renderer.setClearColor("#fff");
+                    const edgesMesh4 = new LineSegments(edges2, edgesMaterial);
+                    edgesMesh4.position.set(-.27, 1.9, -.18)
+                    edgesMesh4.rotation.set(-.05, 0, 0)
 
-                const controls = new OrbitControls(camera, renderer.domElement);
-                controls.target.set(0, 0, 0);
 
-                function changeColor() {
-                    // quadMesh.material.color.set(left_quad_color)
-                    // quadMesh2.material.color.set(right_quad_color)
-                    // hamstringMesh.material.color.set(left_hamstring_color)
-                    // hamstringMesh2.material.color.set(right_hamstring_color)
-                    quadMesh.material.color.set(quad1[counter])
+                    //Add to scene
+
+                    scene.add(hamstringMesh)
+
+                    scene.add(quadMesh)
+                    scene.add(hamstringMesh2)
+                    scene.add(quadMesh2)
+
+                    scene.add(edgesMesh)
+                    scene.add(edgesMesh2)
+                    scene.add(edgesMesh3)
+                    scene.add(edgesMesh4)
+
+
+                    // Lights
+
+                    const pointLight = new PointLight(0xffffff, 0.5)
+                    pointLight.position.x = 2
+                    pointLight.position.y = 3
+                    pointLight.position.z = 4
+                    scene.add(pointLight)
+
+                    const pointLight2 = new PointLight(0xffffff, 0.5)
+                    pointLight2.position.x = -2
+                    pointLight2.position.y = 3
+                    pointLight2.position.z = -4
+                    scene.add(pointLight2)
+
+                    /**
+                     * Sizes
+                     */
+                    const sizes = {
+                        width: 1200,
+                        height: 1500
+                    }
+
+                    window.addEventListener('resize', () => {
+                        // Update sizes
+                        //sizes.width = window.innerWidth
+                        //sizes.height = window.innerHeight
+
+                        // Update camera
+                        camera.aspect = sizes.width / sizes.height
+                        camera.updateProjectionMatrix()
+
+                        // Update renderer
+                        renderer.setSize(sizes.width, sizes.height)
+                        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+                    })
+
+                    /**
+                     * Camera
+                     */
+                    // Base camera
+                    const camera = new PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100)
+                    camera.lookAt(0, 0, 0)
+                    scene.add(camera)
+
+                    var camera_pivot = new Object3D()
+                    camera_pivot.position.set(0, 1, 0)
+                    camera_pivot.rotation.set(0, 1.5, 0)
+                    var Y_AXIS = new Vector3(0, 1.5, 0);
+
+                    scene.add(camera_pivot);
+                    camera_pivot.add(camera);
+                    camera.position.set(3, 3, 0);
+                    // camera.lookAt( camera_pivot.position );
+
+                    /**
+                     * Renderer
+                     */
+                    const renderer = new Renderer({ gl });
+                    renderer.setSize(sizes.width, sizes.height);
+                    renderer.setClearColor("#fff");
+
+                    const controls = new OrbitControls(camera, renderer.domElement);
+                    controls.target.set(0, 0, 0);
+
+                    function changeColor() {
+                        // quadMesh.material.color.set(left_quad_color)
+                        // quadMesh2.material.color.set(right_quad_color)
+                        // hamstringMesh.material.color.set(left_hamstring_color)
+                        // hamstringMesh2.material.color.set(right_hamstring_color)
+                        quadMesh.material.color.set(quad1[counter])
                         quadMesh2.material.color.set(quad2[counter])
                         hamstringMesh.material.color.set(hamstring1[counter])
                         hamstringMesh2.material.color.set(hamstring2[counter])
                         counter++
-                        if (counter > 17)
-                        {
+                        if (counter > 17) {
                             counter = 0;
                         }
-                }
-
-                function animate() {
-                    requestAnimationFrame(animate);
-                    camera_pivot.rotateOnAxis(Y_AXIS, 0.00003);
-                    renderer.render(scene, camera);
-                }
-
-                // Render function
-                const render = () => {
-                    //requestAnimationFrame(render);
-                    renderer.render(scene, camera);
-                    gl.endFrameEXP();
-                };
-
-                function colourChange() {
-                    var time = clock.getElapsedTime(); // elapsed time since last reset
-                    if (time > 0.2) {
-                        changeColor();
-                        clock.start(); // resets clock
                     }
-                }
 
-                function GameLoop() {
-                    requestAnimationFrame(GameLoop);
-                    animate();
-                    colourChange();
-                    render();
-                }
-                //loop
-                GameLoop();
-            }}
-        >
-        </GLView>
+                    function animate() {
+                        requestAnimationFrame(animate);
+                        camera_pivot.rotateOnAxis(Y_AXIS, 0.00003);
+                        renderer.render(scene, camera);
+                    }
+
+                    // Render function
+                    const render = () => {
+                        //requestAnimationFrame(render);
+                        renderer.render(scene, camera);
+                        gl.endFrameEXP();
+                    };
+
+                    function colourChange() {
+                        var time = clock.getElapsedTime(); // elapsed time since last reset
+                        if (time > 0.2) {
+                            changeColor();
+                            clock.start(); // resets clock
+                        }
+                    }
+
+                    function GameLoop() {
+                        requestAnimationFrame(GameLoop);
+                        animate();
+                        colourChange();
+                        render();
+                    }
+                    //loop
+                    GameLoop();
+                }}
+            >
+            </GLView>
+            <div>
+            <View style={styles.mainContainer}>
+                <View style={styles.headingContainer}>
+                    <Text style={styles.sub_text}>
+                        colour scale:
+                    </Text>
+                </View>
+            </View>
+            </div>
+        </div>
     );
 }
 const styles = StyleSheet.create({
     mainContainer: {
-        flex: 1,
         backgroundColor: '#1D2121',
         alignItems: 'center',
         justifyContent: 'center',
+        alignSelf: 'flex-start',
     },
     back_button: {
-    height: 30,
-    justifyContent: 'flex-start',
-    color: "#f36d21",
-  },
+        height: 30,
+        justifyContent: 'flex-start',
+        color: "#f36d21",
+    },
+    headingContainer: {
+        alignItems: 'flex-start',
+        justifyContent: 'center',
+        paddingTop: "5%",
+        width: "80%",
+    },
+    heading_text: {
+        color: "white",
+        fontSize: 35,
+        fontWeight: "bold",
+    },
+    sub_text: {
+        color: "white",
+        fontSize: 30,
+        //fontWeight: "bold",
+        paddingBottom: 10,
+        alignSelf: "flex-start",
+      },
 })

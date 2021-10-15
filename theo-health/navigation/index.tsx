@@ -69,7 +69,7 @@ function BottomTabNavigator() {
       initialRouteName="LogInTab"
       screenOptions={{
         tabBarActiveBackgroundColor: '#1D2121',
-        tabBarInactiveBackgroundColor: '#1D2121',
+        //tabBarInactiveBackgroundColor: '#1D2121',
         tabBarActiveTintColor: '#1D2121',
         tabBarInactiveTintColor: '#1D2121',
         headerShown: false,
