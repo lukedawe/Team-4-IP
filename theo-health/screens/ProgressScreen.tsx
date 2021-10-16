@@ -146,7 +146,7 @@ export default function ProgressScreen({ route, navigation }: RootTabScreenProps
         {"\n"}
               Graph 1 : The line graph shows the average usage of muscles for the last 5 sessions {"\n"} {"\n"}
               Graph 2 : The doughnut chart shows the increase in usage for each muscle over your last 5 sessions {"\n"} {"\n"}
-              Graph 3 : The bar chart shows the share of work that each muscle has done for each of your last two sessions
+              Graph 3 : The bar chart shows the share of work that each muscle has done for each of your last 5 sessions
 
         </Text>
       </ScrollView>
