@@ -13,13 +13,17 @@ import GetExerciseData from './GetExerciseData';
 // export { setSelectedMuscle } 
 
 const data = {
-    labels: ["Test1", "Test2"],
-    legend: ["L1", "L2", "L3"],
+    labels: ["S1", "S2", "S3", "S4", "S5",],
+    legend: ["Right quad", "Left quad", "Right hamstring", "Left hamstring"],
     data: [
-        [60, 60, 60],
-        [30, 30, 60]
+        [60, 60, 60, 40, 30],
+        [30, 30, 60, 20, 40],
+        [30, 10, 60, 40, 40],
+        [30, 50, 70, 10, 10],
+        [30, 10, 60, 70, 40],
+
     ],
-    barColors: ["#dfe4ea", "#ced6e0", "#a4b0be"]
+    barColors: ["#dfe4ea", "#ced6e0", "#a4b0be", "#a5b0bc"]
 };
 
 export default function ExcerciseStackedBarChart() {
