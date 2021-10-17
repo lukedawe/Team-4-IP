@@ -12,12 +12,14 @@ import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
 import { RootTabScreenProps } from '../types';
 
+//screen to create an account
 export default function SignUpScreen({ navigation }: RootTabScreenProps<'SignUpTab'>) {
     const [name, setname] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [errorMessage, seterrorMessage] = useState("");
 
+    //sends the users input to the api to try and create an account
     const submit = async () => {
       try {
         if (email=="" || password=="" || name==""){

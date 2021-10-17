@@ -12,6 +12,7 @@ import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
 import { RootTabScreenProps } from '../types';
 
+//main screen for the personal trainer that shows a list of their clients
 export default function ListViewScreen({ route, navigation }: RootTabScreenProps<'ListViewTab'>) {
   const { id, type } = route.params;
   const [userName, setuserName] = useState("");
@@ -20,13 +21,13 @@ export default function ListViewScreen({ route, navigation }: RootTabScreenProps
   const [data, setData] = useState([]);
 
   useEffect(() => {
-
     if (!success) {
       clientData();
       getuserName();
     }
   });
 
+  //gets the personal trainers name
   const getuserName = async () => {
     try {
       const response = await fetch(
@@ -54,6 +55,7 @@ export default function ListViewScreen({ route, navigation }: RootTabScreenProps
     }
   }
 
+  //gets the list of the pt's clients
   const clientData = async () => {
     try {
       const response = await fetch(
@@ -98,6 +100,7 @@ export default function ListViewScreen({ route, navigation }: RootTabScreenProps
         <Text style={styles.sub_text}>
           your clients
         </Text>
+        {/* list of clients */}
         <View style={styles.session_card_container}>
           {isLoading ? <ActivityIndicator /> : (
             data.map((data, key) => {
