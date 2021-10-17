@@ -13,6 +13,7 @@ import { Dimensions, ActivityIndicator, } from 'react-native';
 import ChartConfig from '../constants/ChartConfig';
 import { Picker } from "@react-native-picker/picker";
 
+//screen that displays graphs related to the users progress
 export default function ProgressScreen({ route, navigation }: RootTabScreenProps<'ProgressTab'>) {
   const { userid, id, type } = route.params;
   const back = async () => {
@@ -142,7 +143,7 @@ export default function ProgressScreen({ route, navigation }: RootTabScreenProps
         <ExerciseProgressChart />
         <ExcerciseStackedBarChart />
 
-        <Text>
+        <Text style={{paddingLeft: 5, paddingRight:10, paddingBottom: 20}}>
         {"\n"}
               Graph 1 : The line graph shows the average usage of muscles for the last 5 sessions {"\n"} {"\n"}
               Graph 2 : The doughnut chart shows the increase in usage for each muscle over your last 5 sessions {"\n"} {"\n"}
@@ -156,9 +157,11 @@ export default function ProgressScreen({ route, navigation }: RootTabScreenProps
 
 const styles = StyleSheet.create({
   container: {
+
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    paddingLeft:20,
   },
   headingContainer: {
     alignItems: 'flex-start',

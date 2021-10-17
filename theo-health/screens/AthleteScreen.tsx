@@ -18,6 +18,7 @@ import GetAllUserSessions from "../components/GetAllUserSessions";
 import { ScrollView } from "react-native-gesture-handler";
 import { Card, ListItem, Icon, Button } from 'react-native-elements'
 
+//main screen for athlete that shows most recent sessions, their progress and an option to record live data
 export default function SingleClientScreen({ route, navigation }: RootTabScreenProps<'AthleteTab'>) {
   const { id, type } = route.params;
   const userid = id;
@@ -29,14 +30,15 @@ export default function SingleClientScreen({ route, navigation }: RootTabScreenP
   const back = () => {
 
   };
-  useEffect(() => {
 
+  useEffect(() => {
     if (!success) {
       sessionData();
       getuserName();
     }
   });
 
+  //gets the user's name from the database
   const getuserName = async () => {
     try {
       const response = await fetch(
@@ -64,6 +66,7 @@ export default function SingleClientScreen({ route, navigation }: RootTabScreenP
     }
   }
 
+  //gets the users most recent sessions
   const sessionData = async () => {
     try {
       const response = await fetch(
@@ -102,11 +105,13 @@ export default function SingleClientScreen({ route, navigation }: RootTabScreenP
           </Text>
         </View>
         <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
+        {/* button to go to the record live session page */}
         <Button
           onPress={() => navigation.navigate('HeatmapRecordTab', {userid: userid, id: id, type:type, sessionid: 1})}
           buttonStyle={styles.progress_button}
           title='record live session'
         />
+        {/* button to go to the progress tab */}
         <Button
           onPress={() => navigation.navigate('ProgressTab', {userid: id, id: id, type: type})}
           buttonStyle={styles.progress_button}
@@ -116,6 +121,7 @@ export default function SingleClientScreen({ route, navigation }: RootTabScreenP
           <Text style={styles.sub_text}>
             recent sessions
           </Text>
+          {/* list of the users most recent sessions */}
           <View style={styles.session_card_container}>
             {isLoading ? <ActivityIndicator /> : (
               data.map((data, key) => {

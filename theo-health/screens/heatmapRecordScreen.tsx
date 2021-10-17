@@ -23,6 +23,7 @@ import { RootTabScreenProps } from '../types';
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader";
 
+//screen to record a heatmap for a session
 export default function HeatmapThing({ route, navigation }: RootTabScreenProps<'HeatmapRecordTab'>) {
     const { userid, id, type, sessionid } = route.params;
     const col1 = 0x0C5793
@@ -50,6 +51,7 @@ export default function HeatmapThing({ route, navigation }: RootTabScreenProps<'
 
     var index = 1;
 
+    //back button
     const back = async () => {
         if (userid == id) {
             navigation.navigate('AthleteTab', { userid: userid, id: id, type: type })
@@ -174,6 +176,7 @@ export default function HeatmapThing({ route, navigation }: RootTabScreenProps<'
                 </View>
             </View>
 
+            {/* heatmap */}
             <GLView
                 style={{ height: 420, backgroundColor: '#1D2121' }}
                 onContextCreate={async (gl) => {

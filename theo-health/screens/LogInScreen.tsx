@@ -20,6 +20,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 let userData = undefined
 
+//screen for the user to log into their account
 export default function LogInScreen({ navigation }: RootTabScreenProps<'LogInTab'>) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -54,11 +55,11 @@ export default function LogInScreen({ navigation }: RootTabScreenProps<'LogInTab
         seterrorMessage("");
         dataArray.splice(0, dataArray.length);
       }
-      //navigate to user screen
     }
   }
   );
 
+  //send the users input data to the api to try and log in
   const submit = async () => {
     try {
       if (email == "" || password == "") {
